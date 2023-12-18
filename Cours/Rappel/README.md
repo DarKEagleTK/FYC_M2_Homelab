@@ -1,16 +1,16 @@
-## 1. Rappel système
+## A. Rappel système
 
 Pour fonctionner, un système d’exploitation (OS) a besoin d’accéder à des ressources. Pour cela, l’OS embarque un kernel (ou noyau), qui va s’occuper de traduire les demandes de ressources, qu’on appelle appels systèmes, aux différents composants de l’ordinateur.
 
 L’une des avancées importantes dans le monde du système est la virtualisation. Cela permet entre autres de faire tourner plusieurs systèmes d’exploitation sous forme de systèmes virtualisés sur une machine hôte. La machine hôte va s’occuper de distribuer ses ressources aux différents systèmes virtualisés, et en fonction de la quantité de ressources disponibles, un certain nombre de systèmes virtualisés pourra fonctionner côte à côte.
 
-### Superviseur, Hyperviseur et Conteneur
+### 1. Superviseur, Hyperviseur et Conteneur
 
 Pour faire ces systèmes virtualisés, nous allons avoir besoin d’une couche qui s’occupera de faire la virtualisation. C’est-à-dire que cette couche va s’occuper de faire la traduction entre les appels systèmes du systèmes virtualisés et les composants de l’hôte.
 
 Il existe donc plusieurs moyens de faire de la virtualisation : les machines virtuelles et les conteneurs. Chacun de ces systèmes intervient sur des couches différentes, et permet plus ou moins de fonctionnalités.
 
-#### Superviseur
+#### a. Superviseur
 
 Un superviseur est un logiciel de virtualisation que l’on doit installer sur un système d’exploitation. On appelle aussi ces logiciels des hyperviseurs de niveau 2. Parmi ce genre de logiciel, on retrouve VMWare Workstation ou encore VirtualBox.
 
@@ -18,7 +18,7 @@ Ces logiciels viennent rajouter une couche par-dessus un système d’exploitati
 
 Le logiciel superviseur embarque donc des drivers pour ces VMs, pour permettre aux appels systèmes des machines virtuelles à travers l’OS et atteindre les ressources. Ce genre de système n’est pas efficace lorsqu’on a besoin de beaucoup de ressources et de performances.
 
-#### Hyperviseur
+#### b. Hyperviseur
 
 Un hyperviseur est un système d’exploitation dédié à la création de machine virtuelle. On parle aussi d’hyperviseur de niveau 1. Parmi ce genre de logiciel, on retrouve KVM, VMWare ESXI ou Hyper-V.
 
@@ -26,7 +26,7 @@ Ce genre de système de virtualisation supprime la couche OS du superviseur. On 
 
 Ces systèmes de virtualisation sont beaucoup plus efficaces et performants pour créer des machines virtuelles, et sont souvent installés sur des serveurs ayant beaucoup de ressources, avec des outils permettant la mise en cluster de ces systèmes.
 
-#### Conteneur
+#### c. Conteneur
 
 Les conteneurs sont une manière de faire de la virtualisation totalement différente des machines virtuelles, donc des hyperviseurs. Le concept des conteneurs est de virtualiser une seule et unique application. Par exemple, si on doit déployer un serveur web et une base de données, on créera deux conteneurs avec un pour le serveur et un pour la base de données.
 
@@ -34,7 +34,7 @@ Parmi ce genre de logiciels, on retrouve Docker, containerd, LXD ou encore Podma
 
 Ces systèmes intègrent donc un moteur de conteneur, qui doit se rajouter par-dessus un OS.
 
-## Les raids
+## 2. Les raids
 
 Les Systèmes RAID (Redundant Array of Independent Disks) sont des systèmes utilisés pour améliorer la fiabilité et les performances du stockage. L’idée est de combiner plusieurs disques physiques en un seul disque logique.
 
@@ -56,15 +56,15 @@ On retrouve aussi d’autres types de RAID, comme le RAID 10 qui est une combina
 
 Chaque RAID a ses avantages et défauts, et nécessite d’avoir été étudié pour prévoir les besoins nécessaires pour leur déploiement.
 
-## Linux
+## 3. Linux
 
-### L’arborescence
+### a. L’arborescence
 
 L’arborescence de Linux fonctionne à partir d’un répertoire racine (le /), dans lequel on retrouve l’ensemble des dossiers.
 
 Chacun des dossiers a ses utilisations, et il est important de savoir ce qu’on peut y retrouver.
 
-### Commandes utiles
+### b. Commandes utiles
 
 Linux a énormément de commandes. Voici quelques commandes utiles pour faire vos débogages, ou pour votre utilisation de Linux :
 
@@ -73,7 +73,7 @@ Linux a énormément de commandes. Voici quelques commandes utiles pour faire vo
 
  commande est utile lors de vos débogages dans les fichiers de logs.
 
-### Logs
+### c. Logs
 
 Linux a un dossier dans lequel on retrouve tous les logs. C’est le dossier /var/log.
 
@@ -81,9 +81,13 @@ Les applications créent en général un dossier à leur nom dans ce répertoire
 
 Vous pouvez utiliser la commande `journalctl -xe` pour avoir accès au log système.
 
-## Windows
+## 4. Windows
 
-# 2. Rappel Réseau
+### a. Arborescence
+
+### b. Logs
+
+# B. Rappel Réseau
 
 ## OSI et TCP/IP
 

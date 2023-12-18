@@ -1,4 +1,4 @@
-## A - Les technologies présentées
+## A. - Les technologies présentées
 
 Lors de cette partie du cours, nous allons vous présenter les différents systèmes que nous avons choisi d’installer sur notre HomeLab.
 
@@ -29,54 +29,53 @@ Nous allons donc vous présenter :
 
 Maintenant que vous avez une idée globale  de ce que nous allons faire dans ce cours, armez-vous de patience et de vos claviers, et suivez-nous dans l’élaboration de votre premier homelab !
 
-## B - La virtualisation
+## B. - La virtualisation
 
-#### I - Présentation
+#### 1. - Présentation
 Comme vous avez pu le voir dans notre partie Rappel, la virtualisation est un point important voir central dans l’informatique moderne. Il est donc important de comprendre les concepts de la virtualisation et de la mettre en place dans notre homelab, car nos ressources seront utilisées pour héberger plusieurs services.
 
-#### II - Installation de l’hyperviseur
+#### 2. - Installation de l’hyperviseur
 
-#### III - Installation de l’environnement Docker
+#### 3. - Installation de l’environnement Docker
 
-#### IV - Configuration
+#### 4. - Configuration
 
-#### V - Pour aller plus loin
+#### 5. - Pour aller plus loin
 
-## C - Le stockage
+## C. - Le stockage
 
-#### I - Présentation
+#### 1. - Présentation
 
-#### II - Installation de NAS/SAN
+#### 2. - Installation de NAS/SAN
 
-#### III - Configuration
+#### 3. - Configuration
 
-#### IV - Pour aller plus loin
+#### 4. - Pour aller plus loin
 
-## D - Services
+## D. - Services
 
-#### I - Présentation
+#### 1 - Présentation
 
-#### II - Installation/Utilisation du Firewall
+#### 2. - Installation/Utilisation du Firewall
 
-#### III - Installation/Utilisation d’outils DEVOPS
+#### 3. - Installation/Utilisation d’outils DEVOPS
 
-#### IV - Installation/Utilisation de NEXTCLOUD
+#### 4. - Installation/Utilisation de NEXTCLOUD
 
-#### V - Installation/Utilisation d’un VPN
+#### 5. - Installation/Utilisation d’un VPN
 
-## E - Monitorings
+## E. - Monitorings
 
-#### I - Présentation
+#### 1. - Présentation
 
-#### II - Installation Grafana/Prometheus/UptimeKuma
+#### 2. - Installation Grafana/Prometheus/UptimeKuma
 
-#### III - Configuration
+#### 3. - Configuration
 
-#### IV - Pour aller plus loin
+#### 4. - Pour aller plus loin
 
-## F - Dashboard
+## F. - Dashboard
 
-#### I - Présentation
+#### 1. - Présentation
 
-#### II - Installation Homer
-```
+#### 2. - Installation Homer
