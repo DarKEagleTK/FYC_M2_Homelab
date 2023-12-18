@@ -8,7 +8,7 @@ L’une des avancées importantes dans le monde du système est la virtualisatio
 
 Pour faire ces systèmes virtualisés, nous allons avoir besoin d’une couche qui s’occupera de faire la virtualisation. C’est-à-dire que cette couche va s’occuper de faire la traduction entre les appels systèmes du systèmes virtualisés et les composants de l’hôte.
 
-Ils existent donc plusieurs moyens de faire de la virtualisation : les machines virtuelles et les conteneurs. Chacun de ces systèmes intervient sur des couches différentes, et permet plus ou moins de fonctionnalité.
+Il existe donc plusieurs moyens de faire de la virtualisation : les machines virtuelles et les conteneurs. Chacun de ces systèmes intervient sur des couches différentes, et permet plus ou moins de fonctionnalités.
 
 #### Superviseur
 

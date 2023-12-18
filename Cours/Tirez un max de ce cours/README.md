@@ -29,7 +29,7 @@ Il est beau, et il aime pas vraiment linux, donc il vous fera des cours de windo
 ### Louise-Anne Dayao
 Louise-Anne s'est ouvert au monde de l'informatique à la suite d’un stage en 3e au service informatique de Monoprix. Après 2 ans d'études à l'université, elle s'est rendu compte que le développement n'est pas pour elle et se tourne vers l'infrastructure système et réseau. Aujourd'hui, elle a fraichement acquis un serveur et servira de cobaye pour notre cours afin qu'il soit le plus compréhensif possible.
 
-
+https://youtu.be/rAutA2IA0VU
 
 ## Fiche résumé du cours
 Nous commencerons par quelques rappels sur les systèmes et réseaux ainsi qu'un questionnaire pour vous guider que le choix des modules selon votre projet personnel. 
