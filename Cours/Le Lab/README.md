@@ -58,13 +58,13 @@ Les prérequis pour cette partie du cours sont :
 - notre machine qui deviendra le serveur
 
 Pour l'installation de notre proxmox, nous allons commencer par télécharger sur notre ordinateur l'iso de proxmox et rufus, un utilitaire pour intaller cet iso sur une clé usb bootable.
-- !(Proxmox)[https://enterprise.proxmox.com/iso/proxmox-ve_8.1-1.iso]
-- !(Rufus)[https://github.com/pbatard/rufus/releases/download/v4.3/rufus-4.3.exe]
+- ![Proxmox](https://enterprise.proxmox.com/iso/proxmox-ve_8.1-1.iso)
+- ![Rufus](https://github.com/pbatard/rufus/releases/download/v4.3/rufus-4.3.exe)
 
 Une fois ces deux éléments télécharger, lancez l'éxécutable rufus. Dans l'onglet `device`, sélectionnez votre clé usb. Point d'attention si vous avez plusieurs disques ou clé usb connceté sur votre ordinateur a ce moment la, mais l'installation de l'ISO sur votre clé procedera à un formatage, donc a la perte de l'ensemble des données présente sur cette clé.
 Vous pouvez ensuite spécifier l'ISO de proxmox dans l'onglet `Boot selection`.
 
-!(Rufus_exemple)[src/rufus.png]
+![Rufus_exemple](src/rufus.png)
 
 
 #### 3. - Installation de l’environnement Docker
