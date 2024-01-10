@@ -84,29 +84,47 @@ Une fois l'installation de Linux effectué, nous nous connecterons en SSH sur no
 Nous allons dans un premier temps installer le référentiel apt de Docker qui nous servira de sources d'installation et de mise à jour de Docker.
 
 Ajout de la clé GPG officiel de Docker :
-`sudo apt-get update
+```bash
+sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
 sudo install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg`
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
 
 Ajout du référentiel aux sources APT:
-`echo \
-  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-sudo apt-get update`
+``` bash
+echo \
+"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
+$(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
 
+Et enfin nous allons installer docker et ces plugins : 
+```bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
 
+Pour vérifier que Docker a bien été installer nous lançons un conteneur test : 
+```bash
+sudo docker run hello-world
+```
+
+L'installation effectué, nous allons le configurer pour que Docker se lance à chaque démarrage système : 
+```bash
+sudo systemctl enable docker.service
+sudo systemctl enable containerd.service
+```
+
+Et pour le désactiver, voici les commandes :
+```bash
+sudo systemctl disable docker.service
+sudo systemctl disable containerd.service
+```
 
 #### 4. - Configuration
 
-Configure Docker to start on boot with systemd
-sudo systemctl enable docker.service
-sudo systemctl enable containerd.service
-
-sudo systemctl disable docker.service
-sudo systemctl disable containerd.service
 
 #### 5. - Pour aller plus loin
 
