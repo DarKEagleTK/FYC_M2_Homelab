@@ -127,14 +127,13 @@ Vous pourrez vous connecter avec l'utilisateur **root**, le mot de passe que vou
 
 #### 3. - Installation de l’environnement Docker
 
-Avant de nous intéresser à Docker, nous définirons ce qu'est un conteneur. Un conteneur est un environnement d'exécution léger, permettant d'utiliser des applications sans la difficulté d'organisation d'un système d'exploitation entier.
-Son utilisation peut nous être intéressant pour l'installation de services tel qu'un serveur de 
+Avant de nous intéresser à Docker, nous définirons ce qu'est un conteneur. Un conteneur est un environnement d'exécution léger, permettant d'isoler les applications déployés sur un seul et le de partage de ressources de l'hôte entre les différents conteneurs. Un conteneur est plus léger et plus simple qu’une machine virtuelle et peut donc démarrer et s’arrêter plus rapidement. Il est donc plus réactif, et adaptable aux besoins fluctuants liés au ” scaling ” d’une application.
+Docker orchestre, crée et manage ces conteneurs, dans le partage de ressources, la configuration réseau et stockage des conteneurs.
 
 L'installation de notre hyperviseur effectué, nous pouvons installer notre plateforme Docker, permettant de créer et gérer automatiquement les différentes applications que nous aurons besoin.
 Pour cela, nous aurons besoin de créer une VM linux. Ici nous utiliserons Debian comme distributeur de système d'exploitation.
 
 Une fois l'installation de Linux effectué, nous nous connecterons en SSH sur notre propre machine pour plus de fluidité.
-
 Nous allons dans un premier temps installer le référentiel apt de Docker qui nous servira de sources d'installation et de mise à jour de Docker.
 
 Ajout de la clé GPG officiel de Docker :
