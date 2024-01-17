@@ -187,7 +187,22 @@ sudo systemctl disable containerd.service
 
 Si nous souhaitons aller plus loin dans le management et la création de conteneur, nous pouvons installer Kubernetes. Kubernetes est une plate-forme open-source pour gérer les ressources machines (computing), la mise en réseau et l’infrastructure de stockage sur les workloads des utilisateurs.
 
+Nous utiliserons Docker pour installer K0S qui est fait partie de la distribution Kubernetes avec une fonctionnalité de créer facilement un cluster en copiant des fichiers exécutants sur chaque hôte cible.
 
+Nous commencerons par créer le cluster avec un master et un worker. Si vous souhaitez créer plus de worker il faudra rajouter une ligne de commande :
+
+``` bash
+docker run -d --name k0s --hostname k0s --privileged -v /var/lib/k0s -p 6443:6443 docker.io/k0sproject/k0s:latest
+
+#pour créer des workers additionnel
+token=$(docker exec -t -i k0s k0s token create --role=worker)
+docker run -d --name k0s-worker1 --hostname k0s-worker1 --privileged -v /var/lib/k0s docker.io/k0sproject/k0s:latest k0s worker $token
+```
+
+Et enfin pour accéder à notre cluster nous lançons :
+```bash
+docker exec k0s kubectl get nodes
+```
 
 ## C. - Le stockage
 
