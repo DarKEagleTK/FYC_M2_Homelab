@@ -183,16 +183,26 @@ Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker :
 #### 4. - Configuration
 
 ##### Gestion des conteneurs
+Nous allons voir 3 concepts clefs de Docker : *les conteneurs, les images et les fichiers Docker (Dockerfile)*
+
+En prenant NGINX comme exemple, voici un tableau avec les commandes les plus utilisé sur Docker pour gérer les conteneurs :
+
+|Commandes|Exemple|Commentaires|
+|---|:-:|---|
+|**docker run <nom_image>**|`docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d nginx`|Différents arguments peuvent être ajouté lors de la création du conteneur. Voir [ici](https://docs.docker.com/engine/reference/run/)|
+|**docker ps**|`docker ps`|pour lister les conteneurs lancés. Rajouter "-a" comme argument pour lister tous les conteneurs|
+|**docker stop <id_conteneur>**|`docker stop 78`|Pour arrêter un conteneur|
+|**docker restart <id_conteneur>**|`docker restart 78`|Pour redémarrer un conteneur|
+|**docker rm <id_conteneur>**|`docker rm 78`|Pour supprimer un conteneur|
+
+
 La gestion de conteneur n'oblige pas que nous créons les conteneurs à chaque fois, un site propose différentes images Docker les plus utiliser [Docker Hub](https://hub.docker.com/search?q=)
 
 Prenons, comme exemple NGINX : serveur web HTTP pouvant servir de proxy inversé, proxy de messagerie électronique ainsi que de LoadBalancer.
 
-Nous choisissons l'image souhaité dans Docker Hub, [NGINX](https://hub.docker.com/_/nginx)
-Et nous plus bas que l'installation se fait en créeant un docker file pré-remplis donc nous faisons :
+Pour l'installer dans notre machine via Dockerhub nous lançons:
 ```bash
-FROM nginx
-COPY static-html-directory /usr/share/nginx/html
-docker run --name some-nginx -d some-content-nginx
+docker pull nginx
 ```
 Et nous devons attribuer un port externe pour notre hôte locale :
 ```bash
@@ -200,11 +210,12 @@ docker run --name some-nginx -d -p 8080:80 some-content-nginx
 ```
 
 Nous pouvons maintenant accéder à notre serveur local sur notre navigateur en tapant : http://localhost:8080
-	Rentrer/sortir d’un conteneur en cours d’utilisation
-	Logs
+
+Pour lister les images nous tapons `docker images`
+Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
+
 ##### Gestion du réseau
-	Création
-	Utilisation
+
 ##### Compréhension des scripts YAML orienté Docker
 
 
