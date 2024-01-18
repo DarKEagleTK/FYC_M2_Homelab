@@ -216,9 +216,11 @@ Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
 ##### Gestion du réseau
 
+Pour garantir un système de sécurité et permettre aux différents conteneurs de communiquer entre eux ou avec l'hôte, Docker pour 
+
 ##### Compréhension des scripts YAML orienté Docker
 
-
+Cas pratique : création de docker compose.yaml pour installer MySQL, Nginx.
 #### 5. - Pour aller plus loin
 ##### Installation de K0s
 
