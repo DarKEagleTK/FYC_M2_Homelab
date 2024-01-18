@@ -177,8 +177,35 @@ Et pour le désactiver, voici les commandes :
 sudo systemctl disable docker.service
 sudo systemctl disable containerd.service
 ```
+Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker : 
+[Cheat Sheet Docker](https://docs.docker.com/get-started/docker_cheatsheet.pdf)
 
 #### 4. - Configuration
+
+##### Gestion des conteneurs
+La gestion de conteneur n'oblige pas que nous créons les conteneurs à chaque fois, un site propose différentes images Docker les plus utiliser [Docker Hub](https://hub.docker.com/search?q=)
+
+Prenons, comme exemple NGINX : serveur web HTTP pouvant servir de proxy inversé, proxy de messagerie électronique ainsi que de LoadBalancer.
+
+Nous choisissons l'image souhaité dans Docker Hub, [NGINX](https://hub.docker.com/_/nginx)
+Et nous plus bas que l'installation se fait en créeant un docker file pré-remplis donc nous faisons :
+```bash
+FROM nginx
+COPY static-html-directory /usr/share/nginx/html
+docker run --name some-nginx -d some-content-nginx
+```
+Et nous devons attribuer un port externe pour notre hôte locale :
+```bash
+docker run --name some-nginx -d -p 8080:80 some-content-nginx
+```
+
+Nous pouvons maintenant accéder à notre serveur local sur notre navigateur en tapant : http://localhost:8080
+	Rentrer/sortir d’un conteneur en cours d’utilisation
+	Logs
+##### Gestion du réseau
+	Création
+	Utilisation
+##### Compréhension des scripts YAML orienté Docker
 
 
 #### 5. - Pour aller plus loin
@@ -191,7 +218,7 @@ Vous trouverez donc ci-dessous, différents liens permettant de d'installer et d
     - https://kubernetes.io/fr/docs/concepts/overview/what-is-kubernetes/
 - https://docs.k0sproject.io/v1.21.2+k0s.1/
     - https://docs.k0sproject.io/v1.21.2+k0s.1/k0s-in-docker/
-- ![Playlist Tutoriel Kuberneste](https://www.youtube.com/playlist?list=PLy7NrYWoggjziYQIDorlXjTvvwweTYoNC)
+- [Playlist Tutoriel Kuberneste](https://www.youtube.com/playlist?list=PLy7NrYWoggjziYQIDorlXjTvvwweTYoNC)
 
 ## C. - Le stockage
 
