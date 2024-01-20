@@ -182,7 +182,11 @@ Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker :
 
 #### 4. - Configuration
 
+##### Configuration du proxmox
+
+Nous allons commencer à configurer le réseau de notre machines. 
 ##### Gestion des conteneurs
+
 Nous allons voir 3 concepts clefs de Docker : *les conteneurs, les images et les fichiers Docker (Dockerfile)*
 
 En prenant NGINX comme exemple, voici un tableau avec les commandes les plus utilisé sur Docker pour gérer les conteneurs :
@@ -222,7 +226,16 @@ Pour garantir un système de sécurité et permettre aux différents conteneurs 
 
 Cas pratique : création de docker compose.yaml pour installer MySQL, Nginx.
 #### 5. - Pour aller plus loin
-##### Installation de K0s
+##### Clustering/HA
+
+Un des points interessant avec les systèmes de virtualisation, c'est la possibilité de faire des clusters avec les différentes machines que vous mettez en place. 
+
+Pour faire un cluster, je vous recommande d'aller voir les liens suivant : 
+
+- [Proxmox Documentation](https://pve.proxmox.com/wiki/Cluster_Manager)
+- [Tuto Youtube](https://www.youtube.com/results?search_query=cluster+proxmox)
+
+##### Kubernetes
 
 Si nous souhaitons aller plus loin dans le management et la création de conteneur, nous pouvons installer Kubernetes. Kubernetes est une plate-forme open-source pour gérer les ressources machines (computing), la mise en réseau et l’infrastructure de stockage sur les workloads des utilisateurs.
 
