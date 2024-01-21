@@ -249,6 +249,17 @@ Vous trouverez donc ci-dessous, différents liens permettant de d'installer et d
 ## C. - Le stockage
 
 #### 1. - Présentation
+Dans tout système de stockage, certaines bonnes pratiques sont à respecter. 
+
+  - Le RAID : 
+
+  La mise en place d’un système en RAID (cf rappel sur les RAID). Votre système de stockage ne peut pas reposer sur un seul élément (un disque dur externe par exemple) ; le risque d’interruption de service en cas de panne serait de 100%. Il vous faut donc choisir un système RAID correspondant à vos besoins en rapidité comme en sécurité/niveau de redondance. 
+
+  - Les sauvegardes : 
+
+Un système de stockage se doit avoir des sauvegardes (et j’insiste ici sur DES sauvegardeS et pas UNE sauvegarde). Encore une fois, tout dépend de la criticité de vos données, mais la règle du 3-2-1 semble être un minimum. Cela consiste en 3 copies de vos données (= 2 sauvegardes, votre prod + 2 copies), sur 2 supports différents (un NAS et une sauvegarde sur bandes par exemple), et une sauvegarde externalisée (par exemple une cartouche RDX, l’objectif étant de ne pas être pris en défaut par un incendie dans votre baie informatique par exemple). La sauvegarde externalisée peut être “à froid” ou juste délocalisée sur un autre site ; mais une sauvegarde à froid peut aussi servir en cas de ransomware. Certaines technologies permettent aussi de créer des sauvegarde “inaltérables”, soit directement grâce à une solution de sauvegarde (Certains produits de chez Veeam par exemple), soit sur le support de sauvegarde (instantané immuable sur NAS Synology par exemple) ; ces fonctions peuvent également être de bonnes solutions pour sécuriser vos données. 
+
+Enfin, point très important : testez vos sauvegardes. Cela peut paraitre bête, mais on ne teste pas ses sauvegardes le jour où l’on en a besoin. Il faut faire des tests de restauration et d’intégrité réguliers pour vérifier tout d’abord que vous saurez utiliser vos sauvegardes si besoin est, mais aussi que vos machines sont sauvegardées convenablement et que les données de sauvegarde ne sont pas corrompues. 
 
 #### 2. - Installation de NAS/SAN
 
