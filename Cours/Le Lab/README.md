@@ -271,13 +271,79 @@ Enfin, point très important : testez vos sauvegardes. Cela peut paraitre bête,
 
 #### 1 - Présentation
 
+Maintenant que vous avez installé votre environnement de virtualisation et votre stockage, nous allons pouvoir commencer à installer des services.
+Il vous est bien entendu possible d'installer tout types de services sur votre infrastructure, mais voici ce que nous vous recommendons d'avoir : 
+- Firewall : Pour connecter vos différents sous réseaux, et pouvoir l'utiliser comme point d'entrée d'une DMZ, par exemple, nous vous recommendons l'utilisations d'un firewall. Nous vous présenterons PFsense, mais il peut etre interessant d'apprendre NFTables ou iptables pour bien comprendre le fonctionnement de ce genre de systeme.
+- VPN : Pouvoir se connecter à votre infrastructure peut importe où vous vous trouvez nous semblent indispensable. Nous vous présenterons donc comment faire un VPN avec le célèbre OPENVPN
+- Outils DevOps : Savoir utiliser git, et être capable d'automatiser certaines choses redondante, comme l'installation de machines virtuelles, est un point important en informatique, et qui devient de plus en plus rechercher dans le monde professionnel. Nous vous présenterons donc terraform, ansible et git pour vous lancer sur ces sujets.
+- Sockage : Nous vous présenterons pour finir un Nextcloud, pour vous présenter une alternative au systeme cloud.
 #### 2. - Installation/Utilisation du Firewall
 
-#### 3. - Installation/Utilisation d’outils DEVOPS
+#### 3. - Installation/Utilisation d’un VPN
 
-#### 4. - Installation/Utilisation de NEXTCLOUD
+#### 4. - Installation/Utilisation d’outils DEVOPS
+Pour notre environnement DevOps, nous allons voir trois points : 
+- Terraform
+- Ansible 
+- Git
 
-#### 5. - Installation/Utilisation d’un VPN
+Nous procéderons à la présentation et à l'installation de ces systèmes sur une machine virtuelle, que vous pouvez créer tout de suite. Vous aurez ensuite un TP à faire, pour 
+##### Terraform
+
+Terraform est un système d'infrastructure as code. Il permettra donc de créer des vms via des fichiers de configuration terraform.<br>
+Voici la documentation officiel de terraform : https://www.terraform.io/<br>
+Si vous n'êtes pas d'accord avec l'utilisation de terraform, pour certaines raisons d'orientation d'entreprise, regardez cette documentation d'OpenTofu : https://opentofu.org/docs/
+
+Pour installer Terraform, connectez vous sur la machine devops que vous avez créé au préalable.
+On commence par installer les dépendances : 
+```bash
+# Debian
+sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+# RedHat
+sudo yum install -y yum-utils
+```
+On installe ensuite la clé gpg du repo et le repo : 
+```bash
+# Debian
+wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+# RedHat
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
+```
+On fini par installer terraform : 
+```bash
+# Debian
+sudo apt update
+sudo apt install -y terraform
+# RedHat 
+sudo dnf install -y terraform
+```
+##### Ansible 
+
+Ansible est un système de configuration as code. Contrairement à Terraform, Ansible est fait pour configurer des serveurs ou services. Cela combine cependant bien avec Terraform dans la mise en place d'un projet AsCode. Vous allez pouvoir definir des configurations dans des fichiers yaml, et les appliquer à distance et sur plusieurs machines différentes en même temps.<br>
+Voici la documentation d'Ansible : https://docs.ansible.com/
+
+Pour installer Terraform, connectez vous sur la machine devops que vous avez créé au préalable.
+```bash
+# Debian
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt update
+sudo apt install -y ansible
+# RedHat 
+sudo dnf install -y ansible-core
+```
+
+##### Git
+
+Git est un logiciel de gestion de versions. Il est intéressant car il permet de stocker des fichiers de configurations ou le code sources d'applications de manière efficace, permettant de gerer les versions des fichiers. Il est aussi très utilisé, vous retrouverez beaucoup d'integration de git dans les logiciles de developpement. De plus, certains dérivé, comme gitlab ou github, permettent d'avoir un ensemble d'outils supplémentaires pour les développeurs, et pour déployer des services de manières automatiques.<br>
+Voici la documentation de Git : https://git-scm.com/<br>
+Voici la documentation de Gitlab : https://docs.gitlab.com/<br>
+Voici la documentation de github : https://docs.github.com/fr<br>
+
+Nous allons commencer par installer git sur notre poste : https://git-scm.com/downloads
+
+
+#### 5. - Installation/Utilisation de NEXTCLOUD
 
 ## E. - Monitorings
 
