@@ -340,8 +340,51 @@ Voici la documentation de Git : https://git-scm.com/<br>
 Voici la documentation de Gitlab : https://docs.gitlab.com/<br>
 Voici la documentation de github : https://docs.github.com/fr<br>
 
-Nous allons commencer par installer git sur notre poste : https://git-scm.com/downloads
+Nous allons commencer par installer git sur notre poste : https://git-scm.com/downloads<br>
+Une fois git installer sur votre ordinateur, vous pourrez faire des clones de repos.
 
+De notre côté, nous allons installer gitlab. Votre machine virtuelle aura donc besoin au minimum : 
+- 2 coeurs
+- 8go de ram
+
+Nous commencerons donc par installer les prérequis : 
+```bash
+sudo apt update
+sudo apt install ca-certificates curl openssh-server postfix perl
+```
+
+Pour installer les référentiels maintenus par gitlab, nous allons utiliser un script : 
+```bash
+cd /tmp
+curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
+sudo bash /tmp/script.deb.sh
+```
+Nous pouvons maintenant installer gitlab via apt : 
+```bash
+sudo apt install gitlab-ce
+```
+
+Nous allons ensuite editer le fichier de configuration de gitlab : 
+```bash
+# Vous pouvez utiliser l'éditeur que vous souhaitez
+sudo vim /etc/gitlab/gitlab.rb
+```
+
+Cherchez le paramètre external_url, et remplissez placez l'url qui sera utiliser pour se connecter sur cette machine. Cela dépends de votre cas. Si vous avez un nom de domaine, vous pouvez l'utiliser.
+```bash
+external_url 'http://exemple.com:80'
+```
+Vous pouvez aussi jeter un oeil à la documentation et aux autres paramètres pour configurer votre gitlab comme vous le souhaitez.
+
+Une fois vos paramètres etablis correctement dans le fichier de configuration, nous allons configurer le service : 
+```bash
+sudo gitlab-ctl reconfigure
+```
+Cette opération peut prendre plus ou moins de temps en fonction des ressources que vous avez.
+
+Une fois la configuration finalisé, vous pouvez aller sur l'url que vous avez configurer et aller sur votre gitlab. Les identifiants par défaut sont récupérable dans le fichier `/etc/gitlab/initial_root_password`.
+
+Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateurs.
 
 #### 5. - Installation/Utilisation de NEXTCLOUD
 
