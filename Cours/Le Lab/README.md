@@ -318,12 +318,72 @@ sudo apt install -y terraform
 # RedHat 
 sudo dnf install -y terraform
 ```
+
+Maintenant que terraform est installé, nous allons pouvoir commencer à l'utiliser.<br>
+Commencons donc par créer un dossier ``terraform``, dans lequel nous mettrons l'ensemble de nos projets, puis un dossier `TP-terraform`.
+```bash
+mkdir -p terraform/TP-terraform && cd terraform/TP-terraform
+```
+Pour commencer, nous devons créer les différents fichiers terraforms : 
+- credentials.rfvars : Nous y mettrons les differents mot de passes et autres. C'est un fichier à bien entendu mettre dans votre git_ignore.
+- provider.tf : le provider est le support sur lequel votre terraform va s'executer. Nous allons donc devoir utiliser le provider de proxmox. Voici la liste des providers de terraform : https://registry.terraform.io/browse/providers
+- main.tf : c'est ici que la magie opère. Nous allons pouvoir definir les différentes actions à effectuer.
+
+```bash
+# Fichier provider.tf
+terraform {
+    required_version = ">= 0.13.0"
+    required_providers {
+        proxmox = {
+            source = "telmate/proxmox" # On défini la source. Pour nous, proxmox !
+        }
+    }
+}
+# On défini les variables
+variable "proxmox_api_url" {
+    type = string
+}
+variable "proxmox_api_token_id" {
+    type = string
+}
+variable "proxmox_api_token_secret" {
+    type = string
+}
+
+provider "proxmox" {
+    pm_api_url = var.proxmox_api_url
+    pm_api_token_id = var.proxmox_api_token_id
+    pm_api_token_secret = var.proxmox_api_token_secret
+}
+```
+
+Générez sur votre utilisateur et le token depuis votre proxmox, puis remplissez les champs suivant : 
+```bash
+# Fichier credentials.tfvars
+proxmox_api_url = "https://0.0.0.0:8006/api2/json"  # Your Proxmox IP Address
+proxmox_api_token_id = "terraform@pam!terraform"  # API Token ID
+proxmox_api_token_secret = "your-api-token-secret"
+```
+
+Vous créerez votre main.tf dans un TP par la suite.
+
+Concernant les différentes commandes importante : 
+```bash
+terraform init #permet d'initialiser le projet/telecharger les elements nécessaires pour communiquer avec proxmox
+
+terraform plan -var-file="credentials.tfvars" #Permet d'afficher les changements prévu, sans les appliquer
+
+terraform apply -var-file="credentials.tfvars" #Permet de lancer le terraform, et donc de creer la VM
+
+terraform destroy -var-file="credentials.tfvars" #Permet de supprimer les elements créer par terraform
+```
+
 ##### Ansible 
 
 Ansible est un système de configuration as code. Contrairement à Terraform, Ansible est fait pour configurer des serveurs ou services. Cela combine cependant bien avec Terraform dans la mise en place d'un projet AsCode. Vous allez pouvoir definir des configurations dans des fichiers yaml, et les appliquer à distance et sur plusieurs machines différentes en même temps.<br>
 Voici la documentation d'Ansible : https://docs.ansible.com/
 
-Pour installer Terraform, connectez vous sur la machine devops que vous avez créé au préalable.
+Pour installer Ansible, connectez vous sur la machine devops que vous avez créé au préalable.
 ```bash
 # Debian
 sudo apt-add-repository ppa:ansible/ansible
@@ -332,6 +392,48 @@ sudo apt install -y ansible
 # RedHat 
 sudo dnf install -y ansible-core
 ```
+
+Avant de commencer, nous allons créer sur notre serveur une clé ssh qui permettra à notre ansible de se connecter sur les différents hôtes. Vous pouvez rajouter cette clé à votre template de vm pour permettre à ansible de pouvoir directement se connecter à vos VMs, et faire des actions dessus.
+
+Les fichiers ansible sont des fichiers yaml. On les appelle les playbook.<br>
+Pour lancer ces playbooks, il va falloir spécifier les hôtes. On va donc pouvoir configurer un fichier inventory.ini.
+
+Pour tester la connexion vers les différents hôtes : 
+```bash
+ansible all -i inventory.ini -m ping
+```
+Voici la liste des paramètres : 
+- `all` : toutes les hôtes de l'inventaire
+- `-i inventory.ini`: L'inventaire en question
+- `-m ping` : On lui demande d'executer la commande ping
+
+On peut aussi lancer des commandes linux : 
+```bash
+ansible all -i inventory.ini -a "whereis python"
+```
+Dans le cas où il faudra une élévation de privilège, vous pouvez passer le paramètres `--become`.
+
+Le fichier inventory.ini sera de la forme : 
+```yaml
+[targets] 
+other1.example.com ansible_connection=ssh ansible_ssh_user=user ansible_ssh_private_key_file=/path/to/file
+```
+Voici la liste des paramètres : 
+- `[targets]` : Nom de la target
+- `other1.example.com`: ip ou fqdn de la target
+- `ansible_connection=ssh` : On definit le type de connexion. Pour windows, cela pourrait etre winrm.
+- ``ansible_ssh_user=user`` : on définit l'utilisateur de l'hôte distant
+- ``ansible_ssh_private_key_file=/path/to/file`` : on définit la clé ssh pour se connecter dans mot de passe.
+
+Vous créerez des playbooks dans un TP par la suite.
+
+Les commandes pour lancer des playbooks : 
+```bash
+ansible-playbook -i inventory.ini nom_playbook
+```
+Voici la liste des paramètres : 
+- `-i inventory.ini`: L'inventaire
+- `nom_playbook` : Le playbook que vous voulez lancer
 
 ##### Git
 
