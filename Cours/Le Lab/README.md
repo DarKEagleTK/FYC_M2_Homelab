@@ -505,3 +505,28 @@ Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateu
 #### 1. - Présentation
 
 #### 2. - Installation Homer
+
+## G. - Pour aller plus loin
+
+Vous avez maintenant un infrastructure en place fonctionnel. Vous allez pouvoir integrer plus de services, et tester plus de technologies.
+
+Voici quelques technologies que nous vous conseillons de regarder : 
+- Virtualisation
+    - QEMU/KVM
+    - XCP-NG
+    - VMware ESXI/Vsphere
+- Firewall
+    - Iptables
+    - NFTables
+- Automatisation
+    - rundeck
+    - foreman
+    - 
+- Autres
+    - Serveur DNS
+    - Serveur DHCP
+    - Serveur WEB
+    - Serveur proxy/reverse proxy
+
+Un homelab est quelque chose qui ouvre des portes pour tous les passionnés d'informatiques, leur permettant de tester des choses, et surtout de les mettres en place ! <br>
+Maintenant que vous avez mis en place le coeur de votre homelab, amusez vous et testez tous !

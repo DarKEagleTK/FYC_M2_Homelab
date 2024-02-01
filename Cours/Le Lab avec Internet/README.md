@@ -43,12 +43,42 @@ Ici, nous allons pouvoir configurer nos sous-domaines, les entrées dns, ainsi q
 ### 3.	Certificat SSL
 - Création d’un certificat
 - Utilisation du certificat sur les services configurer précédemment
+
 ## C.	DMZ
 ### 1.	Présentation
-- Pourquoi ? (Avantages/inconvénient)
-- Comment ?
+
+Une zone démilitarisée (DMZ) est un sous-réseau séparé du réseau local et isolé d'internet par in parefeu. C'est le réseau qu'on expose sur internet, au lieu d'exposer notre réseau local.
+
+Dans le cas d'un homelab, avoir une DMZ va nous permettre d'exposer nos services sur internet, sans compromettre notre réseau local. Par exemple, on pourrait pointer sur un reverse proxy, qui permettrai d'avoir plusieurs sites web sur notre infrastructure.
+
+Cependant, il est important que toutes choses exposer sur internet comporte des risques. Il faut donc bien faire attention à ses règles de pare-feu, et aux configurations des services que l'on expose.
+
+#### Les architectures de DMZ
+
+Le cas le plus courant de DMZ est la DMZ avec un seul firewall. Dans ce cas, on se retrouve avec 3 zones déclarés. 
+
+![dmz_solo_fw](src/dmz_solo_fw.png)
+Dans le cadre de notre homelab, on se trouve dans ce cas présent. Le pare-feu correspondrait à notre box, et le serveur à un routeur qui permettrai d'acceder aux différents réseaux que l'on aurait configurer derrière.
+
+Il faut cependant savoir qu'on peux aussi avoir des DMZ avec deux firewalls. Cette architecture est plus complexe, et est souvent mise en place dans les grosses entreprises.
+
+![dmz_multi_fw](src/dmz_multi_fw.png)
+
+Dans le cas des entreprises, le réseau local correspondrait à l'emplacement ou les serveurs se trouves. Dans la partie DMZ, on retrouverai l'ensemble des relais pour aller sur internet, tel des proxys et reverses proxy.
+
 ### 2.	Mise en place d’une DMZ
-Mise en place d’une DMZ sur la box
+
+Pour la mise en place d'une DMZ sur notre Homelab, nous allons avoir besoin d'un firewall. Je vous renvoie à la partie de notre cours concernant l'installation de PFSense, si vous ne l'avez pas déjà mis en place, ou que vous n'avez pas déjà votre propre firewall.
+
+Allez ensuite dans les paramètres de votre box, et cherchez l'onglet concernant la gestion de port : 
+![dmz_box_param](src/dmz_box_param.png)$
+
+Vous retrouverez ensuite un paramètres DMZ à cochez, et une adresse IP à mettre. Cette adresse corresponds à l'adresse IP de votre firewall.
+![dmz_box_ip](src/dmz_box_ip.png)
+
+Votre DMZ est maintenant configurer, vous pouvez donc aller sur votre firewall. L'ensemble des ports seront rediriger dessus, et vous pourrez faire vos ouvertures vers vos différents services.
+
+
 ## D.	Multisite
 ### 1.	Présentation
 - Pourquoi ? (Avantages/inconvénient)
