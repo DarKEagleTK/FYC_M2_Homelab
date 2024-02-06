@@ -9,8 +9,11 @@
     - https://kubernetes.io/fr/docs/concepts/overview/what-is-kubernetes/
 - https://docs.k0sproject.io/v1.21.2+k0s.1/
     - https://docs.k0sproject.io/v1.21.2+k0s.1/k0s-in-docker/
-https://docs.ansible.com/
-https://docs.gitlab.com/
-https://www.terraform.io/
-https://opentofu.org/docs/
-https://docs.github.com/fr
+- https://docs.ansible.com/
+- https://docs.gitlab.com/
+- https://www.terraform.io/
+- https://opentofu.org/docs/
+- https://docs.github.com/fr
+- https://openvpn.net/community-resources/static-key-mini-howto/
+- https://www.it-connect.fr/debian-11-et-openvpn-comment-creer-son-propre-serveur-vpn/#A_Telecharger_le_script_dinstallation
+- https://github.com/angristan/openvpn-install

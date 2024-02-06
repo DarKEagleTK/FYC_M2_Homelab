@@ -182,7 +182,7 @@ Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker :
 
 #### 4. - Configuration
 
-##### Gestion des conteneurs
+**Gestion des conteneurs**
 
 Nous allons voir 3 concepts clefs de Docker : *les conteneurs, les images et les fichiers Docker (Dockerfile)*
 
@@ -215,13 +215,13 @@ Nous pouvons maintenant accéder à notre serveur local sur notre navigateur en 
 Pour lister les images nous tapons `docker images`
 Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
-##### Compréhension des scripts YAML orienté Docker
+**Compréhension des scripts YAML orienté Docker**
 
 Cas pratique : création de docker compose.yaml pour installer MySQL, Nginx.
 
 #### 5. - Pour aller plus loin
 
-##### Clustering/HA
+**Clustering/HA**
 
 Un des points interessant avec les systèmes de virtualisation, c'est la possibilité de faire des clusters avec les différentes machines que vous mettez en place. 
 
@@ -230,7 +230,7 @@ Pour faire un cluster, je vous recommande d'aller voir les liens suivant :
 - [Proxmox Documentation](https://pve.proxmox.com/wiki/Cluster_Manager)
 - [Tuto Youtube](https://www.youtube.com/results?search_query=cluster+proxmox)
 
-##### Kubernetes
+**Kubernetes**
 
 Si nous souhaitons aller plus loin dans le management et la création de conteneur, nous pouvons installer Kubernetes. Kubernetes est une plate-forme open-source pour gérer les ressources machines (computing), la mise en réseau et l’infrastructure de stockage sur les workloads des utilisateurs.
 
@@ -322,10 +322,53 @@ Il vous est bien entendu possible d'installer tout types de services sur votre i
 - Firewall : Pour connecter vos différents sous réseaux, et pouvoir l'utiliser comme point d'entrée d'une DMZ, par exemple, nous vous recommendons l'utilisations d'un firewall. Nous vous présenterons PFsense, mais il peut etre interessant d'apprendre NFTables ou iptables pour bien comprendre le fonctionnement de ce genre de systeme.
 - VPN : Pouvoir se connecter à votre infrastructure peut importe où vous vous trouvez nous semblent indispensable. Nous vous présenterons donc comment faire un VPN avec le célèbre OPENVPN
 - Outils DevOps : Savoir utiliser git, et être capable d'automatiser certaines choses redondante, comme l'installation de machines virtuelles, est un point important en informatique, et qui devient de plus en plus rechercher dans le monde professionnel. Nous vous présenterons donc terraform, ansible et git pour vous lancer sur ces sujets.
-- Sockage : Nous vous présenterons pour finir un Nextcloud, pour vous présenter une alternative au systeme cloud.
+- Stockage : Nous vous présenterons pour finir un Nextcloud, pour vous présenter une alternative au systeme cloud.
 #### 2. - Installation/Utilisation du Firewall
 
 #### 3. - Installation/Utilisation d’un VPN
+
+La création d'un VPN est intéressant pour avoir accès à l'infrasctructure que vous avez installé en tout temps et emplacement. Nous allons aborder deux technique d'installation, une installation traditionnel et avec le cluster Docker.
+
+**Installation traditionnelle**
+
+Avant tout, vous devez garder en tête le sous réseau que vous attribuez pour les connexions à distance. Ici nous prendrons adresse_ip.
+
+Créez un serveur Linux sous Proxmox avec comme ressources :
+|Ressources||
+|---|:-:|
+|Coeurs de processeurs|1 core|
+|Mémoire RAM|1Go|
+|Stockage disque|16Go|
+
+A la fin de l'installation de Linux, prenez la main sur le serveur en SSH et tapez ces commandes :
+
+```bash
+sudo apt update
+sudo apt install openvpn
+sudo sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/' /etc/default/openvpn ; systemctl daemon-reload #activer OpenVPN au démarrage
+```
+
+En parallèle installez le logiciel client sur le PC que vous souhaitez connecter à votre réseau à distance. Vous trouverez le lien [ici](https://openvpn.net/community-downloads/).
+
+**Installation sous Docker**
+
+Pour cela, nous allons utiliser ce repo : [Repo OpenVPN](https://hub.docker.com/r/kylemanna/openvpn/)
+
+Vous pouvez suivre le Quick start pour installer OpenVPN par Docker.
+
+**Configuration**
+
+Dans les deux cas d'installation, prenez la main sur le serveur en question en SSH en accès privilégié. Dans le cadre d'une utilisation basique du VPN pour se connecter au réseau privé du servuer, nous allons installer un script connu pour configurer nos connexions avec nos clients.
+
+Le script est disponible [ici](https://github.com/angristan/openvpn-install) si vous voulez le voir de manière détaillé.
+
+Nous allons tapez ces commandes pour installer le script et le rendre exécutable puis le lancer:
+```bash
+curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
+chmod +x openvpn-install.sh
+./openvpn-install.sh
+```
+
 
 #### 4. - Installation/Utilisation d’outils DEVOPS
 Pour notre environnement DevOps, nous allons voir trois points : 
@@ -334,7 +377,7 @@ Pour notre environnement DevOps, nous allons voir trois points :
 - Git
 
 Nous procéderons à la présentation et à l'installation de ces systèmes sur une machine virtuelle, que vous pouvez créer tout de suite. Vous aurez ensuite un TP à faire, pour 
-##### Terraform
+**Terraform**
 
 Terraform est un système d'infrastructure as code. Il permettra donc de créer des vms via des fichiers de configuration terraform.<br>
 Voici la documentation officiel de terraform : https://www.terraform.io/<br>
@@ -424,7 +467,7 @@ terraform apply -var-file="credentials.tfvars" #Permet de lancer le terraform, e
 terraform destroy -var-file="credentials.tfvars" #Permet de supprimer les elements créer par terraform
 ```
 
-##### Ansible 
+**Ansible**
 
 Ansible est un système de configuration as code. Contrairement à Terraform, Ansible est fait pour configurer des serveurs ou services. Cela combine cependant bien avec Terraform dans la mise en place d'un projet AsCode. Vous allez pouvoir definir des configurations dans des fichiers yaml, et les appliquer à distance et sur plusieurs machines différentes en même temps.<br>
 Voici la documentation d'Ansible : https://docs.ansible.com/
@@ -481,7 +524,7 @@ Voici la liste des paramètres :
 - `-i inventory.ini`: L'inventaire
 - `nom_playbook` : Le playbook que vous voulez lancer
 
-##### Git
+**Git**
 
 Git est un logiciel de gestion de versions. Il est intéressant car il permet de stocker des fichiers de configurations ou le code sources d'applications de manière efficace, permettant de gerer les versions des fichiers. Il est aussi très utilisé, vous retrouverez beaucoup d'integration de git dans les logiciles de developpement. De plus, certains dérivé, comme gitlab ou github, permettent d'avoir un ensemble d'outils supplémentaires pour les développeurs, et pour déployer des services de manières automatiques.<br>
 Voici la documentation de Git : https://git-scm.com/<br>
