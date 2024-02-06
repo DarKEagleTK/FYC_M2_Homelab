@@ -182,9 +182,6 @@ Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker :
 
 #### 4. - Configuration
 
-##### Configuration du proxmox
-
-Nous allons commencer à configurer le réseau de notre machines. 
 ##### Gestion des conteneurs
 
 Nous allons voir 3 concepts clefs de Docker : *les conteneurs, les images et les fichiers Docker (Dockerfile)*
@@ -218,14 +215,12 @@ Nous pouvons maintenant accéder à notre serveur local sur notre navigateur en 
 Pour lister les images nous tapons `docker images`
 Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
-##### Gestion du réseau
-
-Pour garantir un système de sécurité et permettre aux différents conteneurs de communiquer entre eux ou avec l'hôte, Docker pour 
-
 ##### Compréhension des scripts YAML orienté Docker
 
 Cas pratique : création de docker compose.yaml pour installer MySQL, Nginx.
+
 #### 5. - Pour aller plus loin
+
 ##### Clustering/HA
 
 Un des points interessant avec les systèmes de virtualisation, c'est la possibilité de faire des clusters avec les différentes machines que vous mettez en place. 
@@ -244,7 +239,7 @@ Vous trouverez donc ci-dessous, différents liens permettant de d'installer et d
     - https://kubernetes.io/fr/docs/concepts/overview/what-is-kubernetes/
 - https://docs.k0sproject.io/v1.21.2+k0s.1/
     - https://docs.k0sproject.io/v1.21.2+k0s.1/k0s-in-docker/
-- [Playlist Tutoriel Kuberneste](https://www.youtube.com/playlist?list=PLy7NrYWoggjziYQIDorlXjTvvwweTYoNC)
+- [Playlist Tutoriel Kubernetes](https://www.youtube.com/playlist?list=PLy7NrYWoggjziYQIDorlXjTvvwweTYoNC)
 
 ## C. - Le stockage
 
