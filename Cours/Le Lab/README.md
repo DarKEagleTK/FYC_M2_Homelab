@@ -340,25 +340,7 @@ Créez un serveur Linux sous Proxmox avec comme ressources :
 |Mémoire RAM|1Go|
 |Stockage disque|16Go|
 
-A la fin de l'installation de Linux, prenez la main sur le serveur en SSH et tapez ces commandes :
-
-```bash
-sudo apt update
-sudo apt install openvpn
-sudo sed -i 's/#AUTOSTART="all"/AUTOSTART="all"/' /etc/default/openvpn ; systemctl daemon-reload #activer OpenVPN au démarrage
-```
-
-En parallèle installez le logiciel client sur le PC que vous souhaitez connecter à votre réseau à distance. Vous trouverez le lien [ici](https://openvpn.net/community-downloads/).
-
-**Installation sous Docker**
-
-Pour cela, nous allons utiliser ce repo : [Repo OpenVPN](https://hub.docker.com/r/kylemanna/openvpn/)
-
-Vous pouvez suivre le Quick start pour installer OpenVPN par Docker.
-
-**Configuration**
-
-Dans les deux cas d'installation, prenez la main sur le serveur en question en SSH en accès privilégié. Dans le cadre d'une utilisation basique du VPN pour se connecter au réseau privé du servuer, nous allons installer un script connu pour configurer nos connexions avec nos clients.
+Dans le cadre d'une utilisation basique du VPN pour se connecter au réseau privé du servuer, nous allons installer un script connu pour configurer nos connexions avec nos clients.
 
 Le script est disponible [ici](https://github.com/angristan/openvpn-install) si vous voulez le voir de manière détaillé.
 
@@ -369,6 +351,15 @@ chmod +x openvpn-install.sh
 ./openvpn-install.sh
 ```
 
+Plusieurs questions vous seront poser pour configurer le serveur OpenVPN. Ensuite, lorsque vous lancerez à nouveau le script, un menu s'affichera pour créer ou modifier des utilisateurs. 
+
+En parallèle installez le logiciel client sur le PC que vous souhaitez connecter à votre réseau à distance. Vous trouverez le lien [ici](https://openvpn.net/community-downloads/).
+
+**Installation sous Docker**
+
+Pour cela, nous allons utiliser ce repo : [Repo OpenVPN](https://hub.docker.com/r/kylemanna/openvpn/)
+
+Vous pouvez suivre le Quick start pour installer OpenVPN par Docker et le configurer.
 
 #### 4. - Installation/Utilisation d’outils DEVOPS
 Pour notre environnement DevOps, nous allons voir trois points : 
