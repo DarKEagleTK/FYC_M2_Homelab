@@ -256,7 +256,58 @@ Un système de stockage se doit avoir des sauvegardes (et j’insiste ici sur DE
 
 Enfin, point très important : testez vos sauvegardes. Cela peut paraitre bête, mais on ne teste pas ses sauvegardes le jour où l’on en a besoin. Il faut faire des tests de restauration et d’intégrité réguliers pour vérifier tout d’abord que vous saurez utiliser vos sauvegardes si besoin est, mais aussi que vos machines sont sauvegardées convenablement et que les données de sauvegarde ne sont pas corrompues. 
 
-#### 2. - Installation de NAS/SAN
+#### 2. - Installation de NAS/SAN (TrueNAS)
+Ce cours portera sur l’installation et la configuration initiale de TrueNAS. TrueNAS est une solution gratuite et open source, permettant de stocker vos fichiers à la manière d’un NAS mais bien plus encore. Avant d’aller plus loin, il faut savoir que plusieurs versions de TrueNAS existent : TrueNAS core et TrueNAS scale. La version scale est un peu plus puissante et permet offre quelques fonctionnalités supplémentaires comme la possibilité de créer et gérer des conteneurs, offrir de la redondance, etc. Cette dernière est un peu plus adaptée à un environnement d’entreprise ou demandant des ressources de puissance et de stockage importantes (on parle de plusieurs Po), et la version Core nous suffira largement. TrueNAS scale est aussi plus récent que la version core, puisque l’OS est sorti en 2022, tandis que la version core a vu le jour en 2005 (on a donc un bien meilleur recul sur sa fiabilité). 
+
+La version core demande un minimum de 16Go de stockage pour son installation (il en faudra évidemment plus pour stocker les données que vous souhaitez héberger), ainsi qu’un minimum de 8Go de RAM et un processeur 2 cœurs. Il s’agit ici de la configuration recommandée, il est toujorus de faire tourner un système TrueNAS avec moins de RAM par exemple si on se limite à du stockage et partage de fichiers dans un foyer. A l’inverse, augmenter le nombre de fonctions et de plugins portés par votre système vous obligera à augmenter la RAM allouée à votre machine (il est possible de calculer combien de RAM sera nécessaire ici : [Site officiel TrueNAS](https://www.truenas.com/docs/core/gettingstarted/corehardwareguide/))
+
+Nous pouvons donc commencer ce cours en téléchargeant l’image disque de TrueNAS core depuis le site officiel ici : [Télécharger l'ISO](https://www.truenas.com/download-truenas-core/?location=hero)
+
+L’étape suivante est logiquement de passer à l’installation de notre machine. Vous pouvez l’installer en tant que machine physique (le système permet même de supporter des VM si elles restent simples) ou, comme ici, en tant que machine virtuelle.
+![Install_VM_TrueNAS](src/installTrueNAS1.png)
+
+Une fois notre machine démarrée, nous débutons l’installation. Si vous avez fait le choix de provisionner plusieurs disques dès le début (ou si vous avez fait le choix d’une machine physique), faites attention à sélectionner le bon disque cible pour l’installation.
+![SelectDiskTrueNAS](src/installTrueNAS2.png)
+
+On suit les différentes étapes de l’installateur, faites attention au type de clavier que vous utilisez lorsque l’on vous demande de choisir un mot de passe : un clavier QWERTY pourrait rendre l’accès à votre machine compliqué par la suite.
+![PwdTrueNAS](src/installTrueNAS3.png)
+
+L’installation finie, on redémarre notre machine, sans oublier de retirer le support d’installation. Une fois le système démarré, on arrive sur cette interface :
+![MenuTrueNAS](src/installTrueNAS4.png)
+
+Suivant la configuration de votre HomeLab, il peut être nécessaire de configurer une ou plusieurs interfaces avant de pouvoir se connecter à l’interface web. Vous pouvez aussi vouloir configurer des interfaces en ligne de commande si vous préférez, pour fixer une IP fixe dès le début par exemple. 
+
+Dans notre situation, notre TrueNAS a déjà récupéré une IP depuis notre DHCP, nous pouvons donc d’ores et déjà accéder à l’interface web sans configuration supplémentaire. Il suffit de saisir l’identifiant root et le mot de passe que vous avez configuré lors de la création de la machine (s’il ne correspond pas, pas de panique, il est toujours possible de le réinitialiser via l’interface en ligne de commande de la machine en saisissant l’option numéro 7).
+![InterfaceWebTrueNAS](src/installTrueNAS5.png)
+
+Afin d’éviter de mauvaises manipulations (ou de soulager les moins anglophones d’entre vous), je vous conseille de commencer par changer les options de langue, de clavier et d’emplacement dans System > General
+![MenuGeneralTrueNAS](src/installTrueNAS6.png)
+
+On se rend ensuite dans Stockages > Volumes > Ajouter afin de créer notre partition de stockage. Plusieurs options sont possibles, mais nous allons ici faire au plus simple en choisissant de créer un volume basé sur un seul disque. Nous confirmons notre choix en cliquant sur “Créer un volume”, que l’on nomme ensuite (dans mon cas je l’appellerai “Data”). Dans cette même page, nous avons la possibilité d'activer le chiffrement (plusieurs options sont disponibles, de l’AES-128-CCM à l’AES-256-GCM), que nous n’activerons pas ici. Un autre bouton éveille peut-être aussi votre curiosité : “ajouter vdev”. Sous une apparence compliquée, il s’agit en fait simplement d’une autre unité de stockage (VDEV -> Virtual DEVice) que vous pourriez choisir de créer en vous basant sur un même volume physique. Toujours dans une optique de garder notre machine didactique la plus simple possible, nous choisirons d’allouer tout notre disque à un seul volume de stockage ; puis nous cliquons sur le bouton “créer”. 
+![MenuStockageTrueNAS](src/installTrueNAS7.png)
+
+Nous avons donc désormais un système opérationnel, et de quoi stocker nos données. Nous allons désormais voire comment créer des utilisateurs afin de remplir tout ce stockage inutilisé. Pour ce faire, nous nous rendons dans Comptes > Utilisateurs > Ajouter. Nous saisissons alors au minimum le nom complet de notre utilisateur, ainsi que son nom d’utilisateur et le mot de passe qui lui sera attribué. Dans les autres options disponibles, nous retrouvons l’ID d’utilisateur (qui doit forcément être supérieur à 1000 dans le cas d’un compte utilisateur), le ou les groupes auxquels on peut ajouter notre utilisateur, ainsi que les permissions que l’on choisit de lui attribuer sur les partages de notre système. On constate également la possibilité de configurer une authentification via clé SSH, de désactiver le compte utilisateur, de l’autoriser à utiliser la commande sudo ou son compte Microsoft (pour l’authentification), et d’utiliser Samba.
+![MenuComptesTrueNAS](src/installTrueNAS8.png)
+
+Quand tout a été rempli selon notre convenance, nous pouvons cliquer sur le bouton “envoyer” afin de créer notre utilisateur, que l’on voit maintenant au côté de root dans notre liste d’utilisateurs. Libre à vous maintenant d’en créer d’autres, associés à des groupes ou non, afin de compléter et sécuriser votre arborescence de fichiers.
+![MenuUtilisateursTrueNAS](src/installTrueNAS9.png)
+
+Nous pouvons également créer des partages, SMB par exemple dans le cas d’un utilisateur Windows. Pour cela, nous nous rendons dans Partages > Partages Windows (SMB). On nomme alors notre partage, puis on constate que le bouton “options avancées” nous offre plusieurs fonctions pouvant être utiles. Nous retrouvons entre autres la possibilité de limiter l’accès au partage en lecture seule (via l’option “Exporter en lecture seule”), de choisir les hôtes ayant accès ou ne devant pas accéder au partage (via une liste d’adresses IP par exemple), ou encore de choisir ce lecteur comme dossier personnel de nos utilisateurs. Un dernier menu déroulant nous permet d’autoriser la compatibilité de notre partage avec d’autres protocoles, afin de permettre l’accès via un MAC par exemple.
+
+Votre serveur TrueNAS est désormais totalement opérationnel et bénéficie des fonctions de base d’un NAS. Vous pouvez désormais explorer les autres menus de votre système, parmi lesquels vous retrouverez par exemple : 
+
+    - La possibilité de répliquer vos données (Tâches > Réplication) 
+
+    - Lier votre système à des annuaires (Services d’annuaire) 
+
+    - Permettre à votre système de vous envoyer des notifications via mail (Système > Courriel) 
+
+    - Créer des machines virtuelles hébergées par votre serveur TrueNAS (Machines virtuelles) 
+
+Mais aussi et surtout la possibilité d’installer des plugins sur votre serveur TrueNAS. La collection d’iXsystems vous permet déjà d’ajouter NextCloud à votre système ou de transformer votre système en serveur Plex, mais la communauté offre bien d’autres plugins bien plus nombreux, tels qu’un serveur OpenVPN par exemple, mais aussi des serveurs DNS comme Bind ou des solutions de vidéo surveillance ; le tout appuyé sur une solide communauté. Gardez cependant à l’esprit que toutes ces options demanderont aussi des ressources systèmes, et pourront ralentir votre système et/ou vous obliger à passer sur du matériel plus puissant. 
+
+Si l’installation de ces plugins vous intéresse, vous pouvez suivre notre tutoriel sur NextCloud qui vous aidera à vous familiariser avec un de ces composants. 
+
 
 #### 3. - Configuration
 
