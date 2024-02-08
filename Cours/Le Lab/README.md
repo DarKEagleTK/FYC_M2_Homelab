@@ -320,12 +320,10 @@ Si l’installation de ces plugins vous intéresse, vous pouvez suivre notre tut
 Maintenant que vous avez installé votre environnement de virtualisation et votre stockage, nous allons pouvoir commencer à installer des services.
 Il vous est bien entendu possible d'installer tout types de services sur votre infrastructure, mais voici ce que nous vous recommendons d'avoir : 
 - Firewall : Pour connecter vos différents sous réseaux, et pouvoir l'utiliser comme point d'entrée d'une DMZ, par exemple, nous vous recommendons l'utilisations d'un firewall. Nous vous présenterons PFsense, mais il peut etre interessant d'apprendre NFTables ou iptables pour bien comprendre le fonctionnement de ce genre de systeme.
-- VPN : Pouvoir se connecter à votre infrastructure peut importe où vous vous trouvez nous semblent indispensable. Nous vous présenterons donc comment faire un VPN avec le célèbre OPENVPN
+- VPN : Pouvoir se connecter à votre infrastructure peut importe où vous vous trouvez nous semblant indispensable. Nous vous présenterons donc comment faire un VPN avec le célèbre OPENVPN
 - Outils DevOps : Savoir utiliser git, et être capable d'automatiser certaines choses redondante, comme l'installation de machines virtuelles, est un point important en informatique, et qui devient de plus en plus rechercher dans le monde professionnel. Nous vous présenterons donc terraform, ansible et git pour vous lancer sur ces sujets.
 - Stockage : Nous vous présenterons pour finir un Nextcloud, pour vous présenter une alternative au systeme cloud.
-<<<<<<< Updated upstream
-#### 2. - Installation/Utilisation du Firewall
-=======
+
 #### 2. - Installation/Utilisation du Firewall (pfSense)
 pfSense est un système d’exploitation open source basé sur FreeBSD. Il propose des fonctionnalités telles qu’un pare-feu, des VPN, du routage, la gestion du NAT, de VLAN, de protocoles de redondance, des proxys, du DHCP, la prise en charge de DNS dynamiques, un portail captif... La liste est longue ! Il convient tout à fait à des systèmes à la puissance modeste, puisque les spécifications minimums exigées sont un processeur cadencé à 500MHz, 512MB de RAM et 8Go d’espace disque. Il faut évidemment rajouter au moins une carte réseau, voir 2 si l’on veut utiliser la majorité des fonctionnalités (une interface WAN et une LAN par exemple). La configuration minimale devra bien sûr être revue à la hausse si l’on veut maximiser les débits et les fonctionnalités supportés par le système.
 La dernière version de pfSense est disponible sur le site officiel via cette adresse : [Télécharger l'ISO](https://www.pfsense.org/download/)
@@ -407,9 +405,8 @@ On peut alors constater que notre premier pare-feu est toujours en état Master,
 ![degradePfSense](installPfSense22.png)
 
 On peut alors contrôler la bonne marche de notre configuration en mettant hors service notre premier pare-feu (en enregistrant la VM, en coupant la carte réseau, en débranchant le câble Ethernet...). Si le matériel présent derrière vos pare-feux retrouve rapidement accès à internet, c’est plutôt une bonne nouvelle, mais il nous faut aussi vérifier que les pare-feux reprennent leurs états initiaux après avoir remis en ligne notre machine principale (en allant vérifier l’état CARP). Si c’est bien le cas, félicitations : vous avez configuré vos pare-feux avec brio !
->>>>>>> Stashed changes
 
-#### 3. - Installation/Utilisation d’un VPN
+#### 3. - Installation/Utilisation d’OpenVPN
 
 La création d'un VPN est intéressant pour avoir accès à l'infrasctructure que vous avez installé en tout temps et emplacement. Nous allons aborder deux technique d'installation, une installation traditionnel et avec le cluster Docker.
 
@@ -420,15 +417,14 @@ Avant tout, vous devez garder en tête le sous réseau que vous attribuez pour l
 Créez un serveur Linux sous Proxmox avec comme ressources :
 |Ressources||
 |---|:-:|
-|Coeurs de processeurs|1 core|
 |Mémoire RAM|1Go|
 |Stockage disque|16Go|
 
-Dans le cadre d'une utilisation basique du VPN pour se connecter au réseau privé du servuer, nous allons installer un script connu pour configurer nos connexions avec nos clients.
+Dans le cadre d'une utilisation basique du VPN pour se connecter au réseau privé du serveur, nous allons installer un script connu pour configurer nos connexions avec nos clients.
 
 Le script est disponible [ici](https://github.com/angristan/openvpn-install) si vous voulez le voir de manière détaillé.
 
-Nous allons tapez ces commandes pour installer le script et le rendre exécutable puis le lancer:
+Nous allons taper ces commandes pour installer le script et le rendre exécutable puis le lancer:
 ```bash
 curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
 chmod +x openvpn-install.sh
@@ -437,13 +433,45 @@ chmod +x openvpn-install.sh
 
 Plusieurs questions vous seront poser pour configurer le serveur OpenVPN. Ensuite, lorsque vous lancerez à nouveau le script, un menu s'affichera pour créer ou modifier des utilisateurs. 
 
-En parallèle installez le logiciel client sur le PC que vous souhaitez connecter à votre réseau à distance. Vous trouverez le lien [ici](https://openvpn.net/community-downloads/).
-
 **Installation sous Docker**
 
 Pour cela, nous allons utiliser ce repo : [Repo OpenVPN](https://hub.docker.com/r/kylemanna/openvpn/)
 
-Vous pouvez suivre le Quick start pour installer OpenVPN par Docker et le configurer.
+Prenez la main sur le serveur Master de Docker.
+Nous allons déterminer le nom du container. Trouvez un suffixe parlant après "ovpn-data"
+`OVPN_DATA="ovpn-data-fyc"
+`
+
+Nous allons ensuite initialiser le conteneur avec les fichiers de configuration ainsi que les certificats.
+```bash
+docker volume create --name $OVPN_DATA
+docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
+docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn ovpn_initpki
+```
+
+Nous allons ensuite :
+```bash
+# mettre en marche serveur OpenVPN
+docker run -v $OVPN_DATA:/etc/openvpn -d -p 1194:1194/udp --cap-add=NET_ADMIN kylemanna/openvpn
+
+# générer un certificat client sans passphrase. N'hésitez pas à changer la variable CLIENTNAME 
+docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-client-full CLIENTNAME nopass
+
+# récupérer la configuration client avec les certificats crée précédemment. Changez la variable CLIENTNAME avec celui crée précédemment
+docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
+```
+
+Voilà ! Vous venez, de crée un serveur VPN et le 1er client.
+
+**Installation de l'agent client**
+
+Nous avons crée le serveur VPN. Il faut maintenant installer l'agent sur la machine client pour pouvoir accès à distance à notre serveur.
+Nous trouverons l'agent [ici](https://openvpn.net/community-downloads/).
+
+N'oubliez pas de récupérer les informations nécessaires ainsi que les certificats clients pour vos machines.
+
+Après avoir effectué l'installation, vous n'aurez qu'à implanté les informations dans les champs demandés.
+
 
 #### 4. - Installation/Utilisation d’outils DEVOPS
 Pour notre environnement DevOps, nous allons voir trois points : 
