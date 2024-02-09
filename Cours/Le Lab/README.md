@@ -31,7 +31,7 @@ Maintenant que vous avez une idée globale  de ce que nous allons faire dans ce 
 
 ## B. - La virtualisation
 
-#### 1. - Présentation
+### 1. - Présentation
 Comme vous avez pu le voir dans notre partie Rappel, la virtualisation est un point important voir central dans l’informatique moderne. Il est donc important de comprendre les concepts de la virtualisation et de la mettre en place dans notre homelab.
 Nous allons donc voir ensemble l'installation d'un hyperviseur et de sa configuration. Dans la même lancé, nous installerons un systeme de conteneurisation pour installer certains de nos services sous un format de docker.
 
@@ -62,7 +62,7 @@ Concernant la machine serveur :
 - Stockage : Il est recommender d'avoir plusieurs disques, dont un petit (entre 128 et 256 go) que nous utiliserons pour installer l'OS proxmox, et un second plus gros qui servira de stockage pour les disques des machines virtulles.
 - Réseau : Il faut nécessairement une carte réseau pour permettre à vos machines d'avoir accès à internet. Il est donc forcement recommender d'avoir une interface Gigabit.
 
-#### 2. - Installation de l’hyperviseur
+### 2. - Installation de l’hyperviseur
 
 Les prérequis pour cette partie du cours sont : 
 - un ordinateur avec une connexion internet
@@ -125,7 +125,7 @@ Vous pourrez vous connecter avec l'utilisateur **root**, le mot de passe que vou
 - PVE : C'est la base de données de proxmox. Elle ne permettra que l'utilisation de l'interface web à ses utilisateurs, ainsi qu'à l'API.
 
 
-#### 3. - Installation de l’environnement Docker
+### 3. - Installation de l’environnement Docker
 
 Avant de nous intéresser à Docker, nous définirons ce qu'est un conteneur. Un conteneur est un environnement d'exécution léger, permettant d'isoler les applications déployés sur un seul et le de partage de ressources de l'hôte entre les différents conteneurs. Un conteneur est plus léger et plus simple qu’une machine virtuelle et peut donc démarrer et s’arrêter plus rapidement. Il est donc plus réactif, et adaptable aux besoins fluctuants liés au ” scaling ” d’une application.
 Docker orchestre, crée et manage ces conteneurs, dans le partage de ressources, la configuration réseau et stockage des conteneurs.
@@ -180,7 +180,7 @@ sudo systemctl disable containerd.service
 Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker : 
 [Cheat Sheet Docker](https://docs.docker.com/get-started/docker_cheatsheet.pdf)
 
-#### 4. - Configuration
+### 4. - Configuration
 
 **Gestion des conteneurs**
 
@@ -219,7 +219,7 @@ Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
 Cas pratique : création de docker compose.yaml pour installer MySQL, Nginx.
 
-#### 5. - Pour aller plus loin
+### 5. - Pour aller plus loin
 
 **Clustering/HA**
 
@@ -243,7 +243,7 @@ Vous trouverez donc ci-dessous, différents liens permettant de d'installer et d
 
 ## C. - Le stockage
 
-#### 1. - Présentation
+### 1. - Présentation
 Dans tout système de stockage, certaines bonnes pratiques sont à respecter. 
 
   - Le RAID : 
@@ -256,7 +256,7 @@ Un système de stockage se doit avoir des sauvegardes (et j’insiste ici sur DE
 
 Enfin, point très important : testez vos sauvegardes. Cela peut paraitre bête, mais on ne teste pas ses sauvegardes le jour où l’on en a besoin. Il faut faire des tests de restauration et d’intégrité réguliers pour vérifier tout d’abord que vous saurez utiliser vos sauvegardes si besoin est, mais aussi que vos machines sont sauvegardées convenablement et que les données de sauvegarde ne sont pas corrompues. 
 
-#### 2. - Installation de NAS/SAN (TrueNAS)
+### 2. - Installation de NAS/SAN (TrueNAS)
 Ce cours portera sur l’installation et la configuration initiale de TrueNAS. TrueNAS est une solution gratuite et open source, permettant de stocker vos fichiers à la manière d’un NAS mais bien plus encore. Avant d’aller plus loin, il faut savoir que plusieurs versions de TrueNAS existent : TrueNAS core et TrueNAS scale. La version scale est un peu plus puissante et permet offre quelques fonctionnalités supplémentaires comme la possibilité de créer et gérer des conteneurs, offrir de la redondance, etc. Cette dernière est un peu plus adaptée à un environnement d’entreprise ou demandant des ressources de puissance et de stockage importantes (on parle de plusieurs Po), et la version Core nous suffira largement. TrueNAS scale est aussi plus récent que la version core, puisque l’OS est sorti en 2022, tandis que la version core a vu le jour en 2005 (on a donc un bien meilleur recul sur sa fiabilité). 
 
 La version core demande un minimum de 16Go de stockage pour son installation (il en faudra évidemment plus pour stocker les données que vous souhaitez héberger), ainsi qu’un minimum de 8Go de RAM et un processeur 2 cœurs. Il s’agit ici de la configuration recommandée, il est toujorus de faire tourner un système TrueNAS avec moins de RAM par exemple si on se limite à du stockage et partage de fichiers dans un foyer. A l’inverse, augmenter le nombre de fonctions et de plugins portés par votre système vous obligera à augmenter la RAM allouée à votre machine (il est possible de calculer combien de RAM sera nécessaire ici : [Site officiel TrueNAS](https://www.truenas.com/docs/core/gettingstarted/corehardwareguide/))
@@ -309,13 +309,13 @@ Mais aussi et surtout la possibilité d’installer des plugins sur votre serveu
 Si l’installation de ces plugins vous intéresse, vous pouvez suivre notre tutoriel sur NextCloud qui vous aidera à vous familiariser avec un de ces composants. 
 
 
-#### 3. - Configuration
+### 3. - Configuration
 
-#### 4. - Pour aller plus loin
+### 4. - Pour aller plus loin
 
 ## D. - Services
 
-#### 1 - Présentation
+### 1 - Présentation
 
 Maintenant que vous avez installé votre environnement de virtualisation et votre stockage, nous allons pouvoir commencer à installer des services.
 Il vous est bien entendu possible d'installer tout types de services sur votre infrastructure, mais voici ce que nous vous recommendons d'avoir : 
@@ -324,7 +324,7 @@ Il vous est bien entendu possible d'installer tout types de services sur votre i
 - Outils DevOps : Savoir utiliser git, et être capable d'automatiser certaines choses redondante, comme l'installation de machines virtuelles, est un point important en informatique, et qui devient de plus en plus rechercher dans le monde professionnel. Nous vous présenterons donc terraform, ansible et git pour vous lancer sur ces sujets.
 - Stockage : Nous vous présenterons pour finir un Nextcloud, pour vous présenter une alternative au systeme cloud.
 
-#### 2. - Installation/Utilisation du Firewall (pfSense)
+### 2. - Installation/Utilisation du Firewall (pfSense)
 pfSense est un système d’exploitation open source basé sur FreeBSD. Il propose des fonctionnalités telles qu’un pare-feu, des VPN, du routage, la gestion du NAT, de VLAN, de protocoles de redondance, des proxys, du DHCP, la prise en charge de DNS dynamiques, un portail captif... La liste est longue ! Il convient tout à fait à des systèmes à la puissance modeste, puisque les spécifications minimums exigées sont un processeur cadencé à 500MHz, 512MB de RAM et 8Go d’espace disque. Il faut évidemment rajouter au moins une carte réseau, voir 2 si l’on veut utiliser la majorité des fonctionnalités (une interface WAN et une LAN par exemple). La configuration minimale devra bien sûr être revue à la hausse si l’on veut maximiser les débits et les fonctionnalités supportés par le système.
 La dernière version de pfSense est disponible sur le site officiel via cette adresse : [Télécharger l'ISO](https://www.pfsense.org/download/)
 
@@ -406,7 +406,9 @@ On peut alors constater que notre premier pare-feu est toujours en état Master,
 
 On peut alors contrôler la bonne marche de notre configuration en mettant hors service notre premier pare-feu (en enregistrant la VM, en coupant la carte réseau, en débranchant le câble Ethernet...). Si le matériel présent derrière vos pare-feux retrouve rapidement accès à internet, c’est plutôt une bonne nouvelle, mais il nous faut aussi vérifier que les pare-feux reprennent leurs états initiaux après avoir remis en ligne notre machine principale (en allant vérifier l’état CARP). Si c’est bien le cas, félicitations : vous avez configuré vos pare-feux avec brio !
 
-#### 3. - Installation/Utilisation d’OpenVPN
+*a)	Exercice : Création de la liste des règles pare-feu de base*
+
+### 3. - Installation/Utilisation d’OpenVPN
 
 La création d'un VPN est intéressant pour avoir accès à l'infrasctructure que vous avez installé en tout temps et emplacement. Nous allons aborder deux technique d'installation, une installation traditionnel et avec le cluster Docker.
 
@@ -473,7 +475,7 @@ N'oubliez pas de récupérer les informations nécessaires ainsi que les certifi
 Après avoir effectué l'installation, vous n'aurez qu'à implanté les informations dans les champs demandés.
 
 
-#### 4. - Installation/Utilisation d’outils DEVOPS
+### 4. - Installation/Utilisation d’outils DEVOPS
 Pour notre environnement DevOps, nous allons voir trois points : 
 - Terraform
 - Ansible 
@@ -680,23 +682,53 @@ Une fois la configuration finalisé, vous pouvez aller sur l'url que vous avez c
 
 Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateurs.
 
-#### 5. - Installation/Utilisation de NEXTCLOUD
+### 5. - Installation/Utilisation de NEXTCLOUD
 
 ## E. - Monitorings
 
-#### 1. - Présentation
+### 1. - Présentation
 
-#### 2. - Installation Grafana/Prometheus/UptimeKuma
+### 2. - Installation Grafana/Prometheus/UptimeKuma
 
-#### 3. - Configuration
+### 3. - Configuration
 
-#### 4. - Pour aller plus loin
+### 4. - Pour aller plus loin
 
 ## F. - Dashboard
 
-#### 1. - Présentation
+### 1. - Présentation
 
-#### 2. - Installation Homer
+Un tableau de bord (ou dashboard) peut être utilisé de différentes manières, mêmes pour un usage personnel. En effet, les habitations possèdent de plus en plus d'objets connectés (caméra de surveillances, luminaires, domotiques).
+Un tableau de bord permettra donc de voir les performances de vos différents équipements selon les arguments que vous aurez choisis.
+
+Pour un usage personnel, nous resterons sur des solutions open sources, tel que [Homer](https://github.com/sipcapture/homer-docker)
+
+### 2. - Installation Homer
+
+La solution d'installation d'Homer peut se faire avec un script d'installation rapide fourni par les développeurs ou avec Docker. 
+
+Voici les lignes de commandes à effectuer selon la solution que vous souhaitez utiliser :
+
+```bash
+# Avec Debian
+# Installation avec le script du fournisseur Sipcapture
+apt-get install libluajit-5.1-common libluajit-5.1-dev lsb-release wget curl git
+wget https://github.com/sipcapture/homer-installer/raw/master/homer_installer.sh
+chmod +x homer_installer.sh
+./homer_installer.sh
+
+# Avec Docker
+git clone https://github.com/sipcapture/homer7-docker
+cd homer7-docker/heplify-server/hom7-prom-all
+docker-compose up -d
+```
+
+Vous trouverez ensuite les différents ports d'accès ou d'usage : 
+- Homer:9080 (admin/sipcapture)
+- Grafana:9030 (admin/admin)
+- Prometheus:9090 (admin/admin)
+- Loki:3100 (admin/admin)
+- Alertmanager:9093 (admin/admin)
 
 ## G. - Pour aller plus loin
 

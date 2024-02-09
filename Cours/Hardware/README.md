@@ -26,7 +26,6 @@ Physique ou virtuel ?
 ### 3.	Routeur/pare-feu (si physiques)
 - Règles de routage/gateway
 - Gestion des vlans
-*a)	Exercice : Création de la liste des règles pare-feu de base*
 ### 4.	Switch (si physiques)
 Gestion des vlans
 ### 5.	Pour aller plus loin
