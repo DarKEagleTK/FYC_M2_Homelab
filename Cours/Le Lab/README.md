@@ -412,7 +412,7 @@ On peut alors contrôler la bonne marche de notre configuration en mettant hors 
 
 La création d'un VPN est intéressant pour avoir accès à l'infrasctructure que vous avez installé en tout temps et emplacement. Nous allons aborder deux technique d'installation, une installation traditionnel et avec le cluster Docker.
 
-**Installation traditionnelle**
+**Installation manuelle**
 
 Avant tout, vous devez garder en tête le sous réseau que vous attribuez pour les connexions à distance. Ici nous prendrons adresse_ip.
 
@@ -688,7 +688,36 @@ Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateu
 
 ### 1. - Présentation
 
-### 2. - Installation Grafana/Prometheus/UptimeKuma
+Le monitoring peut être utilisé de différentes manières, mêmes pour un usage personnel. En effet, les habitations possèdent de plus en plus d'objets connectés (caméra de surveillances, luminaires, domotiques, portables, tablettes, ordinateurs, etc.). Un monitoring permettra de recenser les différentes performances qu'utilise un équipement électronique.
+
+Nous utiliserons différentes solutions pour surveiller nos différents équipements : Prometheus et UptimeKuma.
+Leur utilisation diffère selon vos besoins.
+
+||Uptime Kuma|Prometheus|
+|---|:---:|:---:|
+|**Utilisation**|Surveillance de sites web|Surveillance des performances systèmes|
+|**Alertes**|Oui|Oui|
+|**Facilité de prise en main**|Facile|Medium|
+|**Exemple d'utilisation**|Ping sur un site (en cours de développement) pour connaître s'il est en marche ou non|% d'utilisation de la RAM d'un équipement|
+
+### 2. - Installation Prometheus/UptimeKuma (à faire en vidéo)
+
+Dû à leurs complexité de configuration, il est conseillé d'installer ces serveurs sous Docker. 
+Voici cependant des liens si vous souhaitez les installer manuellement : [Prometheus](https://linux.how2shout.com/how-to-install-prometheus-in-debian-11-or-ubuntu-20-04/), [Uptime Kuma](https://www.rosehosting.com/blog/how-to-install-uptime-kuma-on-debian-12/).
+
+Nous vous montrerons comment installer Prometheus sous Docker et vous laisserons comme cas pratique, l'installation de l'autre serveur de monitoring.
+
+Prenez la main sur votre serveur Docker en SSH.
+
+Voici le repository de Prometheus sous Docker Hub : [ici](https://hub.docker.com/r/prom/prometheus/)
+
+Pour éviter de gérer un fichier sur l'hôte, nous installerons Prometheus comme une image. Pour cela, nous tapons : 
+
+```bash
+```
+Nous avons installé et lancé le serveur Prometheus. Nous pouvons maintenant accédez à l'interface web qui est sur 
+
+*a) exercice : Installation d'Uptime Kuma sous Docker*
 
 ### 3. - Configuration
 
@@ -698,9 +727,7 @@ Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateu
 
 ### 1. - Présentation
 
-Un tableau de bord (ou dashboard) peut être utilisé de différentes manières, mêmes pour un usage personnel. En effet, les habitations possèdent de plus en plus d'objets connectés (caméra de surveillances, luminaires, domotiques).
-Un tableau de bord permettra donc de voir les performances de vos différents équipements selon les arguments que vous aurez choisis.
-
+Un tableau de bord permettra donc de voir de manière organisé les différentes données recensé par le monitoring. En effet, un serveur de monitoring s'occupera de recenser les informations que vous aurez programmé mais affichera ces données de manière brute et condensé.
 Pour un usage personnel, nous resterons sur des solutions open sources, tel que [Homer](https://github.com/sipcapture/homer-docker)
 
 ### 2. - Installation Homer
