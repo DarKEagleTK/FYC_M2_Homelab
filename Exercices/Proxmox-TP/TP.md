@@ -36,3 +36,35 @@ Sur votre serveur, créez donc deux sous-réseaux supplémentaire :
 - Le réseau privée (Pour mettre vos services) : vmbr2 avec un commentaire "Réseau projet"
 
 ## Configuration du stockage
+
+Nous allons avoir besoin ensuite de stockage pour pouvoir mettre nos VMs en place.
+
+Pour commencer, nous allons voir pour les configurations concernant le stockage locale de votre serveur.<br>
+Vous retrouverez dans la configuration de votre serveur, dans l'onglet ``disks``, la liste des disques disponibles sur le serveurs. Cela vous permettra d'integrer vos disques, et de voir qu'ils ont bien été récupérer par proxmox.
+![proxmox-storage-2](src/proxmox-storage-2.png)
+
+Nous allons ensuite pouvoir configurer nos disques selon 4 formats différents : 
+- LVM : volumes LVM
+- LVM-Thin : pool de volumes lvm
+- Directory : dossier local
+- ZFS : système qui melange du Directory et du LVM
+
+Pour plus d'information sur les types de stockages, nous vous invitons à visiter la documentations officiel, ou aller sur les liens : ``https://votre_serveur/pve-docs/chapter-sysadmin.html#chapter_lvm``.
+
+Ici, nous allons mettre en place des volumes LVM. Allez dans l'onglet `LVM`. Vous retrouverez dans cet onglet la liste des disques LVM déjà configurer. Cliquez sur le bouton `Create: Volume Group` pour créer votre volume.<br>
+![proxmox-storage-3](src/proxmox-storage-3.png)
+
+Selectionnez le disque souhaitez dans la liste, ainsi que le nom souhaité.<br>
+![proxmox-storage-4](src/proxmox-storage-4.png)
+
+Une fois votre volume créé, vous allez pouvoir aller dans la configuration `Datacenter`. Dans l'onglet `Storage`, vous pouvez ajouter plein de type de stockage différent, comme les stockages locaux que nous avons vu dans la gestion des disques précédement, ou des disques distants avec des protocoles tel que ISCSI ou NFS. ([iscsi](https://doc.ubuntu-fr.org/iscsi) et [nfs](https://doc.ubuntu-fr.org/nfs))<br>
+Pour ajouter notre disque, cliquez sur le bouton `add` :
+![proxmox-storage-5](src/proxmox-storage-5.png)
+
+Nous pouvons maintenant utiliser notre stockage.
+
+## Configuration des utilisateurs/groupes
+
+## Configuration des droits
+
+## Gestion des VMs
