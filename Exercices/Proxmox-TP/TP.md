@@ -32,8 +32,9 @@ Pour plus d'informations, vous pouvez aller voir la documentation officiel : htt
 
 Dans notre cas, nous crérons des sous-réseaux que nous interconnecterons via un pfsense, que vous verrez plus tard lors du cours.
 Sur votre serveur, créez donc deux sous-réseaux supplémentaire :
-- Le réseau projet (Pour mettre vos projets pour les cours par exemple): vmbr1 avec un commentaire "Réseau projet"
-- Le réseau privée (Pour mettre vos services) : vmbr2 avec un commentaire "Réseau projet"
+- Le réseau projet (Pour mettre vos projets pour les cours par exemple): vmbr1 avec un commentaire : "Réseau projet"
+- Le réseau privée (Pour mettre vos services) : vmbr2 avec un commentaire : "Réseau projet"<br>
+Puis, configurer sur l'interface vmbr0 un commentaire : "Réseau box"
 
 ## Configuration du stockage
 
@@ -65,6 +66,45 @@ Nous pouvons maintenant utiliser notre stockage.
 
 ## Configuration des utilisateurs/groupes
 
-## Configuration des droits
+Pour suivre les bonnes pratiques générales en informatiques, nous allons créer des comptes qui auront des accès limités aux ressources de notre machines. Cela permet par exemple de préter votre super environnement à votre ami, sans qu'il puissent casser les choses que vous avez déjà mises en place.
+
+Pour gerer utilisateurs et leurs droits, vous pouvez vous rendre dans l'onglet `Permissions`.<br>
+![proxmox-user-1](src/proxmox-user-1.png)
+
+Vous retrouverez dans cet onglet plusieurs onglets : 
+- Permissions : cliquez sur l'onglet en lui meme permet d'acceder à la gestion des permissions.
+- Users : gestions des utilisateurs
+- API tokens : Permet de créer des tokens d'authentifications pour l'api de proxmox. Cela permet par exemple de faire du terraform.
+- Two factor : pour la double authentification
+- Groups : gestions des groupes
+- Pools : permet de créer des pools de ressources
+- Roles : gestions des roles
+- realms : permet de gérer les realms, tel que les LDAPs, ou PVE par défaut sur proxmox.
+
+Nous allons donc commencer par la création d'utilisateurs. Pour cela, rendez vous dans l'onglet `user`, et cliquez sur le bouton `add`.
+![proxmox-user-2](src/proxmox-user-2.png)
+
+Vous pouvez donc ajouter votre utilisateur avec un nom d'identification, le realm choisi (pour les utilisateurs, préféré le Proxmox VE), un groupe et d'autres paramètres supplémentaire.
+
+Nous allons ensuite créer nos pools et nos groupes. Les pools permetrons de ranger les machines virtuelles, et les groupes les utilisateurs. Pour cela, rendez vous simplement dans les onglets correspondant, et cliquez sur les boutons `create`.
+
+Pour attribuer un groupes à un utilisateur, sélectionnez votre utilisateur, et cliquez sur `Edit`. Vous aurez alors une liste deroulante des groupes. Si vous voulez mettre plusieurs groupes, vous pouvez simplement en selectionner plusieurs en cliquant sur les groupes les un après les autres.
+![proxmox-user-3](src/proxmox-user-3.png)
+
+Nous verrons l'attributions des pools créés dans la partie suivante, sur la gestions des machines virtuelles.
+
+Nous pouvons ensuite gérer les autorisations. Pour cela, nous utiliserons ici les roles par défaut qui sont prédéfini. Vous pouvez cependant en créer d'autres, plus proche de vos demandes, dans l'onglet `roles` et grace à la documentation ``https://votre_serveur/pve-docs/chapter-pveum.html``.
+
+Pour configurer les permissions, cliquez directement sur l'onglet ``permissions``. Vous pourrez ajouter 3 types de permissions : 
+- les permissions sur les utilisateurs
+- les permissions sur les groupes
+- les permissions sur les token API
+
+Nous vous conseillons de gérer les autorisations par groupe, cela permet d'appliquer des configurations complexes sur plusieurs utilisateurs.
+
+La gestion des droits se fait via un système d'asborescence : 
+![proxmox-user-4](src/proxmox-user-4.png)
+
+Ici, vous pourrez spécifier précisément sur quelle partie les droits vont etre mise en place. A savoir : Les droits peuvent être propager aux sous-éléments de chaques éléments. Vous pouvez ensuite appliquer le ou les groupes souhaité, et le roles.
 
 ## Gestion des VMs
