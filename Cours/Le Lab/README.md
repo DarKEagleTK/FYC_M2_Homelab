@@ -714,8 +714,19 @@ Voici le repository de Prometheus sous Docker Hub : [ici](https://hub.docker.com
 Pour éviter de gérer un fichier sur l'hôte, nous installerons Prometheus comme une image. Pour cela, nous tapons : 
 
 ```bash
+mkdir /etc/prometheus
+cd /etc/prometheus
+
+# Création du fichier Dockerfile
+touch dockerfile
+echo "FROM prom/prometheus" > dockerfile
+echo "ADD prometheus.yml /etc/prometheus/" >> dockerfile
+
+# Build et mise en marche 
+docker build -t my-prometheus .
+docker run -p 9090:9090 my-prometheus
 ```
-Nous avons installé et lancé le serveur Prometheus. Nous pouvons maintenant accédez à l'interface web qui est sur 
+Nous avons installé et lancé le serveur Prometheus. Nous pouvons maintenant accédez à l'interface web qui est sur http://localhost:9090
 
 *a) exercice : Installation d'Uptime Kuma sous Docker*
 
