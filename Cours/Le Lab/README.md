@@ -460,7 +460,7 @@ Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
 **Compréhension des scripts YAML orienté Docker**
 
-Cas pratique : création de docker compose.yaml pour installer MySQL, Nginx.
+*a) exercice : création de docker compose.yaml pour installer MySQL, Nginx*
 
 ### 6. - Pour aller plus loin
 
@@ -950,30 +950,66 @@ Voici cependant des liens si vous souhaitez les installer manuellement : [Promet
 
 Nous vous montrerons comment installer Prometheus sous Docker et vous laisserons comme cas pratique, l'installation de l'autre serveur de monitoring.
 
-Prenez la main sur votre serveur Docker en SSH.
+Lien vers le repo Docker Hub de Prometheus : https://hub.docker.com/r/prom/prometheus/
 
-Voici le repository de Prometheus sous Docker Hub : [ici](https://hub.docker.com/r/prom/prometheus/)
-
-Pour éviter de gérer un fichier sur l'hôte, nous installerons Prometheus comme une image. Pour cela, nous tapons : 
+Prenez la main sur votre serveur Docker en SSH. Tapez ensuite les commandes suivantes:
 
 ```bash
 mkdir /etc/prometheus
-cd /etc/prometheus
-
-# Création du fichier Dockerfile
-touch dockerfile
-echo "FROM prom/prometheus" > dockerfile
-echo "ADD prometheus.yml /etc/prometheus/" >> dockerfile
-
-# Build et mise en marche 
-docker build -t my-prometheus .
-docker run -p 9090:9090 my-prometheus
+nano /etc/prometheus/prometheus.yml
 ```
-Nous avons installé et lancé le serveur Prometheus. Nous pouvons maintenant accédez à l'interface web qui est sur http://localhost:9090
+
+Et entrez ce script :
+
+```yml
+# my global config
+global:
+  scrape_interval: 15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: "prometheus"
+
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+
+    static_configs:
+      - targets: ["localhost:9090"]
+```
+
+```bash
+# Création du volume pour stocker les données
+docker volume create prometheus-data
+
+# Création et mise en marche du docker
+docker run -p 9090:9090 -v prometheus-data:/prometheus -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -d prom/prometheus
+```
+**Installation des agents avec Node Exporter sur les machines virtuelles**
+ static config à expliquer pour la mise en lien avec les agents node exporter
 
 *a) exercice : Installation d'Uptime Kuma sous Docker*
 
 ### 3. - Configuration
+
+**Configuration Prometheus**
+
+**Configuration Uptime Kuma**
 
 ### 4. - Pour aller plus loin
 

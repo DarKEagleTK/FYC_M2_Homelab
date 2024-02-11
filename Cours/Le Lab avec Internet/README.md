@@ -31,9 +31,9 @@ Un certain nombres d'entreprises proposent cependant aux utilisateurs l'accès �
 
 Choisissez donc un fournisseur de nom de domaine, et réservez votre propre nom de domaine. **ATTENTION** C'est payant !!
 Voici quelques fournisseurs : 
-- ![OVH](https://www.ovhcloud.com/fr/domains/)
-- ![IONOS](https://www.ionos.fr/domaine/noms-de-domaine)
-- ![Hostinger](https://www.hostinger.fr/nom-de-domaine-disponible)
+- [OVH](https://www.ovhcloud.com/fr/domains/)
+- [IONOS](https://www.ionos.fr/domaine/noms-de-domaine)
+- [Hostinger](https://www.hostinger.fr/nom-de-domaine-disponible)
 
 Une fois que vous avez votre nom de domaine, rendez-vous sur la page de gestion de nom de domaine de votre fournisseur. Vous obtiendrez une page similaire, récapitulant les informations de nom de domaine et vous permettant de faire des configurations.
 ![dns_datails](src/dns_details.png)
