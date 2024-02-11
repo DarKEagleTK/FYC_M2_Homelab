@@ -127,7 +127,8 @@ Vous pourrez vous connecter avec l'utilisateur **root**, le mot de passe que vou
 
 ### 3. - Configuration et prise en main du Promox
 
-Vous avez maintenant installer votre proxmox. Vous allons donc vour comment le prendre en main.
+Vous avez maintenant installer votre proxmox. Vous allons donc vour comment le prendre en main. Avant de commencer, je vous conseille de faire un tour de l'interface, pour vous familiariser avec.
+
 Vous allez donc devoir faire plusieurs manipulations sur votre nouvel environnement pour le configurer.
 
 Vous allez devoir faire les points suivant sur votre infrastructure : 
@@ -143,6 +144,15 @@ Vous allez devoir faire les points suivant sur votre infrastructure :
 
 
 Nous verrons certaines parties ci-dessus, et vous aurez une partie avec un exercice pour la mise en place d'un template pour vos VMs.
+
+#### Tour du propriétaire
+
+![proxmox-interface](src/proxmox-interface.png)
+
+Après votre première connexion, vous aurez ce genre d'interface.<br>
+A gauche, vous retrouverez la liste des VMs, des pools et des stockages. Un peu plus au centre, vous retrouverez une liste d'onglet, dont nous verrons certain dans la suite du cours. <br>
+Au centre, vous aurez quelques métriques sur les ressources consommé, le nombres de machines, l'état du cluster proxmox etc.<br>
+Pour finir, en bas, vous aurez un historique de tous les taches et des logs.
 
 #### Configuration des réseaux
 
