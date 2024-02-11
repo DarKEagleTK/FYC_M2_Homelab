@@ -466,36 +466,36 @@ pfSense est un système d’exploitation open source basé sur FreeBSD. Il propo
 La dernière version de pfSense est disponible sur le site officiel via cette adresse : [Télécharger l'ISO](https://www.pfsense.org/download/)
 
 Une fois l’ISO téléchargé, on passe à la création de la machine virtuelle (ou physique!). Pour ce tuto j’utiliserai Hyper-V, mais vous pouvez prendre celui qui vous convient sans problème.
-![InstallVMPfSense](installPfSense1.png)
+![InstallVMPfSense](src/installPfSense1.png)
 
 On accepte les conditions d’utilisation, on demande à installer le logiciel et on clique sur suivant
-![conditionsPfSense](installPfSense2.png)
+![conditionsPfSense](src/installPfSense2.png)
 
 Si votre matériel comporte plusieurs disques ou partitions, apportez un soin particulier à cette partie (l’erreur bête arrive vite, même si l’installeur possède des garde-fous).
-![disquesPfSense](installPfSense3.png)
+![disquesPfSense](src/installPfSense3.png)
 
 La machine demande un reboot pour finir l’installation (selon votre hyperviseur, il faudra peut-être éjecter l’ISO) avant d’afficher cette page :
-![startupPfSense](installPfSense4.png)
+![startupPfSense](src/installPfSense4.png)
 
 On retrouve nos interfaces réseau (ici 2, hn0 et hn1), et la console demande si l’on souhaite configurer des VLANs. Pas de panique, nous pourrons toujours changer d’avis plus tard, la réponse n’est pas définitive. 
 
 On nomme nos interfaces, et on confirme notre choix après le résumé des changements demandés. Vient ensuite une nouvelle interface qui offre plusieurs choix. Suivant votre infrastructure, vos interfaces peuvent récupérer une IP ou non. Si la configuration actuelle ne convient pas, il faut se rendre dans le menu n°2 afin de configurer nos interfaces.
-![menuPfSense](installPfSense5.png)
+![menuPfSense](src/installPfSense5.png)
 
 Ici par exemple, j’ai demandé à modifier mon interface n°1, puis à utiliser une adresse reçue via DHCP
-![DHCPPfSense](installPfSense6.png)
+![DHCPPfSense](src/installPfSense6.png)
 
 On peut ensuite configurer notre interface LAN, en configurant un serveur DHCP si besoin pour que nos clients se voient attribuer des adresses IP automatiquement. Dans le cas où vous auriez plusieurs interfaces LAN ou WAN, il suffit de renouveler les opérations précédentes autant de fois que nécessaire.
-![LANPfSense](installPfSense7.png)
+![LANPfSense](src/installPfSense7.png)
 
 Maintenant qu’au moins une de nos interfaces LAN est configurée, nous pouvons accéder à l’interface WEB de notre pfSense, qui est bien plus complète. Une fois l’adresse IP du pare-feu tapée sur un navigateur, on saisi les identifiants par défaut afin d’accéder à la configuration web (admin/pfsense). On peut ici donner un nom à notre part feu, ainsi que les serveurs DNS à utiliser.
-![webPfSense](installPfSense8.png)
+![webPfSense](src/installPfSense8.png)
 
 Les options suivantes ont déjà été configurées dans l’interface en ligne de commande, on peut donc directement passer toute cette configuration jusqu’à arriver à la définition du mot de passe de notre pfSense, puis on quitte le programme d’installation.
-![pwdPfSense](installPfSense9.png)
+![pwdPfSense](src/installPfSense9.png)
 
 Pour vérifier que tout fonctionne correctement, j’attache une machine virtuelle au réseau LAN du pare-feu et je vérifie que tout fonctionne.
-![LANPfSense](installPfSense10.png)
+![LANPfSense](src/installPfSense10.png)
 
 Vous avez désormais un pare-feu pfSense à votre disposition. Nous allons maintenant voir quelques applications qu’offre votre nouvelle machine. 
 
@@ -504,42 +504,42 @@ Pour la première application, nous allons voir comment rendre notre système re
 Pour commencer, il nous faut une deuxième machine. On peut suivre la même procédure d'installation que pour la première, mais il faut quand même faire attention à quelques détails, pour ne pas avoir deux fois la même IP par exemple. On rajoute également une interface supplémentaire afin de relier les 2 machines entre elles. Elles pourront ainsi toujours vérifier l’état de l’autre. Dans mon cas, la configuration de mes machines est la suivante : 
 
 Machine n°1 :
-![machine1PfSense](installPfSense11.png)
+![machine1PfSense](src/installPfSense11.png)
 
 Machine n°2 :
-![machine2PfSense](installpfSense12.png)
+![machine2PfSense](src/installpfSense12.png)
 
 Et mon réseau se compose d’un WAN (hn0), un LAN (hn1), et un réseau isolé (hn2) qui ne sert qu’à relier mes deux pares-feux.
-![vSwitchPfSense](installPfSense13.png)
+![vSwitchPfSense](src/installPfSense13.png)
 
 Sur l’interface de notre premier pare-feu, on se rend dans le menu Firewall, puis Virtual IP et on clique sur le bouton “add”. Dans ce nouveau menu, on précise le type d’IP virtuelle (CARP dans notre cas), l’interface qui sera concernée par l’IP virtuelle (ici la LAN), une adresse virtuelle (qui ne doit pas être déjà utilisée, attention aussi à ne pas oublier de spécifier le masque en bout de ligne), ainsi qu’un mot de passe d’IP virtuelle. Le reste des paramètres peut être laissé par défaut, celui qui nous intéresse est le “Skew” ou “biais”. Il sera typiquement à 0 pour le pare-feu maitre et à 1 pour l’esclave. Ne pas oublier de cliquer sur “Apply changes” une fois la configuration enregistrée.
-![virtIPPfSense](installPfSense14.png)
+![virtIPPfSense](src/installPfSense14.png)
 
 On renouvelle l’opération sur le 2ème pare-feu, en gardant la même IP virtuelle et le même mot de passe, mais en changeant le biais à 1 comme vu précédemment, puis on valide à nouveau.
-![virtIPP2fSense](installPfSense15.png)
+![virtIPP2fSense](src/installPfSense15.png)
 
 On peut ensuite se rendre dans le menu Status, puis CARP et activer CARP.
-![CARPPfSense](installPfSense16.png)
+![CARPPfSense](src/installPfSense16.png)
 
 On recommence ensuite la même manipulation mais pour créer une IP virtuelle commune sur l’interface WAN comme suit :
-![virtIP3PfSense](installPfSense17.png)
+![virtIP3PfSense](src/installPfSense17.png)
 
 On se rend aussi les services, puis dans les options du serveur DHCP afin de modifier la passerelle distribuée par le service, que l’on remplace par notre adresse virtuelle choisie précédemment pour le LAN. Il faut encore une fois valider les changements en haut de la place quand on effectue un changement.
-![DHCP2PfSense](installPfSense18.png)
+![DHCP2PfSense](src/installPfSense18.png)
 
 On vient ensuite se rendre dans le menu System, et High Availablility, où l’on vient cocher la case synchronize states qui permettra aux pare-feux d’échanger leurs informations entre eux. On sélectionne également notre interface de communication (ici notre réseau dédié) et on précise l’IP de l’autre pare-feu.
-![HAPfSense](installPfSense19.png)
+![HAPfSense](src/installPfSense19.png)
 
 On spécifie ensuite les identifiants de connexion de l’autre pare-feu, puis on coche les cases qui nous intéresse (dans mon cas, toutes).
-![casesSyncPfSense](installPfSense20.png)
+![casesSyncPfSense](src/installPfSense20.png)
 
 On renouvelle l’opération sur le pare-feu secondaire (en changeant les IP), mais sans activer la synchronisation de la configuration et donc sans spécifier les identifiants de connexion puisqu'il s’agit d’un pare-feu de secours sur lequel on ne devrait pas faire de changement de configuration. 
 
 Enfin, on créé une règle de pare-feu pour autoriser la libre communication entre les 2 pare-feux sur le réseau qui leur est dédié.
-![reglePfSense](installPfSense21.png)
+![reglePfSense](src/installPfSense21.png)
 
 On peut alors constater que notre premier pare-feu est toujours en état Master, mais que le second est passé en Backup.
-![degradePfSense](installPfSense22.png)
+![degradePfSense](src/installPfSense22.png)
 
 On peut alors contrôler la bonne marche de notre configuration en mettant hors service notre premier pare-feu (en enregistrant la VM, en coupant la carte réseau, en débranchant le câble Ethernet...). Si le matériel présent derrière vos pare-feux retrouve rapidement accès à internet, c’est plutôt une bonne nouvelle, mais il nous faut aussi vérifier que les pare-feux reprennent leurs états initiaux après avoir remis en ligne notre machine principale (en allant vérifier l’état CARP). Si c’est bien le cas, félicitations : vous avez configuré vos pare-feux avec brio !
 
