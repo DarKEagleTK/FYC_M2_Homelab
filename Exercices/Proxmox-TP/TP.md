@@ -15,6 +15,6 @@ Il faudra remplir les points suivant :
 - Vous devez utiliser le cloud-init
 - Comme nous avons un prometheus pour notre supervision, installer sur le template l'exporteur de données de prometheus
 - Mettez en place le système guest agent.
-- Configurer votre clé ssh dans la machine
+- Configurer votre clé ssh dans la machine, ainsi que la clé de votre machine Devops
 
 Il vous sera demander de rendre sur la plateforme un compte rendu de votre TP, avec des captures d'écrans et des explications des systèmes que vous allez utiliser.
