@@ -70,8 +70,8 @@ Les prérequis pour cette partie du cours sont :
 - notre machine qui deviendra le serveur
 
 Pour l'installation de notre proxmox, nous allons commencer par télécharger sur notre ordinateur l'iso de proxmox et rufus, un utilitaire pour intaller cet iso sur une clé usb bootable.
-- ![Proxmox](https://enterprise.proxmox.com/iso/proxmox-ve_8.1-1.iso)
-- ![Rufus](https://github.com/pbatard/rufus/releases/download/v4.3/rufus-4.3.exe)
+- [Proxmox](https://enterprise.proxmox.com/iso/proxmox-ve_8.1-1.iso)
+- [Rufus](https://github.com/pbatard/rufus/releases/download/v4.3/rufus-4.3.exe)
 
 Une fois ces deux éléments télécharger, lancez l'éxécutable rufus. Dans l'onglet `device`, sélectionnez votre clé usb. Point d'attention si vous avez plusieurs disques ou clé usb connceté sur votre ordinateur a ce moment la, mais l'installation de l'ISO sur votre clé procedera à un formatage, donc a la perte de l'ensemble des données présente sur cette clé.
 Une fois ces deux éléments télécharger, lancez l'éxécutable rufus. Dans l'onglet `device`, sélectionnez votre clé usb. 
@@ -251,17 +251,113 @@ Pour la gestion des roles, veuillez regarder la description des roles et des per
 
 #### Gestion des VMs
 
+Si nous avons installé un proxmox, c'est pour pouvoir y mettre des machines virtuelles. Nous allons donc commencer par créer une machine virtuelle. Nous regarderons cette gestion des VMs principalement avec l'interface web. Vous pouvez aussi le faire depuis les lignes de commandes, mais nous n'arborderons pas le sujet. Pour la gestion via ligne de commande, vous pouvez regarder la commande `qm`, avec la commande ``man qm``.
+
+Pour créer votre première machine virtuelle, vous pouvez cliquer sur le bouton `Create VM`, en haut à droite de votre ecran. Une nouvelle page s'ouvre pour permettre de configurer la VM. Cliquez directement sur la case `Advanced`, pour pouvoir avoir l'ensemble des informations customisables.
+
+![proxmox-vm-01](src/proxmox-vm-01.png)
+
+Voici les informations que vous allez pouvoir customiser sur l'onglet général : 
+- Le Node : la machine physique sur lequel la vm se placera
+- Le VM ID : L'identifiant de la machine virtuelle.
+- Le nom : Le nom de votre VM
+- Ressources pool : permet de placer la machine dans un pool, que vous avez pu créé dans les parties précédentes.
+- Start at boot : permet de lancer la VM au lancement du la machine physique, dans le cas d'un redemarrage par exemple
+- Tags : Permet de mettre en place des tags. Ceci sont purement visuel, mais vous permette de vous organiser dans vos VMs.
+
+![proxmox-vm-02](src/proxmox-vm-02.png)
+
+Dans la partie OS, vous pourrez :
+- Utiliser un fichier ISO : La première Options permet d'utiliser les images ISO préalablement installer sur votre proxmox. Vous devrez aussi selectionner le type et la version de l'OS que vous voulez installer.
+- CD physique : La seconde options permet d'installer votre VM via un disque physique que vous intégreriez sur votre lecteur dvd sur le serveur.
+- Ne pas mettre d'OS
+
+![proxmox-vm-03](src/proxmox-vm-03.png)
+
+Dans la partie Systeme, vous allez pouvoir configurer : 
+- La carte graphique : Vous allez pouvoir configurer plusieurs types de carte graphique. Cela sera utiliser pour la prévisualisation.
+- Le paramètre Machine : permet de définir le chipset. La principale différence entre i440fs et le q35 est le support du PCI-E, donc principalement la gestion des cartes graphiques par exemple. Vous pouvez parfaitement laisser ce paramètre par défaut.
+- Firmware Bios : Permet de définir le Bios que vous allez utiliser. Vous pouvez utiliser dans la majorité du temps le paramètres par défaut SeaBIOS, ou mettre en place l'UEFI, pour des VMs windows par exemple.
+- SCSI Controller : Permet de configurer le bus pour les disques dur. Je vous conseille d'utiliser les paramètres `Virtio`, qui permet d'avoir des performances intéressantes sur des systèmes de virtualisation Linux.
+- Qemu agent : permet à proxmox de récupérer des informations sur la machine virtuelle, comme sa consommation ou son adresse ip.
+- Add TPM : permet d'ajouter une puce TPM à notre VM, pour une VM windows 11 par exemple.
+
+![proxmox-vm-05](src/proxmox-vm-05.png)
+
+Pour la gestion de vos disques dans la vm, vous pourrez donc créer un disque virtuel sur lequel votre système tournera : 
+- Bus/device : Selectionner un type de bus. Je vous conseille de rester sur le paramètre par défaut.
+- Storage : permet de définir sur quelle stockage vous aller stocker ce disque virtuelle de votre machine. Je vous rappelle que la configuration de ce stockage a été fait en début de cours sur proxmox.
+- Disk size : permet de définir la taille en Giga de votre disque virtuel.<br>
+- Cache : permet de définir le fonctionnement du cache de ce disque.
+- SSD emulation : permet de simuler un SSD. Ce paramètre n'est pas utile ormis si vous voulez que votre machine virtuelle persoivent ce disque comme étant un SSD.
+- Read-only : le disque virtuelle que vous créé ne permettra pas l'écriture. A proscrire dans le cas d'une installation de machine virtuelle.
+- IO thread et Async IO : permet de configurer des le nombres de thread utiliser par IO. Activer ces paramètres permet de meilleures performances.
+- Dans l'onglet bandwith, vous pourrez configurer des limites d'écriture et de lecture sur votre disque. Par défaut, tous les paramètres sont en illimités.
+
+![proxmox-vm-04](src/proxmox-vm-04.png)
+
+Dans la partie CPU, vous allez avoir la possibilité de configurer : 
+- Le nombre de socket : le nombre de Processeurs contenu dans votre VM
+- Le nombre de cores : le nombre de coeurs par socket 
+- Le type de processeur : Cette partie est extrement complexe. Elle permet de configurer le type d'architecture de processeurs que vous voulez utiliser, mais beaucoup de ces architectures, souvent provenant de QEMU, ne sont pas très bien documentés. Je vous recommende donc de laisser par défaut, ou d'utiliser le profil `host`, qui utilisera les informations de la machine hote, et souvent permet plus de performance.
+
+![proxmox-vm-06](src/proxmox-vm-06.png)
+
+Dans la partie Memory, vous allez pouvoir configurer la taille de mémoire RAM de votre machine. La différence entre le paramètres ``memory`` et ``minimum memory`` est que ``memory`` concerne le maximum utilisable, mais ne sera pas forcement tout le temps allouer sur la machine hote car pas utilisé par exemple, et le paramètre ``minimum memory`` permet d'allouer directement sur la machine physique la mémoire RAM.
+
+![proxmox-vm-07](src/proxmox-vm-07.png)
+
+Dans la partie network, vous allez pouvoir configurer : 
+- Le bridge utilisé : Ce sera l'interface bridge, que nous avons vu dans la configration réseau, sur laquelle notre Vm se rattachera pour avoir sa connexion réseau.
+- Le modele : Permet de définir le modele de carte réseau utilisé. Je vous conseille de partir sur du VirtIO.
+- Vlan TAG : permet de mettre un tag pour l'utilisation d'un vlan.
+- Firewall : permet d'utiliser le firewall interne de proxmox
+- Mac Address : permet de configurer l'adresse mac de notre VM
+- Disconnect : permet de ne pas connecter votre interface réseau
+- Rate limit : permet de placer une limite de débit sur la machine
+- MTU : permet de définir le MTU (taille maximum d'un packet pouvant etre transmit sans fragnmantation)
+
+Vous aurez ensuite une page récapitulative, et vous pourrez simplement cliquez sur le bouton `Finish`
+
+Vous retrouverez l'ensemble de vos machines virtuelle sur la liste à gauche de votre écran. Cette liste est modifiable selon 3 templates : le  server view, le folder view et le pool view. 
+
+![proxmox-vm-08](src/proxmox-vm-08.png)
+
+Vous pourrez à cet endroit faire clic droit sur votre machine et avoir faire plusieurs interaction : 
+- Mettre en pause la machine
+- l'eteindre : envoyer un signal pour que le système s'eteigne proprement
+- la stopper : équivalent à couper l'allimentation de la VM
+- Reboot : relancer la VM
+- Clone : faire une réplique de la machine virtuelle
+- Convert to template : convertie la machine en template
+- Console : lance l'affichage de la VM
+
+![proxmox-vm-09](src/proxmox-vm-09.png)
+
+En cliquant sur un machine, vous aurez l'apercu de votre VM, ainsi qu'un certain nombre d'onglet pour la configuration de la machine.
+
+![proxmox-vm-10](src/proxmox-vm-10.png)
+
+Voici les onglets et leur utilisation : 
+- Summary : donne les informations et ressources utiliser par la VM
+- Console : permet d'avoir l'affichage de la vm, ou la console linux
+- Hardware : permet de configurer les composants (CPU, RAM) de votre VM.
+- Cloud init : Vous l'experiementerez plus tard lors d'un TP
+- Options : un ensemble d'options de fonctionnement de la VM
+- task history : un historique des actions
+- backup : permet de faire une backup de votre machine sur un stockage, et de faire des restaurations si besoin
+- réplication : utilisable si vous avez un cluster. Ce n'est pas notre ca, nous ne l'utiliserons pas.
+- Snapshot : permet de gerer les snapshots.
+- Firewall : regle firewall de la machine
+- Permission : Ajouter des permissions
+
+Vous retrouverez aussi en haut à droite de l'écran les différentes actions possible.
+
+![proxmox-vm-10](src/proxmox-vm-11.png)
+
+Nous avons maintenant fait le tours des choses possible à faire par rapport à nos VMs. Je vous conseille de pratiquer, de tester les paramètres et de visiter les différents menus pour bien comprendre les différents points.
 
 
-
-
-
-
-
-
-
-
---------------------------------------
 ### 4. - Installation de l’environnement Docker
 
 Avant de nous intéresser à Docker, nous définirons ce qu'est un conteneur. Un conteneur est un environnement d'exécution léger, permettant d'isoler les applications déployés sur un seul et le de partage de ressources de l'hôte entre les différents conteneurs. Un conteneur est plus léger et plus simple qu’une machine virtuelle et peut donc démarrer et s’arrêter plus rapidement. Il est donc plus réactif, et adaptable aux besoins fluctuants liés au ” scaling ” d’une application.
