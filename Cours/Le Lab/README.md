@@ -998,10 +998,31 @@ scrape_configs:
 docker volume create prometheus-data
 
 # Création et mise en marche du docker
-docker run -p 9090:9090 -v prometheus-data:/prometheus -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -d prom/prometheus
+docker run -p 9090:9090 -v prometheus-data:/prometheus -v /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml -d prom/prometheus --name prometheus
 ```
 **Installation des agents avec Node Exporter sur les machines virtuelles**
- static config à expliquer pour la mise en lien avec les agents node exporter
+
+Nous allons maintenant installer l'agent sur les VMs clients pour récolter les données.
+Tapez la commande suivante pour installer l'agent sur une VM Debian :
+```bash
+apt install prometheus-node-exporter
+```
+
+Nous retournons maintenant sur le serveur comportant Prometheus et nous modifions le fichier **Prometheus.yml**.
+
+En effet vous avez dans ce fichier, une ligne se nommant *static config* avec *target* soit comportant les adresses IP des cibles pour récupérer leurs données.
+Node-exporter utilise le port 9100. Nous allons donc rajouter dans target l'adresse IP de la machine auquel nous avons installé l'agent avec comme port 9100.
+
+A chaque modification du fichier, notamment pour un ajout de cible dans prometheus, nous devons redémarrer le conteneur avec : `docker restart [container_ID]`
+
+**Installation Grafana**
+
+```bash
+mkdir /etc/grafana
+docker volume create grafana-data
+# start grafana
+docker run -d -p 3000:3000 --name=grafana -v grafana-data:/etc/grafana grafana/grafana-enterprise
+```
 
 *a) exercice : Installation d'Uptime Kuma sous Docker*
 
