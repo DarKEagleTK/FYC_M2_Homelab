@@ -1,0 +1,18 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+
+rule_files:
+  
+scrape_configs:
+  - job_name: "prometheus"
+    static_configs:
+      - targets: 
+      {% for target in targets %}
+        - {{ target.name }}:9100
+      {% endfor %}

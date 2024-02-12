@@ -1,0 +1,14 @@
+---
+- hosts: all
+  vars:
+    prometheus_target:
+      - targets:
+        - target1
+        - target2
+  tasks:
+    - name: Update prometheus config
+      import_role:
+        name: TP.add_host_prometheus
+    - name: Update docker
+      import_role:
+        name: TP.updates
