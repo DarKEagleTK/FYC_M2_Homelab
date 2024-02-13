@@ -679,7 +679,45 @@ On peut alors contrôler la bonne marche de notre configuration en mettant hors 
 
 *a)	Exercice : Création de la liste des règles pare-feu de base*
 
-### 3. - Installation/Utilisation d’OpenVPN
+
+### 3. - Utilisation du Firewall (WatchGuard) - Cours vidéo
+Dans le cours précédent, nous nous sommes penchés sur la configuration et l'utilisation d'un pare-feu pfSense, une solution gratuite et opensource. Dans cette partie, nous verrons une alternative à pfSense au travers d'une solution propriétaire, puisque nous allons utiliser des pare-feux de la marque WatchGuard. Ces pare-feux se présentent sous la forme de machines appelées Firebox, disponibles sous plusieurs formes :
+
+  - Physique au format tabletop : il s'agit de petits boitiers conçus pour les petites et moyennes entreprises, permettant des solutions tout en un (offrant un port PoE, du Wi-Fi ou de la 5G selon les modèles par exemple)
+  - Physique au format rackable : ces appareils sont destinées aux grosses PME ou grandes entreprises. Les performances sont accrues, le nombre de ports augmente et les boitiers sont évolutifs grâce à des emplacements pour modules supplémentaires offrants des ports d'extension cuivre ou fibre avec des débits montants jusqu'à 40Gbps.
+  - Virtuelle au format machine virtuelle : ces machines sont compatibles avec ESXi ou HyperV et offrent les mêmes fonctionnalités que leurs équivalents physiques, voir plus (selon les modèles).
+  - Virtuelle au fromat cloud : ce service propose les mêmes modèles que les machines virtuelles, mais a été spécifiquement developpé pour Microsoft Azure et AWS.
+
+Dans notre cas, nous utiliserons des boitiers tabletop sans clé de fonctionnalité, c'est à dire sans licence et fonctionnalités payantes.
+
+0 - Démarrage et tableau de bord : cette première vidéo vous permettra de réaliser la configuration initiale de votre Firebox.
+Note : Si votre boitier n'est pas remis à 0, vous pouvez le réinitialiser grâce à [cette procédure](https://www.watchguard.com/help/docs/fireware/12/fr-FR/Content/fr-FR/backup_upgrade_recovery/recovery_procedures_c.html)
+
+https://youtu.be/EF3TZHpeLlo
+
+
+1 - Configuration générale : dans cette deuxième partie, nous abordons la configuration générale du pare-feu. Vous y trouverez les menus permettant de réaliser les manipulations les plus basiques.
+
+https://youtu.be/xjScT0Lso48
+
+2 - Réseau et interfaces : nous attaquons désormais la réelle configuration du pare-feu dans cette vidéo orientée sur la partie réseau et les interfaces de votre boitier.
+
+https://youtu.be/8uH_EmKwcxU
+
+3 - Stratégies, SNAT, ports et sites bloqués : seront abordées dans cette vidéo les fonctionnalités de sécurité et les redirections de ports afin de gérer au mieux les liaisons entre votre infrastructure, ses services et Internet.
+
+https://youtu.be/aJaNXiEmSAM
+
+4 - Travail pratique : avant de regarder cette vidéo, vous devez configurer un VPN SSL (mobile VPN) sur votre boitier et vous y connecter grâce à un utilisateur créé pour l'occasion. Attention, une ouverture/redirection de port sera peut être nécessaire sur votre box internet pour permettre le bon fonctionnement de votre VPN (pour rappel, le port utilisé par un VPN SSL est le 443). La technologie est basée sur OpenVPN, mais un client VPN vous sera nécessaire sur votre machine de test devant se connecter à votre réseau ; vous pouvez le télécharger [ici](https://cdn.watchguard.com/SoftwareCenter/Files/MUVPN_SSL/12_10/WG-MVPN-SSL_12_10.exe).
+
+Une fois votre TP finalisé, vous pouvez regarder la correction vidéo :
+
+https://youtu.be/0KQlNAkSTFs
+
+Si vous souhaitez aller plus loin ou obtenir des informations complémentaires, vous trouverez votre bonheur sur [la plateforme de support WatchGuard](https://www.watchguard.com/wgrd-support/overview)
+
+
+### 4. - Installation/Utilisation d’OpenVPN
 
 La création d'un VPN est intéressant pour avoir accès à l'infrasctructure que vous avez installé en tout temps et emplacement. Nous allons aborder deux technique d'installation, une installation traditionnel et avec le cluster Docker.
 
@@ -746,7 +784,7 @@ N'oubliez pas de récupérer les informations nécessaires ainsi que les certifi
 Après avoir effectué l'installation, vous n'aurez qu'à implanté les informations dans les champs demandés.
 
 
-### 4. - Installation/Utilisation d’outils DEVOPS
+### 5. - Installation/Utilisation d’outils DEVOPS
 Pour notre environnement DevOps, nous allons voir trois points : 
 - Terraform
 - Ansible 
@@ -952,8 +990,6 @@ Cette opération peut prendre plus ou moins de temps en fonction des ressources 
 Une fois la configuration finalisé, vous pouvez aller sur l'url que vous avez configurer et aller sur votre gitlab. Les identifiants par défaut sont récupérable dans le fichier `/etc/gitlab/initial_root_password`.
 
 Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateurs.
-
-### 5. - Installation/Utilisation de NEXTCLOUD
 
 ## E. - Monitorings
 
