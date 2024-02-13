@@ -1,0 +1,20 @@
+# Var Prometheus
+prometheus_name: prometheus
+prometheus_image: prom/prometheus
+prometheus_port_interne: 9090
+prometheus_port_externe: 9090
+prometheus_volume: prometheus_data
+
+# var Grafana
+grafana_name: grafana
+grafana_image: grafana/grafana
+grafana_port_interne: 3000
+grafana_port_externe: 3000
+grafana_volume: grafana_data
+
+# var uptimekuma
+uptimekuma_name: uptimekuma
+uptimekuma_image: louislam/uptime_kuma
+uptimekuma_port_interne: 3001
+uptimekuma_port_externe: 3001
+uptimekuma_volume: uptimekuma_data

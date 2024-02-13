@@ -6,6 +6,6 @@
     state: present
     recreate: yes
     exposed_ports:
-      - {{ grafana_port }}
+      - "{{ grafana_port_externe }}:{{ grafana_port_interne }}"
     volumes_from:
       - {{ grafana_volume }}

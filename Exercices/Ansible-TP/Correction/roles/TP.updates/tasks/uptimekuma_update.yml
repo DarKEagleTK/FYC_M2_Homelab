@@ -6,6 +6,6 @@
     state: present
     recreate: yes
     exposed_ports:
-      - {{ uptimekuma_port }}
+      - "{{ uptimekuma_port_externe }}:{{ uptimekuma_port_interne }}"
     volumes_from:
       - {{ uptimekuma_volume }}
