@@ -1,0 +1,11 @@
+---
+- name: Restart docker
+  become: true
+  docker_container:
+    name: prometheus
+    image: prom/prometheus
+    state: present
+    restart: yes
+    volume_from: prometheus_data
+    ports:
+      - 9090:9090
