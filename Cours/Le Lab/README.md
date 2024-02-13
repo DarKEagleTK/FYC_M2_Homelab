@@ -548,7 +548,36 @@ Votre serveur TrueNAS est désormais totalement opérationnel et bénéficie des
 
 Mais aussi et surtout la possibilité d’installer des plugins sur votre serveur TrueNAS. La collection d’iXsystems vous permet déjà d’ajouter NextCloud à votre système ou de transformer votre système en serveur Plex, mais la communauté offre bien d’autres plugins bien plus nombreux, tels qu’un serveur OpenVPN par exemple, mais aussi des serveurs DNS comme Bind ou des solutions de vidéo surveillance ; le tout appuyé sur une solide communauté. Gardez cependant à l’esprit que toutes ces options demanderont aussi des ressources systèmes, et pourront ralentir votre système et/ou vous obliger à passer sur du matériel plus puissant. 
 
-Si l’installation de ces plugins vous intéresse, vous pouvez suivre notre tutoriel sur NextCloud qui vous aidera à vous familiariser avec un de ces composants. 
+Vous pouvez désormais faire le choix de vous arrêter ici, ou de compléter votre installation avec NextCloud. NextCloud est un logiciel libre open source permettant d’héberger des fichiers et des fonctionnalités de synchronisation automatique à la manière de TrueNAS, mais elle propose également toute une suite collaborative comprenant notamment :
+ 
+  - Des calendriers partagés 
+
+  - Un gestionnaire de contacts 
+
+  - Un module de conférence vidéo avec partage d’écran 
+
+  - Des visionneuses de documents (PDF, Open Document...) et de fichiers multimédias (jpg, img, mp4...) 
+
+  - Un logiciel de prise de notes 
+
+  - Un client Webmail 
+
+  - Un support d’ActivityPub
+
+Détail important : NextCloud propose une interface plus user-friendly que TrueNAS, notamment avec une application mobile gratuite. Les ministères de l’intérieur et de l’éducation nationale utilisent également NextCloud. 
+
+Pour procéder à l’installation de NextCloud, nous nous rendons dans le menu Plugins, puis nous sélectionnons NextCloud dans la liste et nous cliquons sur installer. Une fois l’installation réussie, nous pouvons au choix cliquer sur le logo NextCloud dans le module Jail des plugins, ou saisir son adresse et son port dans un navigateur. 
+
+Note : les identifiants par défauts se trouvent dans la section “notes post-installation" 
+![PluginNextcloud](src/nextcloud1.png)
+
+Vous arrivez ensuite sur le tableau de bord de NextCloud. La première chose que nous allons faire est de changer les identifiants qui nous ont été donnés pour le compte administrateur. Pour ce faire, on clique sur l’avatar en haut à droite, puis sur l’onglet Utilisateurs. Dans ce nouveau menu, on retrouve le compte que nous avons utilisé pour nous connecter. Nous cliquons sur le stylo au bout de la ligne, puis nous modifions l’utilisateur (attention, le portail d’authentification demandera toujours l’identifiant ncadmin) et le mot de passe par défaut par ceux de notre choix en cliquant sur la flèche à gauche du champ que nous modifions (il faudra peut-être nous reconnecter après cette opération). Nous retrouvons alors notre ligne utilisateur avec son nouveau nom. 
+![UtilisateursNextcloud](src/nextcloud2.png)
+
+Depuis ce menu, nous pouvons ajouter d’autres utilisateurs si nécessaire, ou des groupes afin de gérer plus efficacement les stratégies de sécurité que nous souhaiterions mettre en place. 
+
+Nous pouvons désormais nous rendre dans l’onglet fichiers, ou nous pouvons gérer notre arborescence. Certains fichiers sont créés par défaut, et l’on retrouve plusieurs fichiers, notamment un PDF nommé “Nextcloud Manual” qui couvre l’ensemble des fonctionnalités de base de Nextcloud. Le logiciel est très intuitif, mais si certaines questions vous venaient à l’esprit, vous trouveriez votre réponse dans ce fichier (qui comprend également des captures d’écran afin de vous expliquer au mieux).
+![FichiersNextcloud](src/nextcloud3.png)
 
 
 ### 3. - Configuration
