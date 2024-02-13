@@ -1020,7 +1020,6 @@ A chaque modification du fichier, notamment pour un ajout de cible dans promethe
 ```bash
 mkdir /etc/grafana
 docker volume create grafana-data
-# start grafana
 docker run -d -p 3000:3000 --name=grafana -v grafana-data:/etc/grafana grafana/grafana-enterprise
 ```
 
@@ -1039,34 +1038,19 @@ docker run -d -p 3000:3000 --name=grafana -v grafana-data:/etc/grafana grafana/g
 ### 1. - Présentation
 
 Un tableau de bord permettra donc de voir de manière organisé les différentes données recensé par le monitoring. En effet, un serveur de monitoring s'occupera de recenser les informations que vous aurez programmé mais affichera ces données de manière brute et condensé.
-Pour un usage personnel, nous resterons sur des solutions open sources, tel que [Homer](https://github.com/sipcapture/homer-docker)
+Pour un usage personnel, nous resterons sur des solutions open sources, tel que [Homer](https://github.com/bastienwirtz/homer?ref=tcude.net)
 
 ### 2. - Installation Homer
 
-La solution d'installation d'Homer peut se faire avec un script d'installation rapide fourni par les développeurs ou avec Docker. 
-
-Voici les lignes de commandes à effectuer selon la solution que vous souhaitez utiliser :
+L'installation se fait sous Docker avec les commandes suivantes :
 
 ```bash
-# Avec Debian
-# Installation avec le script du fournisseur Sipcapture
-apt-get install libluajit-5.1-common libluajit-5.1-dev lsb-release wget curl git
-wget https://github.com/sipcapture/homer-installer/raw/master/homer_installer.sh
-chmod +x homer_installer.sh
-./homer_installer.sh
-
-# Avec Docker
-git clone https://github.com/sipcapture/homer7-docker
-cd homer7-docker/heplify-server/hom7-prom-all
-docker-compose up -d
+mkdir /etc/Homer
+docker volume create homer-data
+docker run -d -p 8080:8080  --name homer -v /etc/Homer:/etc/Homer --restart=always  b4bz/homer:latest
 ```
 
-Vous trouverez ensuite les différents ports d'accès ou d'usage : 
-- Homer:9080 (admin/sipcapture)
-- Grafana:9030 (admin/admin)
-- Prometheus:9090 (admin/admin)
-- Loki:3100 (admin/admin)
-- Alertmanager:9093 (admin/admin)
+*a) exercice : configuration de Homer avec tous les services mis en place*
 
 ## G. - Pour aller plus loin
 
