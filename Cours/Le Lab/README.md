@@ -2,7 +2,7 @@
 
 Lors de cette partie du cours, nous allons vous présenter les différents systèmes que nous avons choisi d’installer sur notre HomeLab.
 
-Pour chaque technologie que nous allons présenter, le cours sera en deux parties : une partie théorique qui présentera le système global via une technologie associée, et l’installation et configuration de cette technologie sur notre infrastructure. Comme nous ne vous présentons qu’une des différents chemins que vous pouvez emprunter, chaque catégorie aura des recommandations supplémentaires vers d’autres technologies avec les liens vers les documentations pour que vous puissiez aussi trouver par vous-même des solutions qui vous conviennent.
+Pour chaque technologie que nous allons présenter, le cours sera en deux parties : une partie théorique qui présentera le système global via une technologie associée, et une seconde sur l’installation et la configuration de cette technologie sur notre infrastructure. Comme nous ne vous présentons qu’un des différents chemins que vous pouvez emprunter, chaque catégorie aura des recommandations supplémentaires vers d’autres technologies avec les liens vers les documentations afin que vous puissiez aussi trouver des solutions qui vous conviennent par vous-même.
 
 Nous allons donc vous présenter : 
 
@@ -15,9 +15,9 @@ Nous allons donc vous présenter :
   - Les NAS
   - Les SANs
 
-- Les services installables pour le bon fonctionnement de l’infrastructure : 
-  - Firewall (physique ou logiciels)
-  - Les VPNs
+- Les services contribuants au bon fonctionnement de l’infrastructure : 
+  - Firewall (physique ou logiciel)
+  - Les VPN
   - Les outils DevOps
   - Le monitoring
     - Grafana
@@ -27,23 +27,23 @@ Nous allons donc vous présenter :
 - Un dashboard de centralisation : 
   - Homer
 
-Maintenant que vous avez une idée globale  de ce que nous allons faire dans ce cours, armez-vous de patience et de vos claviers, et suivez-nous dans l’élaboration de votre premier homelab !
+Maintenant que vous avez une idée globale  de ce que nous allons faire dans ce cours, armez-vous de patience, de vos claviers, et suivez-nous dans l’élaboration de votre premier homelab !
 
 ## B. - La virtualisation
 
 ### 1. - Présentation
-Comme vous avez pu le voir dans notre partie Rappel, la virtualisation est un point important voir central dans l’informatique moderne. Il est donc important de comprendre les concepts de la virtualisation et de la mettre en place dans notre homelab.
-Nous allons donc voir ensemble l'installation d'un hyperviseur et de sa configuration. Dans la même lancé, nous installerons un systeme de conteneurisation pour installer certains de nos services sous un format de docker.
+Comme vous avez pu le voir dans notre partie Rappel, la virtualisation est un point important, voir central, dans l’informatique moderne. Il est donc nécessaire de comprendre les concepts de la virtualisation et de les mettre en place dans notre homelab.
+Nous allons voir ensemble l'installation d'un hyperviseur et sa configuration. Dans la même lancée, nous installerons un système de conteneurisation pour installer certains de nos services sous format docker.
 
-Avant de commencer, il est important de comprendre ce que vous voulez faire avec vos conteneurs ou vos machines virtuelles. Un certain nombre de service propose des conteneurs déjà presque entierement configurer, et c'est l'un des gros avantages de cette technologies, mais dans un but d'apprentissage, il est parfois interessant d'installer les services manuellement sur une machine virtuelle, ou de monter sa propre image de conteneur pour comprendre comment ces services fonctionnent.
+Avant de commencer, il est important de comprendre ce que vous voulez faire avec vos conteneurs ou vos machines virtuelles. Un certain nombre de services proposent des conteneurs déjà presque entierement configurés, et c'est l'un des gros avantages de cette technologie. Cependant, dans un but d'apprentissage, il est parfois interessant d'installer les services manuellement sur une machine virtuelle, ou de monter sa propre image de conteneur pour comprendre comment ces services fonctionnent.
 
-Pour ce cours, nous avons choisi de vous présenter l'hyperviseur proxmox et le système de conteneurisation docker.
-Nous porterons nos attentions sur ces différents points : 
+Pour ce cours, nous avons choisi de vous présenter l'hyperviseur Proxmox et le système de conteneurisation docker.
+Nous porterons notre attention sur différents points : 
 
-- L'installation de notre proxmox et de notre environnement docker.
-- La configuration basique de notre proxmox :
-    - configuration du stockage
-    - Configuration d'utilisateurs/groupes et gestions des droits associée à ces comptes/groupes
+- L'installation de notre Proxmox et de notre environnement docker.
+- La configuration basique de notre Proxmox :
+    - Configuration du stockage
+    - Configuration d'utilisateurs/groupes et gestion des droits associés à ces comptes/groupes
     - Configuration du/des réseaux
     - Création de machines virtuelles
 - Les bonnes pratiques en termes de virtualisation :
@@ -52,46 +52,45 @@ Nous porterons nos attentions sur ces différents points :
     - Connexion via clé SSH
 
 Les prérequis pour cette partie du cours sont : 
-- un ordinateur avec une connexion internet
-- une clé usb 8go
-- notre machine qui deviendra le serveur. Il sera donc nécessaire d'avoir effectuer les manipulations possible présenter dans la section `Hardware`.
+- Un ordinateur avec une connexion internet
+- Une clé usb 8go
+- Notre machine qui deviendra le serveur. Il sera donc nécessaire d'avoir effectué les manipulations présentées dans la section `Hardware`.
 
 Concernant la machine serveur :
-- Cpu : Il est indispensable d'avoir un processeur mutlicoeurs supportant la virtualisation. Pour le nombre de coeurs, il en faut au minimum 2, même si cela ne vous permettra pas de faire grand chose. La recommendation serait donc d'avoir un processeur 4 coeurs ou plus.
-- Ram : Le minimum requis en terme de mémoire RAM est de 2go. Cependant, de même que pour le CPU, vous ne pourrez pas faire grand chose de cette manière, et certain OS ne pourrons pas être installer par manque de RAM (exemple: windows qui demande environ 4go de ram minimum). Je vous conseillerai de partir sur du 4go au minimum, et je vous recommenderai d'avoir 8go pour avoir un peu de marge.
-- Stockage : Il est recommender d'avoir plusieurs disques, dont un petit (entre 128 et 256 go) que nous utiliserons pour installer l'OS proxmox, et un second plus gros qui servira de stockage pour les disques des machines virtulles.
-- Réseau : Il faut nécessairement une carte réseau pour permettre à vos machines d'avoir accès à internet. Il est donc forcement recommender d'avoir une interface Gigabit.
+- CPU : Il est indispensable d'avoir un processeur mutlicoeurs supportant la virtualisation. Pour le nombre de coeurs, il en faut au minimum 2, même si cela ne vous permettra pas de tout faire. La configuration optimale serait d'avoir un processeur 4 coeurs ou plus.
+- RAM : Le minimum requis en terme de mémoire RAM est de 2go. Cependant, comme pour le CPU, vous ne pourrez pas faire grand chose avec aussi peu de ressources, et certains OS ne pourront pas être installés par manque de RAM (exemple: Windows Server qui demande 4go de RAM minimum). Je vous conseillerai de partir sur du 4go au minimum, même si 8Go sont recommandés pour avoir un peu de marge.
+- Stockage : Il est recommandé d'avoir plusieurs disques, dont un petit (entre 128 et 256 go) que nous utiliserons pour installer l'OS Proxmox, et un second, plus gros, qui servira de stockage pour les disques des machines virtuelles.
+- Réseau : Il faut obligatoirement une carte réseau pour permettre à vos machines d'avoir accès à internet. Il est également recommandé d'avoir une interface Gigabit.
 
 ### 2. - Installation de l’hyperviseur
 
 Les prérequis pour cette partie du cours sont : 
-- un ordinateur avec une connexion internet
-- une clé usb 8go
-- notre machine qui deviendra le serveur
+- Un ordinateur avec une connexion internet
+- Une clé usb 8Go
+- Notre machine qui deviendra le serveur
 
-Pour l'installation de notre proxmox, nous allons commencer par télécharger sur notre ordinateur l'iso de proxmox et rufus, un utilitaire pour intaller cet iso sur une clé usb bootable.
+Pour l'installation de notre Proxmox, nous allons commencer par télécharger sur notre ordinateur l'ISO de Proxmox et Rufus, un utilitaire pour intaller l'ISO sur une clé usb bootable.
 - [Proxmox](https://enterprise.proxmox.com/iso/proxmox-ve_8.1-1.iso)
 - [Rufus](https://github.com/pbatard/rufus/releases/download/v4.3/rufus-4.3.exe)
 
-Une fois ces deux éléments télécharger, lancez l'éxécutable rufus. Dans l'onglet `device`, sélectionnez votre clé usb. Point d'attention si vous avez plusieurs disques ou clé usb connceté sur votre ordinateur a ce moment la, mais l'installation de l'ISO sur votre clé procedera à un formatage, donc a la perte de l'ensemble des données présente sur cette clé.
-Une fois ces deux éléments télécharger, lancez l'éxécutable rufus. Dans l'onglet `device`, sélectionnez votre clé usb. 
-**Point d'attention** : si vous avez plusieurs disques ou clé usb connceté sur votre ordinateur a ce moment la, mais l'installation de l'ISO sur votre clé procedera à un formatage, donc a la perte de l'ensemble des données présente sur cette clé.
-Vous pouvez ensuite spécifier l'ISO de proxmox dans l'onglet `Boot selection`.
-Une fois que vous avez sélectionner ces deux paramètres, vous pouvez laisser le reste par défaut, et cliquer sur `Start`
+Une fois ces deux éléments téléchargés, lancez l'éxécutable Rufus et sélectionnez votre clé USB dans l'onglet `device`. 
+**Point d'attention** si vous avez plusieurs disques ou clés USB connectés sur votre ordinateur : l'opération procédera à un formatage, et mènera donc à la perte de l'ensemble des données présentes sur cette clé.
+Vous pouvez ensuite spécifier l'ISO de Proxmox dans l'onglet `Boot selection`.
+Une fois que vous avez sélectionné ces deux paramètres, vous pouvez laisser le reste par défaut et cliquer sur `Start`
 
 ![Rufus_exemple](src/rufus.png)
 
-Une fois que vous aurez votre clé USB bootable prête à l'emploi, vous pouvez la brancher sur votre serveur, et aller dans le bios pour booter sur cette clé usb.
-Une fois que vous aurez booter sur cette clé, vous arriverez sur l'interface d'installation de proxmox ! 
-**Point d'attention** : Le processus ci-dessus est le même pour toute les versions de proxmox. Seules les configurations ultérieures à l'installation changeront en fonction de la version que vous avez installé.
+Une fois que votre clé USB bootable est prête à l'emploi, vous pouvez la brancher sur votre serveur et vous rendre dans le bios afin de booter dessus.
+Une fois que vous avez booté sur la clé, vous arrivez sur l'interface d'installation de Proxmox ! 
+**Point d'attention** : Le processus ci-dessus est le même pour toutes les versions de Proxmox. Seules les configurations ultérieures à l'installation changeront en fonction de la version que vous avez installé.
 
-A ce point la, cliquez simplement sur `Isntall Proxmox VE` :
+A ce point là, cliquez simplement sur `Install Proxmox VE` :
 ![proxmox_fisrt_page](src/proxmox_install_fisrt_page.png)
 
-Acceptez ensuite le contrat de license (eula) : 
+Acceptez ensuite le contrat de license (EULA) : 
 ![proxmox_eula](src/proxmox_eula.png)
 
-Nous devons ensuite sélectionner le disque sur lequel nous allons installer l'OS. Nous configurerons le stockage des VMs plus tard, lorsque l'os sera installer.
+Nous devons ensuite sélectionner le disque sur lequel nous allons installer l'OS. Nous configurerons le stockage des VMs plus tard, lorsque l'OS sera installé.
 ![proxmox_disque](src/proxmox_disque.png)
 
 On s'occupe ensuite de la sélection du pays, qui permet de determiner le layout du clavier et la zone de temps.
@@ -101,287 +100,287 @@ On configure ensuite le mot de passe de l'utilisateur **root**, ainsi qu'une adr
 **Point important** : Le clavier de base de l'installateur peut être en QWERTY. Vérifiez donc bien quand vous écrivez !
 ![proxmox_password](src/proxmox_password.png)
 
-La configuration réseau se fait par rapport à votre réseau chez vous. En règle générale, vous serez sur la plage d'ip 192.168.0.0/24 ou 192.168.1.0/24, avec comme routeur/dns l'adresse ip de votre routeur.
-Vous pouvez avoir ces informations sur votre ordinateur, en tapant la commande `ipconfig /all`.
-Entrez donc l'adresse IP que vous avez choisi pour votre serveur, et validez.
+La configuration réseau se fait par rapport à votre réseau personnel. En règle générale, vous serez sur la plage d'ip 192.168.0.0/24 ou 192.168.1.0/24, avec comme passerelle/DNS l'adresse ip de votre routeur.
+Vous pouvez retrouver ces informations sur votre ordinateur, en tapant la commande `ipconfig /all`.
+Entrez l'adresse IP que vous avez choisi pour votre serveur, puis validez.
 ![proxmox_network](src/proxmox_network.png)
 
-Proxmox vous faira ensuite un récapitualitif de vos configurations. En cas d'erreurs, vous pouvez cliquez sur `previous`, et venir changer les paramètres sur lesquels vous vous etes trompé.
+Proxmox vous fera ensuite un récapitualitif de vos configurations. En cas d'erreur, vous pouvez cliquer sur `previous`, et venir changer les paramètres sur lesquels vous vous êtes trompés.
 ![proxmox_install_recap](src/proxmox_install_recap.png)
 
-L'installation se faira, et au bout de quelques minutes, vous aurez une page contenant le lien de l'interface web de votre proxmox : 
+L'installation commence, et au bout de quelques minutes vous arrivez sur une page contenant le lien de l'interface web de votre proxmox : 
 ![proxmox_install_end](src/proxmox_install_end.png)
 
-Vous pourrez donc acceder à votre insterface web sur le lien suivant depuis votre navigateur : 
+Vous pouvez désormais accéder à votre interface web depuis ce lien sur votre navigateur : 
 ```
 https://<ip_serveur>:8006
 ```
 
-Vous pourrez vous connecter avec l'utilisateur **root**, le mot de passe que vous avez défini lors de l'installation, dans le REALM `Linux PAM standard authentification`.
+Vous pouvez vous connecter avec l'utilisateur **root** et le mot de passe que vous avez défini lors de l'installation, dans le REALM `Linux PAM standard authentification`.
 ![proxmox_login_page](src/proxmox_login_page.png)
 
-**Point d'attention** : Vous retrouverez sous proxmox deux manières d'authentification, que l'on appelle REALM.
-- PAM : C'est le module d'authentification utilisé par Linux et les systèmes UNIX et BSD. Les informations de l'utilisateur local sont stocké dans le système et permette l'authentification de se connecter sur la machine en SSH ou en local, ainsi que sur l'interface de proxmox.
+**Point d'attention** : Vous retrouverez sous Proxmox deux manières d'authentification, que l'on appelle REALM.
+- PAM : C'est le module d'authentification utilisé par Linux et les systèmes UNIX et BSD. Les informations de l'utilisateur local sont stockées dans le système et permettent l'authentification sur la machine en SSH ou en local, ainsi que sur l'interface de Proxmox.
 - PVE : C'est la base de données de proxmox. Elle ne permettra que l'utilisation de l'interface web à ses utilisateurs, ainsi qu'à l'API.
 
 
 ### 3. - Configuration et prise en main du Promox
 
-Vous avez maintenant installer votre proxmox. Vous allons donc vour comment le prendre en main. Avant de commencer, je vous conseille de faire un tour de l'interface, pour vous familiariser avec.
+Vous avez maintenant installé votre Proxmox et nous allons voir comment le prendre en main. Avant de commencer, je vous conseille de faire un tour de l'interface, afin de vous familiariser avec cette dernière.
 
-Vous allez donc devoir faire plusieurs manipulations sur votre nouvel environnement pour le configurer.
+Vous allez maintenant devoir effectuer plusieurs manipulations sur votre nouvel environnement pour le configurer.
 
-Vous allez devoir faire les points suivant sur votre infrastructure : 
-- La configuration du réseau (port, sous-réseau, )
+Vous allez devoir réaliser les opérations suivantes sur votre infrastructure : 
+- La configuration du réseau (port, sous-réseau...)
 - La configuration du stockage
 - La configuration des utilisateurs/groupes
 - La gestion des droits
 - La Gestions des VM
-    - gestion des pools
-    - creation des vms linux et windows
-    - gestion des vms
-- Mise en place de template pour vos futures VMs
+    - Gestion des pools
+    - Creation des vms linux et windows
+    - Gestion des vms
+- Mise en place de templates pour vos futures VM
 
 
-Nous verrons certaines parties ci-dessus, et vous aurez une partie avec un exercice pour la mise en place d'un template pour vos VMs.
+Nous verons certaines parties ci-dessus, et vous aurez une partie avec un exercice pour la mise en place d'un template pour vos VM.
 
 #### Tour du propriétaire
 
 ![proxmox-interface](src/proxmox-interface.png)
 
 Après votre première connexion, vous aurez ce genre d'interface.<br>
-A gauche, vous retrouverez la liste des VMs, des pools et des stockages. Un peu plus au centre, vous retrouverez une liste d'onglet, dont nous verrons certain dans la suite du cours. <br>
-Au centre, vous aurez quelques métriques sur les ressources consommé, le nombres de machines, l'état du cluster proxmox etc.<br>
-Pour finir, en bas, vous aurez un historique de tous les taches et des logs.
+A gauche, vous retrouverez la liste des VM, des pools et du stockage. Un peu plus au centre, vous retrouverez une liste d'onglets. Nous en verrons certains plus tard dans le cours. <br>
+Enfin, au centre, vous trouverez quelques métriques sur les ressources consommées, le nombres de machines, l'état du cluster proxmox etc.<br>
+Pour finir, en bas, vous aurez un historique de toutes les taches et des logs.
 
 #### Configuration des réseaux
 
 Pour commencer, vous allez devoir configurer les interfaces réseaux de votre serveur. 
 
-Pour configurer vos interfaces réseau, vous devez aller dans le menu serveur>System>Network :
+Pour configurer vos interfaces réseau, vous devez vous rendre dans le menu serveur>System>Network :
 ![proxmox-network](src/proxmox-network.png)
 
-Dans ce menu, on retrouve la liste de nos différentes interfaces physiques, nommé `eno`, avec un chiffre correspondant aux numéros de l'interface. <br>
-On trouve aussi une interface nommé ``vmbr0``. C'est une interface bridge, c'est-à-dire une interface virtuelle qui va connecter toutes les interfaces (virtuelle ou physique) reliés à ce bridge sur le meme réseau. Par exemple sur la capture ci-dessus, ``vmbr0`` est l'interface virtuelle créé par défaut pour permettre à vos machine de se connecter à internet, en passant par l'interface physique `eno1`.
+Dans ce menu, on retrouve la liste de nos différentes interfaces physiques, nommées `eno`, avec un chiffre correspondant au numéro de l'interface. <br>
+On trouve aussi une interface nommée ``vmbr0``. C'est une interface bridge, c'est-à-dire une interface virtuelle qui va connecter toutes les interfaces reliées à ce bridge (virtuelles ou physiques) sur le même réseau. Par exemple, sur la capture ci-dessus, ``vmbr0`` est l'interface virtuelle créée par défaut pour permettre à vos machine de se connecter à internet, en passant par l'interface physique `eno1`.
 
 Pour appliquer votre configuration, vous pouvez passer directement depuis l'interface en appuyant sur le bouton `Create`. Vous retrouverez plusieurs types d'interfaces possible : 
-- Linux : Concerne les interfaces par défaut de Linux
-- OVS : C'est un système de switch, qui est une alternative au système linux natif. Nous ne l'utiliserons pas, mais voici la page de documentation sur cette partie : `https://pve.proxmox.com/wiki/Open_vSwitch`
+- Linux : concerne les interfaces par défaut de Linux
+- OVS : c'est un système de switch, qui est une alternative au système linux natif. Nous ne l'utiliserons pas, mais voici la page de documentation de cette partie : `https://pve.proxmox.com/wiki/Open_vSwitch`
 
-Dans ces deux groupes d'interface, vous retrouverez :
+Dans ces deux groupes d'interfaces, vous retrouverez :
 - Bridge : Une interface bridge permet d'attribuer d'autre interfaces à cette même interface. On pourra donc faire des réseaux de VMs via cette interface.
 ![proxmox-network-01](src/proxmox-network-01.png)
-- Bond : Une interface bond permet de faire du lcap. C'est une méthode qui permet de regrouper plusieurs interfaces physiques pour en faire une seule logique. Cela ne sera pas utile dans notre cas.
-- VLAN : Permet de faire de la gestion de Vlans.
+- Bond : Une interface bond permet de faire du LCAP. C'est une méthode qui permet de regrouper plusieurs interfaces physiques pour faire une seule interface logique. Cela ne sera pas utile dans notre cas.
+- VLAN : Permet de faire de la gestion de VLAN.
 
 Vous pouvez aussi passer par la configuration en ligne de commandes, dans le fichier `/etc/network/interfaces`.
 
-Ici, nous allons nous concentrez sur la création d'interface bridge.
+Ici, nous allons nous concentrer sur la création d'interface bridge.
 ![proxmox-network-02](src/proxmox-network-02.png)
 
-Vous aurez donc la possibilité de nommer vos interfaces, et d'y appliquer des commentaires. Cela nous servira pour bien définir l'utilisation de chaque interface et ne pas se perdre lors de nos configurations futures.<br>
-Toutes la partie configuration d'adresses IP n'est pas obligatoire, mais permet d'attribuer une adresse IP à une interface lorsqu'elle est attaché à un port. Attention au gateway, il ne peut pas en avoir plusieurs sur vos différentes interfaces.<br>
-La partie `bridge port` permet de définir sur quel port physique l'interface virtuelle sera rattacher.
+Vous aurez la possibilité de nommer vos interfaces, et d'y appliquer des commentaires. Cela nous servira pour bien définir l'utilisation de chaque interface et ne pas se perdre lors de nos configurations futures.<br>
+Toutes la partie configuration d'adresses IP n'est pas obligatoire, mais permet d'attribuer une adresse IP à une interface lorsqu'elle est attachée à un port. Attention à la passerelle par défaut, il ne peut pas y en avoir plusieurs sur une seule interface.<br>
+La partie `bridge port` permet de définir sur quel port physique l'interface virtuelle sera rattachée.
 
-Pour plus d'informations, vous pouvez aller voir la documentation officiel : https://pve.proxmox.com/wiki/Network_Configuration
+Pour plus d'informations, vous pouvez aller voir la documentation officielle : https://pve.proxmox.com/wiki/Network_Configuration
 
 
 #### Configuration du stockage
 
-Nous allons avoir besoin ensuite de stockage pour pouvoir mettre nos VMs en place.
+Nous allons ensuite avoir besoin de stockage pour mettre nos VM en place.
 
-Pour commencer, nous allons voir pour les configurations concernant le stockage locale de votre serveur.<br>
-Vous retrouverez dans la configuration de votre serveur, dans l'onglet ``disks``, la liste des disques disponibles sur le serveurs. Cela vous permettra d'integrer vos disques, et de voir qu'ils ont bien été récupérer par proxmox.
+Pour commencer, nous allons voir la configuration du stockage local de votre serveur.<br>
+Vous retrouverez dans l'onglet ``disks`` la liste des disques disponibles sur le serveur. Cela vous permettra d'intégrer vos disques et de vérifier qu'ils aient bien été récupérés par Proxmox.
 ![proxmox-storage-2](src/proxmox-storage-2.png)
 
-Nous allons ensuite pouvoir configurer nos disques selon 4 formats différents : 
+Nous allons maintenant pouvoir configurer nos disques selon 4 formats différents : 
 - LVM : volumes LVM
-- LVM-Thin : pool de volumes lvm
+- LVM-Thin : pool de volumes LVM
 - Directory : dossier local
-- ZFS : système qui melange du Directory et du LVM
+- ZFS : système mélangeant le Directory et le LVM
 
-Pour plus d'information sur les types de stockages, nous vous invitons à visiter la documentations officiel, ou aller sur les liens : ``https://votre_serveur/pve-docs/chapter-sysadmin.html#chapter_lvm``.
+Pour plus d'informations sur les types de stockage, nous vous invitons à visiter la documentation officielle, ou consulter les liens suivants : ``https://votre_serveur/pve-docs/chapter-sysadmin.html#chapter_lvm``.
 
-Ici, nous allons mettre en place des volumes LVM. Allez dans l'onglet `LVM`. Vous retrouverez dans cet onglet la liste des disques LVM déjà configurer. Cliquez sur le bouton `Create: Volume Group` pour créer votre volume.<br>
+Ici, nous allons mettre en place des volumes LVM. Allez dans l'onglet `LVM`. Vous retrouverez dans cet onglet la liste des disques LVM déjà configurés. Cliquez sur le bouton `Create: Volume Group` pour créer votre volume.<br>
 ![proxmox-storage-3](src/proxmox-storage-3.png)
 
-Selectionnez le disque souhaitez dans la liste, ainsi que le nom souhaité.<br>
+Selectionnez le disque souhaité dans la liste, ainsi que le nom souhaité.<br>
 ![proxmox-storage-4](src/proxmox-storage-4.png)
 
-Une fois votre volume créé, vous allez pouvoir aller dans la configuration `Datacenter`. Dans l'onglet `Storage`, vous pouvez ajouter plein de type de stockage différent, comme les stockages locaux que nous avons vu dans la gestion des disques précédement, ou des disques distants avec des protocoles tel que ISCSI ou NFS. ([iscsi](https://doc.ubuntu-fr.org/iscsi) et [nfs](https://doc.ubuntu-fr.org/nfs))<br>
-Pour ajouter notre disque, cliquez sur le bouton `add` :
+Une fois votre volume créé, vous allez pouvoir aller dans la configuration `Datacenter`. Dans l'onglet `Storage`, vous pouvez ajouter plusieurs types de stockage différents, comme les stockages locaux que nous avons vu précédement dans la gestion des disques, ou des disques distants avec des protocoles tels que ISCSI ou NFS. ([iscsi](https://doc.ubuntu-fr.org/iscsi) et [nfs](https://doc.ubuntu-fr.org/nfs))<br>
+Pour ajouter un disque, cliquez sur le bouton `add` :
 ![proxmox-storage-5](src/proxmox-storage-5.png)
 
 Nous pouvons maintenant utiliser notre stockage.
 
 #### Configuration des utilisateurs/groupes
 
-Pour suivre les bonnes pratiques générales en informatiques, nous allons créer des comptes qui auront des accès limités aux ressources de notre machines. Cela permet par exemple de préter votre super environnement à votre ami, sans qu'il puissent casser les choses que vous avez déjà mises en place.
+Pour suivre les bonnes pratiques générales en informatique, nous allons créer des comptes qui auront des accès limités aux ressources de nos machines. Cela permet par exemple de donner des accès à vos amis, sans qu'il puissent avoir accès aux ressources déjà mises en place.
 
-Pour gerer utilisateurs et leurs droits, vous pouvez vous rendre dans l'onglet `Permissions`.<br>
+Pour gérer les utilisateurs et leurs droits, vous pouvez vous rendre dans l'onglet `Permissions`.<br>
 ![proxmox-user-1](src/proxmox-user-1.png)
 
 Vous retrouverez dans cet onglet plusieurs onglets : 
-- Permissions : cliquez sur l'onglet en lui meme permet d'acceder à la gestion des permissions.
-- Users : gestions des utilisateurs
-- API tokens : Permet de créer des tokens d'authentifications pour l'api de proxmox. Cela permet par exemple de faire du terraform.
-- Two factor : pour la double authentification
-- Groups : gestions des groupes
+- Permissions : cliquer sur l'onglet en lui même permet d'accéder à la gestion des permissions.
+- Users : gestion des utilisateurs
+- API tokens : permettent de créer des tokens d'authentification pour l'api de Proxmox. Cela permet par exemple de faire du Terraform.
+- Two factor : gestion de la double authentification
+- Groups : gestion des groupes
 - Pools : permet de créer des pools de ressources
-- Roles : gestions des roles
-- realms : permet de gérer les realms, tel que les LDAPs, ou PVE par défaut sur proxmox.
+- Rôles : gestion des rôles
+- realms : permet de gérer les realms, tel que les LDAP, ou PVE par défaut sur Proxmox.
 
-Nous allons donc commencer par la création d'utilisateurs. Pour cela, rendez vous dans l'onglet `user`, et cliquez sur le bouton `add`.
+Nous allons commencer par la création d'utilisateurs. Pour cela, rendez vous dans l'onglet `user`, et cliquez sur le bouton `add`.
 ![proxmox-user-2](src/proxmox-user-2.png)
 
-Vous pouvez donc ajouter votre utilisateur avec un nom d'identification, le realm choisi (pour les utilisateurs, préféré le Proxmox VE), un groupe et d'autres paramètres supplémentaire.
+Vous pouvez ajouter votre utilisateur avec un nom d'identification, le realm choisi (pour les utilisateurs, préférez le Proxmox VE), un groupe et d'autres paramètres supplémentaires.
 
-Nous allons ensuite créer nos pools et nos groupes. Les pools permetrons de ranger les machines virtuelles, et les groupes les utilisateurs. Pour cela, rendez vous simplement dans les onglets correspondant, et cliquez sur les boutons `create`.
+Nous allons ensuite créer nos pools et nos groupes. Les pools permettront de classer les machines virtuelles et les groupes utilisateurs. Pour cela, rendez vous simplement dans les onglets correspondants, et cliquez sur le bouton `create`.
 
-Pour attribuer un groupes à un utilisateur, sélectionnez votre utilisateur, et cliquez sur `Edit`. Vous aurez alors une liste deroulante des groupes. Si vous voulez mettre plusieurs groupes, vous pouvez simplement en selectionner plusieurs en cliquant sur les groupes les un après les autres.
+Pour attribuer un groupe à un utilisateur, sélectionnez votre utilisateur et cliquez sur `Edit`. Vous aurez alors une liste déroulante des groupes. Si vous voulez attribuer plusieurs groupes, vous pouvez simplement en selectionner plusieurs en cliquant sur les groupes les uns après les autres.
 ![proxmox-user-3](src/proxmox-user-3.png)
 
-Nous verrons l'attributions des pools créés dans la partie suivante, sur la gestions des machines virtuelles.
+Nous verrons l'attribution des pools créés dans la partie suivante, sur la gestion des machines virtuelles.
 
-Nous pouvons ensuite gérer les autorisations. Pour cela, nous utiliserons ici les roles par défaut qui sont prédéfini. Vous pouvez cependant en créer d'autres, plus proche de vos demandes, dans l'onglet `roles` et grace à la documentation ``https://votre_serveur/pve-docs/chapter-pveum.html``.
+Nous passons ensuite à la gestion des autorisations. Pour cela, nous utiliserons les rôles par défaut. Vous pouvez cependant en créer d'autres, plus proches de vos demandes, dans l'onglet `roles` et grâce à la documentation ``https://votre_serveur/pve-docs/chapter-pveum.html``.
 
 Pour configurer les permissions, cliquez directement sur l'onglet ``permissions``. Vous pourrez ajouter 3 types de permissions : 
-- les permissions sur les utilisateurs
-- les permissions sur les groupes
-- les permissions sur les token API
+- Les permissions sur les utilisateurs
+- Les permissions sur les groupes
+- Les permissions sur les tokens API
 
-Nous vous conseillons de gérer les autorisations par groupe, cela permet d'appliquer des configurations complexes sur plusieurs utilisateurs.
+Nous vous conseillons de gérer les autorisations par groupes, cela permet d'appliquer des configurations complexes sur plusieurs utilisateurs.
 
 La gestion des droits se fait via un système d'asborescence : 
 ![proxmox-user-4](src/proxmox-user-4.png)
 
-Ici, vous pourrez spécifier précisément sur quelle partie les droits vont etre mise en place. A savoir : Les droits peuvent être propager aux sous-éléments de chaques éléments. Vous pouvez ensuite appliquer le ou les groupes souhaité, et le role.
+Ici, vous pourrez spécifier de manière précise sur quelle partie les droits vont être mis en place. A savoir : les sous éléments peuvent hériter des droits de leur dossier père. Vous pouvez ensuite appliquer le ou les groupes souhaités, ainsi que le rôle.
 
-Pour la gestion des roles, veuillez regarder la description des roles et des permissions associé à ses roles dans la documentation officiel, partie `Permission Management` : `https://pve.proxmox.com/wiki/User_Management`.
+Pour la gestion des rôles, veuillez consulter la description des rôles et des permissions associés dans la documentation officielle, partie `Permission Management` : `https://pve.proxmox.com/wiki/User_Management`.
 
 #### Gestion des VMs
 
-Si nous avons installé un proxmox, c'est pour pouvoir y mettre des machines virtuelles. Nous allons donc commencer par créer une machine virtuelle. Nous regarderons cette gestion des VMs principalement avec l'interface web. Vous pouvez aussi le faire depuis les lignes de commandes, mais nous n'arborderons pas le sujet. Pour la gestion via ligne de commande, vous pouvez regarder la commande `qm`, avec la commande ``man qm``.
+Si nous avons installé un proxmox, c'est pour pouvoir y mettre des machines virtuelles. Nous allons donc commencer par créer une machine virtuelle. Nous nous occuperons de la gestion des VM principalement depuis l'interface web, mais vous pouvez aussi le faire depuis l'interface en ligne de commande, que nous ne verrons pas ici. Pour la gestion via ligne de commande, vous pouvez regarder la commande `qm`, avec la commande ``man qm``.
 
-Pour créer votre première machine virtuelle, vous pouvez cliquer sur le bouton `Create VM`, en haut à droite de votre ecran. Une nouvelle page s'ouvre pour permettre de configurer la VM. Cliquez directement sur la case `Advanced`, pour pouvoir avoir l'ensemble des informations customisables.
+Pour créer votre première machine virtuelle, vous pouvez cliquer sur le bouton `Create VM` en haut à droite de votre écran. Une nouvelle page s'ouvre pour permettre la configuration de la VM. Cliquez directement sur la case `Advanced` pour voir l'ensemble des informations customisables.
 
 ![proxmox-vm-01](src/proxmox-vm-01.png)
 
-Voici les informations que vous allez pouvoir customiser sur l'onglet général : 
-- Le Node : la machine physique sur lequel la vm se placera
-- Le VM ID : L'identifiant de la machine virtuelle.
-- Le nom : Le nom de votre VM
+Voici les informations que vous allez pouvoir modifier sur l'onglet général : 
+- Le Node : la machine physique sur laquel la VM sera hébergée
+- Le VM ID : l'identifiant de la machine virtuelle.
+- Le nom : le nom de votre VM
 - Ressources pool : permet de placer la machine dans un pool, que vous avez pu créé dans les parties précédentes.
-- Start at boot : permet de lancer la VM au lancement du la machine physique, dans le cas d'un redemarrage par exemple
-- Tags : Permet de mettre en place des tags. Ceci sont purement visuel, mais vous permette de vous organiser dans vos VMs.
+- Start at boot : permet de lancer la VM au lancement de la machine physique, dans le cas d'un redémarrage par exemple.
+- Tags : permet de mettre en place des tags. Ceux-ci sont purement visuels, mais vous permettent de vous organiser dans vos VM.
 
 ![proxmox-vm-02](src/proxmox-vm-02.png)
 
-Dans la partie OS, vous pourrez :
-- Utiliser un fichier ISO : La première Options permet d'utiliser les images ISO préalablement installer sur votre proxmox. Vous devrez aussi selectionner le type et la version de l'OS que vous voulez installer.
-- CD physique : La seconde options permet d'installer votre VM via un disque physique que vous intégreriez sur votre lecteur dvd sur le serveur.
-- Ne pas mettre d'OS
+Dans la partie OS, vous pouvez :
+- Utiliser un fichier ISO : la première option permet d'utiliser les images ISO préalablement installées sur votre Proxmox. Vous devrez aussi selectionner le type et la version de l'OS que vous voulez installer.
+- CD physique : la seconde option permet d'installer votre VM via un disque physique inséré dans un lecteur du serveur.
+- Ne pas mettre d'OS.
 
 ![proxmox-vm-03](src/proxmox-vm-03.png)
 
-Dans la partie Systeme, vous allez pouvoir configurer : 
-- La carte graphique : Vous allez pouvoir configurer plusieurs types de carte graphique. Cela sera utiliser pour la prévisualisation.
-- Le paramètre Machine : permet de définir le chipset. La principale différence entre i440fs et le q35 est le support du PCI-E, donc principalement la gestion des cartes graphiques par exemple. Vous pouvez parfaitement laisser ce paramètre par défaut.
-- Firmware Bios : Permet de définir le Bios que vous allez utiliser. Vous pouvez utiliser dans la majorité du temps le paramètres par défaut SeaBIOS, ou mettre en place l'UEFI, pour des VMs windows par exemple.
-- SCSI Controller : Permet de configurer le bus pour les disques dur. Je vous conseille d'utiliser les paramètres `Virtio`, qui permet d'avoir des performances intéressantes sur des systèmes de virtualisation Linux.
-- Qemu agent : permet à proxmox de récupérer des informations sur la machine virtuelle, comme sa consommation ou son adresse ip.
-- Add TPM : permet d'ajouter une puce TPM à notre VM, pour une VM windows 11 par exemple.
+Dans la partie système, vous allez pouvoir configurer : 
+- La carte graphique : vous pouvez configurer plusieurs types de cartes graphiques, utilisées pour la prévisualisation.
+- Le paramètre machine : permet de définir le chipset. La principale différence entre le i440fs et le q35 est le support du PCI-E, donc la gestion des cartes graphiques par exemple. Vous pouvez laisser ce paramètre par défaut ci besoin est.
+- Firmware bios : permet de définir le bios que vous allez utiliser. Vous pouvez généralement utiliser le paramètres par défaut SeaBIOS, ou mettre en place l'UEFI, pour des VM Windows par exemple.
+- SCSI Controller : permet de configurer le bus pour les disques durs. Je vous conseille d'utiliser les paramètres `Virtio`, qui permettent d'avoir des performances intéressantes sur des systèmes de virtualisation Linux.
+- Qemu agent : permet à Proxmox de récupérer des informations sur la machine virtuelle, comme sa consommation ou son adresse IP.
+- Add TPM : permet d'ajouter une puce TPM à notre VM, pour une VM Windows 11 par exemple.
 
 ![proxmox-vm-05](src/proxmox-vm-05.png)
 
-Pour la gestion de vos disques dans la vm, vous pourrez donc créer un disque virtuel sur lequel votre système tournera : 
-- Bus/device : Selectionner un type de bus. Je vous conseille de rester sur le paramètre par défaut.
-- Storage : permet de définir sur quelle stockage vous aller stocker ce disque virtuelle de votre machine. Je vous rappelle que la configuration de ce stockage a été fait en début de cours sur proxmox.
+Pour la gestion de vos disques dans la VM, vous pouvez créer un disque virtuel sur lequel votre système tournera. Les options suivantes sont disponibles : 
+- Bus/device : selectionner un type de bus. Nous vous conseillons de rester sur le paramètre par défaut.
+- Storage : permet de définir sur quel stockage vous aller placer le disque virtuel de votre machine. Je vous rappelle que la configuration de ce stockage a été fait en début de ce cours.
 - Disk size : permet de définir la taille en Giga de votre disque virtuel.<br>
 - Cache : permet de définir le fonctionnement du cache de ce disque.
-- SSD emulation : permet de simuler un SSD. Ce paramètre n'est pas utile ormis si vous voulez que votre machine virtuelle persoivent ce disque comme étant un SSD.
-- Read-only : le disque virtuelle que vous créé ne permettra pas l'écriture. A proscrire dans le cas d'une installation de machine virtuelle.
-- IO thread et Async IO : permet de configurer des le nombres de thread utiliser par IO. Activer ces paramètres permet de meilleures performances.
-- Dans l'onglet bandwith, vous pourrez configurer des limites d'écriture et de lecture sur votre disque. Par défaut, tous les paramètres sont en illimités.
+- SSD emulation : permet de simuler un SSD. Ce paramètre n'est pas utile, hormis si vous voulez que votre machine virtuelle perçoive ce disque comme étant un SSD.
+- Read-only : le disque virtuel que vous créez ne permettra pas l'écriture. A proscrire dans le cas d'une installation de machine virtuelle.
+- IO thread et Async IO : permet de configurer le nombre de threads utilisés par IO. Activer ces paramètres permet de meilleures performances.
+- Dans l'onglet bandwith, vous pouvez configurer des limites d'écriture et de lecture sur votre disque. Par défaut, tous les paramètres sont illimités.
 
 ![proxmox-vm-04](src/proxmox-vm-04.png)
 
 Dans la partie CPU, vous allez avoir la possibilité de configurer : 
-- Le nombre de socket : le nombre de Processeurs contenu dans votre VM
+- Le nombre de socket : le nombre de processeurs contenus dans votre VM
 - Le nombre de cores : le nombre de coeurs par socket 
-- Le type de processeur : Cette partie est extrement complexe. Elle permet de configurer le type d'architecture de processeurs que vous voulez utiliser, mais beaucoup de ces architectures, souvent provenant de QEMU, ne sont pas très bien documentés. Je vous recommende donc de laisser par défaut, ou d'utiliser le profil `host`, qui utilisera les informations de la machine hote, et souvent permet plus de performance.
+- Le type de processeur : cette partie est extrêmement complexe. Elle permet de configurer le type d'architecture de processeur que vous souhaitez utiliser, mais bon nombre de ces architectures, souvent provenant de QEMU, ne sont pas très bien documentées. Je vous recommande donc de laisser par le réglage par défaut, ou d'utiliser le profil `host`, qui utilisera les informations de la machine hôte, et permet souvent de meilleures performances.
 
 ![proxmox-vm-06](src/proxmox-vm-06.png)
 
-Dans la partie Memory, vous allez pouvoir configurer la taille de mémoire RAM de votre machine. La différence entre le paramètres ``memory`` et ``minimum memory`` est que ``memory`` concerne le maximum utilisable, mais ne sera pas forcement tout le temps allouer sur la machine hote car pas utilisé par exemple, et le paramètre ``minimum memory`` permet d'allouer directement sur la machine physique la mémoire RAM.
+Dans la partie memory, vous allez pouvoir configurer la quantité de mémoire RAM de votre machine. Le paramètre ``memory`` représente la valeur maximale utilisable par la VM, tandis que ``minimum memory`` permet d'allouer la quantité minimale de mémoire RAM que la machine peut utiliser.
 
 ![proxmox-vm-07](src/proxmox-vm-07.png)
 
 Dans la partie network, vous allez pouvoir configurer : 
-- Le bridge utilisé : Ce sera l'interface bridge, que nous avons vu dans la configration réseau, sur laquelle notre Vm se rattachera pour avoir sa connexion réseau.
-- Le modele : Permet de définir le modele de carte réseau utilisé. Je vous conseille de partir sur du VirtIO.
-- Vlan TAG : permet de mettre un tag pour l'utilisation d'un vlan.
-- Firewall : permet d'utiliser le firewall interne de proxmox
-- Mac Address : permet de configurer l'adresse mac de notre VM
+- Le bridge utilisé : il s'agit de l'interface bridge, que nous avons vu dans la configuration réseau et sur laquelle notre VM se connectera pour avoir sa connexion réseau.
+- Le modèle : permet de définir le modèle de carte réseau utilisée. Je vous conseille de partir sur du VirtIO.
+- VLAN TAG : permet de mettre un tag pour l'utilisation d'un VLAN.
+- Firewall : permet d'utiliser le firewall interne de Proxmox
+- MAC Address : permet de configurer l'adresse MAC de notre VM
 - Disconnect : permet de ne pas connecter votre interface réseau
 - Rate limit : permet de placer une limite de débit sur la machine
 - MTU : permet de définir le MTU (taille maximum d'un packet pouvant etre transmit sans fragnmantation)
 
-Vous aurez ensuite une page récapitulative, et vous pourrez simplement cliquez sur le bouton `Finish`
+Vous arrivez ensuite sur une page récapitulative, où vous pouvez cliquer sur le bouton `Finish`
 
-Vous retrouverez l'ensemble de vos machines virtuelle sur la liste à gauche de votre écran. Cette liste est modifiable selon 3 templates : le  server view, le folder view et le pool view. 
+Vous retrouverez l'ensemble de vos machines virtuelles dans la liste à gauche de votre écran. Cette liste est modifiable selon 3 templates : server view, folder view et pool view. 
 
 ![proxmox-vm-08](src/proxmox-vm-08.png)
 
-Vous pourrez à cet endroit faire clic droit sur votre machine et avoir faire plusieurs interaction : 
+Vous pouvez ici jouer sur plusieurs paramètres de la machine à l'aide d'un clic droit : 
 - Mettre en pause la machine
-- l'eteindre : envoyer un signal pour que le système s'eteigne proprement
-- la stopper : équivalent à couper l'allimentation de la VM
+- Eteindre : envoyer un signal pour que le système s'éteigne correctement
+- Stopper : équivaut à couper l'allimentation de la VM
 - Reboot : relancer la VM
 - Clone : faire une réplique de la machine virtuelle
-- Convert to template : convertie la machine en template
+- Convert to template : convertir la machine en template
 - Console : lance l'affichage de la VM
 
 ![proxmox-vm-09](src/proxmox-vm-09.png)
 
-En cliquant sur un machine, vous aurez l'apercu de votre VM, ainsi qu'un certain nombre d'onglet pour la configuration de la machine.
+En cliquant sur une machine, vous obtenez l'apercu de votre VM ainsi qu'un certain nombre d'onglets pour la configuration de votre machine.
 
 ![proxmox-vm-10](src/proxmox-vm-10.png)
 
 Voici les onglets et leur utilisation : 
-- Summary : donne les informations et ressources utiliser par la VM
-- Console : permet d'avoir l'affichage de la vm, ou la console linux
+- Summary : donne les informations et ressources utilisées par la VM.
+- Console : permet de faire apparaitre l'affichage de la VM, ou la console linux.
 - Hardware : permet de configurer les composants (CPU, RAM) de votre VM.
-- Cloud init : Vous l'experiementerez plus tard lors d'un TP
-- Options : un ensemble d'options de fonctionnement de la VM
-- task history : un historique des actions
-- backup : permet de faire une backup de votre machine sur un stockage, et de faire des restaurations si besoin
-- réplication : utilisable si vous avez un cluster. Ce n'est pas notre ca, nous ne l'utiliserons pas.
-- Snapshot : permet de gerer les snapshots.
-- Firewall : regle firewall de la machine
-- Permission : Ajouter des permissions
+- Cloud init : nous verrons cette option plus tard lors d'un TP.
+- Options : un ensemble d'options relatives au fonctionnement de la VM.
+- Task history : un historique des actions.
+- Backup : permet de faire une sauvegarde de votre machine sur un unité de stockage et de faire des restaurations si besoin.
+- Réplication : utilisable si vous avez un cluster. Ce n'est pas notre cas, nous ne l'utiliserons donc pas.
+- Snapshot : permet de gérer les snapshots.
+- Firewall : permet de gérer les règles de part-feu de la machine.
+- Permission : gérer les permissions.
 
-Vous retrouverez aussi en haut à droite de l'écran les différentes actions possible.
+Vous retrouverez aussi en haut à droite de l'écran les différentes actions possibles.
 
 ![proxmox-vm-10](src/proxmox-vm-11.png)
 
-Nous avons maintenant fait le tours des choses possible à faire par rapport à nos VMs. Je vous conseille de pratiquer, de tester les paramètres et de visiter les différents menus pour bien comprendre les différents points.
+Nous avons maintenant fait le tour des choses possibles à faire par rapport à nos VMs. Je vous conseille de pratiquer, de tester les paramètres et de visiter les différents menus pour bien comprendre les différents points.
 
 
 ### 4. - Installation de l’environnement Docker
 
-Avant de nous intéresser à Docker, nous définirons ce qu'est un conteneur. Un conteneur est un environnement d'exécution léger, permettant d'isoler les applications déployés sur un seul et le de partage de ressources de l'hôte entre les différents conteneurs. Un conteneur est plus léger et plus simple qu’une machine virtuelle et peut donc démarrer et s’arrêter plus rapidement. Il est donc plus réactif, et adaptable aux besoins fluctuants liés au ” scaling ” d’une application.
-Docker orchestre, crée et manage ces conteneurs, dans le partage de ressources, la configuration réseau et stockage des conteneurs.
+Avant de nous intéresser à Docker, nous allons définir ce qu'est un conteneur. Un conteneur est un environnement d'exécution léger, permettant d'isoler les applications déployées et de partager les ressources de l'hôte entre les différents conteneurs. Un conteneur est plus léger et plus simple qu’une machine virtuelle et peut donc démarrer et s’arrêter plus rapidement. Il est également plus réactif, et s'adapte mieux aux besoins fluctuants liés au ” scaling ” d’une application.
+Docker orchestre, crée et manage ces conteneurs, mais gère aussi dans le partage de ressources, la configuration réseau et stockage des conteneurs.
 
 ![Schema Conteneurs](src/why_containers.svg) 
 
-L'installation de notre hyperviseur effectué, nous pouvons installer notre plateforme Docker, permettant de créer et gérer automatiquement les différentes applications que nous aurons besoin.
-Pour cela, nous aurons besoin de créer une VM linux. Ici nous utiliserons Debian comme distributeur de système d'exploitation.
+L'installation de notre hyperviseur effectué, nous pouvons installer notre plateforme Docker qui permettra de créer et gérer automatiquement les différentes applications dont nous aurons besoin.
+Pour cela, il nous faut créer une VM linux, et nous utiliserons Debian comme distributeur de système d'exploitation.
 
-Une fois l'installation de Linux effectué, nous nous connecterons en SSH sur notre propre machine pour plus de fluidité.
-Nous allons dans un premier temps installer le référentiel apt de Docker qui nous servira de sources d'installation et de mise à jour de Docker.
+Une fois l'installation de Linux effectuée, nous nous connectons en SSH sur notre propre machine pour plus de fluidité.
+Nous allons dans un premier temps installer le référentiel apt de Docker, qui nous servira de source d'installation et de mise à jour de Docker.
 
-Ajout de la clé GPG officiel de Docker :
+Ajout de la clé GPG officielle de Docker :
 ```bash
 sudo apt-get update
 sudo apt-get install ca-certificates curl gnupg
@@ -399,28 +398,28 @@ sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get update
 ```
 
-Et enfin nous allons installer docker et ces plugins : 
+Et enfin nous allons installer Docker et ces plugins : 
 ```bash
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-Pour vérifier que Docker a bien été installer nous lançons un conteneur test : 
+Pour vérifier que Docker a bien été installé, nous lançons un conteneur test : 
 ```bash
 sudo docker run hello-world
 ```
 
-L'installation effectué, nous allons le configurer pour que Docker se lance à chaque démarrage système : 
+L'installation effectuée, nous allons configurer Docker pour qu'il se lance à chaque démarrage système : 
 ```bash
 sudo systemctl enable docker.service
 sudo systemctl enable containerd.service
 ```
 
-Et pour le désactiver, voici les commandes :
+Et pour le désactiver, nous pouvons saisir les commandes suivantes :
 ```bash
 sudo systemctl disable docker.service
 sudo systemctl disable containerd.service
 ```
-Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker : 
+Vous trouverez ici l'anti-sèche des commandes les plus utilisées sur Docker : 
 [Cheat Sheet Docker](https://docs.docker.com/get-started/docker_cheatsheet.pdf)
 
 ### 5. - Configuration des Dockers
@@ -429,31 +428,31 @@ Vous trouverez l'anti-sèche des commandes les plus utilisées sur Docker :
 
 Nous allons voir 3 concepts clefs de Docker : *les conteneurs, les images et les fichiers Docker (Dockerfile)*
 
-En prenant NGINX comme exemple, voici un tableau avec les commandes les plus utilisé sur Docker pour gérer les conteneurs :
+En prenant NGINX comme exemple, voici un tableau avec les commandes les plus utilisées sur Docker pour gérer les conteneurs :
 
 |Commandes|Exemple|Commentaires|
 |---|:-:|---|
-|**docker run <nom_image>**|`docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d nginx`|Différents arguments peuvent être ajouté lors de la création du conteneur. Voir [ici](https://docs.docker.com/engine/reference/run/)|
+|**docker run <nom_image>**|`docker run --name some-nginx -v /some/content:/usr/share/nginx/html:ro -d nginx`|Différents arguments peuvent être ajoutés lors de la création du conteneur. Voir [ici](https://docs.docker.com/engine/reference/run/)|
 |**docker ps**|`docker ps`|pour lister les conteneurs lancés. Rajouter "-a" comme argument pour lister tous les conteneurs|
 |**docker stop <id_conteneur>**|`docker stop 78`|Pour arrêter un conteneur|
 |**docker restart <id_conteneur>**|`docker restart 78`|Pour redémarrer un conteneur|
 |**docker rm <id_conteneur>**|`docker rm 78`|Pour supprimer un conteneur|
 
 
-La gestion de conteneur n'oblige pas que nous créons les conteneurs à chaque fois, un site propose différentes images Docker les plus utiliser [Docker Hub](https://hub.docker.com/search?q=)
+La gestion de conteneur ne nous force pas à créer les conteneurs à chaque fois, un site propose les images Docker les plus utilisées [Docker Hub](https://hub.docker.com/search?q=)
 
-Prenons, comme exemple NGINX : serveur web HTTP pouvant servir de proxy inversé, proxy de messagerie électronique ainsi que de LoadBalancer.
+Prenons comme exemple NGINX : serveur web HTTP pouvant servir de proxy inversé, de proxy de messagerie électronique et de LoadBalancer.
 
-Pour l'installer dans notre machine via Dockerhub nous lançons:
+Pour l'installer dans notre machine via Dockerhub nous lançons :
 ```bash
 docker pull nginx
 ```
-Et nous devons attribuer un port externe pour notre hôte locale :
+Et nous attribuons un port externe pour notre hôte local :
 ```bash
 docker run --name some-nginx -d -p 8080:80 some-content-nginx
 ```
 
-Nous pouvons maintenant accéder à notre serveur local sur notre navigateur en tapant : http://localhost:8080
+Nous pouvons maintenant accéder à notre serveur local via notre navigateur en saisissant l'adresse : http://localhost:8080
 
 Pour lister les images nous tapons `docker images`
 Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
@@ -466,9 +465,9 @@ Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
 **Clustering/HA**
 
-Un des points interessant avec les systèmes de virtualisation, c'est la possibilité de faire des clusters avec les différentes machines que vous mettez en place. 
+Un des points intéressants avec les systèmes de virtualisation, c'est la possibilité de faire des clusters avec les différentes machines que vous mettez en place. 
 
-Pour faire un cluster, je vous recommande d'aller voir les liens suivant : 
+Pour faire un cluster, je vous recommande d'aller consulter les liens suivant : 
 
 - [Proxmox Documentation](https://pve.proxmox.com/wiki/Cluster_Manager)
 - [Tuto Youtube](https://www.youtube.com/results?search_query=cluster+proxmox)
