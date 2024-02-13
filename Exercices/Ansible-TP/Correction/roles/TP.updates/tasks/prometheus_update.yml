@@ -1,0 +1,11 @@
+---
+- name: Re-create a prometheus container
+  docker_container:
+    name: {{ prometheus_name }}
+    image: {{ prometheus_image }}
+    state: present
+    recreate: yes
+    exposed_ports:
+      - {{ prometheus_port }}
+    volumes_from:
+      - {{ prometheus_volume }}

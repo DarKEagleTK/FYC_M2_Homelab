@@ -1,0 +1,11 @@
+---
+- name: Re-create a grafana container
+  docker_container:
+    name: {{ grafana_name }}
+    image: {{ grafana_image }}
+    state: present
+    recreate: yes
+    exposed_ports:
+      - {{ grafana_port }}
+    volumes_from:
+      - {{ grafana_volume }}

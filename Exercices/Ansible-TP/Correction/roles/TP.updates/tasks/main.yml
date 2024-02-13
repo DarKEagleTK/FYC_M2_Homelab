@@ -1,0 +1,7 @@
+---
+- name: Update prometheus docker
+  include: prometheus_update.yml
+- name: Update grafana docker
+  include: grafana_update.yml
+- name: Update uptimekuma docker
+  include: uptimekuma_update.yml

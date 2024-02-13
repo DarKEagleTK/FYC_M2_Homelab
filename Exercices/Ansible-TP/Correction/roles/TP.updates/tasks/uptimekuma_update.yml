@@ -1,0 +1,11 @@
+---
+- name: Re-create a uptimekuma container
+  docker_container:
+    name: {{ uptimekuma_name }}
+    image: {{ uptimekuma_image }}
+    state: present
+    recreate: yes
+    exposed_ports:
+      - {{ uptimekuma_port }}
+    volumes_from:
+      - {{ uptimekuma_volume }}
