@@ -1055,11 +1055,18 @@ docker run -d -p 3000:3000 --name=grafana -v grafana-data:/etc/grafana grafana/g
 
 ### 3. - Configuration
 
-**Configuration Prometheus**
+**Configuration Grafana**
 
-**Configuration Uptime Kuma**
+Une fois l'installation de Prometheus et des agents effectué, nous allons configuré Grafana afin de récupérer les données de Prometheus et les afficher dans un graphs avec les spécificités que nous souhaitons.
 
-### 4. - Pour aller plus loin
+Nous pouvons voir des graphs préconfigurés sur [ce site](https://grafana.com/grafana/dashboards/).
+
+Dans notre exemple nous prendrons [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) que vous pouvez importer dans Grafana. Voici le dashboard affiché. 
+
+![DashboardGrafana](src/DashboardGrafana.png)
+
+
+**Configuration UptimeKuma**
 
 ## F. - Dashboard
 

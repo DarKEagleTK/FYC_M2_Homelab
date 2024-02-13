@@ -27,6 +27,7 @@ Pour finir, les serveurs DNS relais ne font pas authorité sur une zone, et serv
 Pour obtenir un nom de domaine, on doit réserver le nom de domaine aupres de `registars`, qui dependent de la zone DNS qui vous voulez (fr, com, eu, ...). L'oganisme internationnal qui gèrent les DNS s'appelle ICANN.
 Un certain nombres d'entreprises proposent cependant aux utilisateurs l'accès à des noms de domaines, pour les prixs allant de 5 à plusieurs milliers d'euros. En France, on retrouve IONOS, CLOUDFARE, ou encore OVH.
 
+
 ### 2.	DNS
 
 Choisissez donc un fournisseur de nom de domaine, et réservez votre propre nom de domaine. **ATTENTION** C'est payant !!
@@ -36,13 +37,14 @@ Voici quelques fournisseurs :
 - [Hostinger](https://www.hostinger.fr/nom-de-domaine-disponible)
 
 Une fois que vous avez votre nom de domaine, rendez-vous sur la page de gestion de nom de domaine de votre fournisseur. Vous obtiendrez une page similaire, récapitulant les informations de nom de domaine et vous permettant de faire des configurations.
-![dns_datails](src/dns_details.png)
+![dns_details](src/dns_details.png)
+![dnsdetails-ovh](src/dns_details_ovh.png)
 
-Ici, nous allons pouvoir configurer nos sous-domaines, les entrées dns, ainsi que parametrer les serveurs DNS pour faire en sorte d'utiliser votre propre serveurs en tant que serveur de nom.
+Ici, vous pouvez voir deux hébergeurs de domaines IONOS et OVH proposant de configurer nos sous-domaines, les entrées dns, ainsi que parametrer les serveurs DNS pour faire en sorte d'utiliser votre propre serveurs en tant que serveur de nom.
 
 ### 3.	Certificat SSL
-- Création d’un certificat
-- Utilisation du certificat sur les services configurer précédemment
+
+Dans la continuité de l'acquisition d'un nom de domaine avec DNS, nous avons la possibilité de créer un site web avec notre nom de domaine. Cependant, afin de certifier que notre site web est bien sécurisé, nous devons importer un certificat SSL. Je vous donne donc 2 liens de d'acquisition de certificat SSL sur [IONOS](https://www.ionos.fr/assistance/certificats-ssl/configurer-un-certificat-ssl-gere-par-lutilisateur/configuration-dun-certificat-ssl-gere-par-vous-meme-ssl-starter-ssl-starter-wildcard/) et [OVH](https://help.ovhcloud.com/csm/fr-web-hosting-ssl-certificates?id=kb_article_view&sysparm_article=KB0053177).
 
 ## C.	DMZ
 ### 1.	Présentation
@@ -58,6 +60,7 @@ Cependant, il est important que toutes choses exposer sur internet comporte des 
 Le cas le plus courant de DMZ est la DMZ avec un seul firewall. Dans ce cas, on se retrouve avec 3 zones déclarés. 
 
 ![dmz_solo_fw](src/dmz_solo_fw.png)
+
 Dans le cadre de notre homelab, on se trouve dans ce cas présent. Le pare-feu correspondrait à notre box, et le serveur à un routeur qui permettrai d'acceder aux différents réseaux que l'on aurait configurer derrière.
 
 Il faut cependant savoir qu'on peux aussi avoir des DMZ avec deux firewalls. Cette architecture est plus complexe, et est souvent mise en place dans les grosses entreprises.
