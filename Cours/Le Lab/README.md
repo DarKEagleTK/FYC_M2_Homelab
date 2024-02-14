@@ -458,7 +458,7 @@ Pour lister les images nous tapons `docker images`
 Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
 **Compréhension des scripts YAML orienté Docker**
-
+aab
 *a) exercice : création de docker compose.yaml pour installer MySQL, Nginx*
 
 ### 6. - Pour aller plus loin
@@ -467,16 +467,16 @@ Pour supprimer une image nous lançons la commande `docker rmi <id_image>`
 
 Un des points intéressants avec les systèmes de virtualisation, c'est la possibilité de faire des clusters avec les différentes machines que vous mettez en place. 
 
-Pour faire un cluster, je vous recommande d'aller consulter les liens suivant : 
+Pour faire un cluster, je vous recommande d'aller consulter les liens suivants : 
 
 - [Proxmox Documentation](https://pve.proxmox.com/wiki/Cluster_Manager)
 - [Tuto Youtube](https://www.youtube.com/results?search_query=cluster+proxmox)
 
 **Kubernetes**
 
-Si nous souhaitons aller plus loin dans le management et la création de conteneur, nous pouvons installer Kubernetes. Kubernetes est une plate-forme open-source pour gérer les ressources machines (computing), la mise en réseau et l’infrastructure de stockage sur les workloads des utilisateurs.
+Si nous souhaitons aller plus loin dans le management et la création de conteneurs, nous pouvons installer Kubernetes. Kubernetes est une plateforme open-source à même de gérer les ressources machines (computing), la mise en réseau et l’infrastructure de stockage sur les workloads des utilisateurs.
 
-Vous trouverez donc ci-dessous, différents liens permettant de d'installer et d'utiliser kubernetes : 
+Vous trouverez ci-dessous différents liens permettant d'installer et d'utiliser Kubernetes : 
 - https://kubernetes.io/fr/
     - https://kubernetes.io/fr/docs/concepts/overview/what-is-kubernetes/
 - https://docs.k0sproject.io/v1.21.2+k0s.1/
@@ -719,11 +719,11 @@ Si vous souhaitez aller plus loin ou obtenir des informations complémentaires, 
 
 ### 4. - Installation/Utilisation d’OpenVPN
 
-La création d'un VPN est intéressant pour avoir accès à l'infrasctructure que vous avez installé en tout temps et emplacement. Nous allons aborder deux technique d'installation, une installation traditionnel et avec le cluster Docker.
+La création d'un VPN est intéressante, par exemple pour avoir accès à l'infrastructure que vous avez installé en tout temps et lieu. Nous allons aborder deux techniques d'installation : une installation traditionnelle, et une autre avec le cluster Docker.
 
 **Installation manuelle**
 
-Avant tout, vous devez garder en tête le sous réseau que vous attribuez pour les connexions à distance. Ici nous prendrons adresse_ip.
+Avant tout, vous devez garder en tête le sous réseau que vous attribuez pour les connexions à distance. Ici nous prendrons *adresse_ip*.
 
 Créez un serveur Linux sous Proxmox avec comme ressources :
 |Ressources||
@@ -731,29 +731,29 @@ Créez un serveur Linux sous Proxmox avec comme ressources :
 |Mémoire RAM|1Go|
 |Stockage disque|16Go|
 
-Dans le cadre d'une utilisation basique du VPN pour se connecter au réseau privé du serveur, nous allons installer un script connu pour configurer nos connexions avec nos clients.
+Dans le cadre d'une utilisation basique du VPN pour se connecter à notre réseau local, nous allons installer un script connu pour configurer nos connexions avec nos clients.
 
-Le script est disponible [ici](https://github.com/angristan/openvpn-install) si vous voulez le voir de manière détaillé.
+Le script est disponible [ici](https://github.com/angristan/openvpn-install) si vous voulez le consulter de manière détaillée.
 
-Nous allons taper ces commandes pour installer le script et le rendre exécutable puis le lancer:
+Nous allons saisir les commandes suivantes pour installer le script, le rendre exécutable et le lancer :
 ```bash
 curl -O https://raw.githubusercontent.com/angristan/openvpn-install/master/openvpn-install.sh
 chmod +x openvpn-install.sh
 ./openvpn-install.sh
 ```
 
-Plusieurs questions vous seront poser pour configurer le serveur OpenVPN. Ensuite, lorsque vous lancerez à nouveau le script, un menu s'affichera pour créer ou modifier des utilisateurs. 
+Plusieurs questions vous seront posées afin de configurer le serveur OpenVPN. Lorsque vous lancerez à nouveau le script, un menu apparaîtra, vous permettant de créer ou modifier des utilisateurs. 
 
 **Installation sous Docker**
 
 Pour cela, nous allons utiliser ce repo : [Repo OpenVPN](https://hub.docker.com/r/kylemanna/openvpn/)
 
 Prenez la main sur le serveur Master de Docker.
-Nous allons déterminer le nom du container. Trouvez un suffixe parlant après "ovpn-data"
+Nous allons déterminer le nom du container; essayez de trouvez un suffixe parlant après "ovpn-data"
 `OVPN_DATA="ovpn-data-fyc"
 `
 
-Nous allons ensuite initialiser le conteneur avec les fichiers de configuration ainsi que les certificats.
+Nous allons ensuite initialiser le conteneur avec les fichiers de configuration et les certificats.
 ```bash
 docker volume create --name $OVPN_DATA
 docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_genconfig -u udp://VPN.SERVERNAME.COM
@@ -772,32 +772,32 @@ docker run -v $OVPN_DATA:/etc/openvpn --rm -it kylemanna/openvpn easyrsa build-c
 docker run -v $OVPN_DATA:/etc/openvpn --rm kylemanna/openvpn ovpn_getclient CLIENTNAME > CLIENTNAME.ovpn
 ```
 
-Voilà ! Vous venez, de crée un serveur VPN et le 1er client.
+Voilà ! Vous venez de créer un serveur VPN et le 1er client.
 
 **Installation de l'agent client**
 
-Nous avons crée le serveur VPN. Il faut maintenant installer l'agent sur la machine client pour pouvoir accès à distance à notre serveur.
-Nous trouverons l'agent [ici](https://openvpn.net/community-downloads/).
+Nous avons créé le serveur VPN. Il faut maintenant installer l'agent sur la machine client afin de nous connecter au serveur et d'accéder à notre réseau local.
+L'agent est téléchargeable [ici](https://openvpn.net/community-downloads/).
 
-N'oubliez pas de récupérer les informations nécessaires ainsi que les certificats clients pour vos machines.
+N'oubliez pas de récupérer les informations nécessaires et les certificats clients pour vos machines.
 
-Après avoir effectué l'installation, vous n'aurez qu'à implanté les informations dans les champs demandés.
+Une fois l'installation terminée, vous n'aurez qu'à saisir vos informations dans les champs adéquats.
 
 
 ### 5. - Installation/Utilisation d’outils DEVOPS
-Pour notre environnement DevOps, nous allons voir trois points : 
+Pour notre environnement DevOps, nous allons voir trois technologies : 
 - Terraform
 - Ansible 
 - Git
 
-Nous procéderons à la présentation et à l'installation de ces systèmes sur une machine virtuelle, que vous pouvez créer tout de suite. Vous aurez ensuite un TP à faire, pour 
+Nous procéderons à la présentation et à l'installation de ces systèmes sur une machine virtuelle; que vous pouvez commencer à créer dès maintenant.
 **Terraform**
 
-Terraform est un système d'infrastructure as code. Il permettra donc de créer des vms via des fichiers de configuration terraform.<br>
-Voici la documentation officiel de terraform : https://www.terraform.io/<br>
-Si vous n'êtes pas d'accord avec l'utilisation de terraform, pour certaines raisons d'orientation d'entreprise, regardez cette documentation d'OpenTofu : https://opentofu.org/docs/
+Terraform est un système d'infrastructure as code (IaC). Il permet de créer des VM via des fichiers de configuration Terraform.<br>
+Vous trouverez la documentation officiel de Terraform ici : https://www.terraform.io/<br>
+Si vous ne souhaitez pas utiliser Terraform, pour des raisons d'orientation d'entreprise par exemple, vous pouvez vous pencher sur cette documentation d'OpenTofu : https://opentofu.org/docs/
 
-Pour installer Terraform, connectez vous sur la machine devops que vous avez créé au préalable.
+Pour installer Terraform, connectez vous à la machine devops que vous avez créé au début de ce cours.
 On commence par installer les dépendances : 
 ```bash
 # Debian
@@ -805,7 +805,7 @@ sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
 # RedHat
 sudo yum install -y yum-utils
 ```
-On installe ensuite la clé gpg du repo et le repo : 
+On installe ensuite la clé gpg du repo, et le repo : 
 ```bash
 # Debian
 wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor | sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg
@@ -813,7 +813,7 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 # RedHat
 sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/RHEL/hashicorp.repo
 ```
-On fini par installer terraform : 
+On fini par l'installation de Terraform : 
 ```bash
 # Debian
 sudo apt update
@@ -822,15 +822,15 @@ sudo apt install -y terraform
 sudo dnf install -y terraform
 ```
 
-Maintenant que terraform est installé, nous allons pouvoir commencer à l'utiliser.<br>
-Commencons donc par créer un dossier ``terraform``, dans lequel nous mettrons l'ensemble de nos projets, puis un dossier `TP-terraform`.
+Maintenant que Terraform est installé, nous pouvons commencer à l'utiliser.<br>
+Créez un dossier ``terraform``, dans lequel nous mettrons l'ensemble de nos projets, puis un dossier `TP-terraform`.
 ```bash
 mkdir -p terraform/TP-terraform && cd terraform/TP-terraform
 ```
-Pour commencer, nous devons créer les différents fichiers terraforms : 
-- credentials.rfvars : Nous y mettrons les differents mot de passes et autres. C'est un fichier à bien entendu mettre dans votre git_ignore.
-- provider.tf : le provider est le support sur lequel votre terraform va s'executer. Nous allons donc devoir utiliser le provider de proxmox. Voici la liste des providers de terraform : https://registry.terraform.io/browse/providers
-- main.tf : c'est ici que la magie opère. Nous allons pouvoir definir les différentes actions à effectuer.
+Nous devons ensuite créer les différents fichiers Terraform : 
+- credentials.rfvars : Nous y mettrons les différents mots de passe et autres. Bien entendu, c'est un fichier à placer dans votre git_ignore.
+- provider.tf : le provider est le support sur lequel Terraform va s'exécuter. Nous allons ici utiliser le provider de Proxmox. Vous pouvez retrouver la liste des providers de Terraform ici : https://registry.terraform.io/browse/providers
+- main.tf : c'est ici que la magie opère. Nous allons pouvoir y definir les différentes actions à effectuer.
 
 ```bash
 # Fichier provider.tf
@@ -838,7 +838,7 @@ terraform {
     required_version = ">= 0.13.0"
     required_providers {
         proxmox = {
-            source = "telmate/proxmox" # On défini la source. Pour nous, proxmox !
+            source = "telmate/proxmox" # On défini la source. Pour nous : Proxmox !
         }
     }
 }
@@ -863,8 +863,8 @@ provider "proxmox" {
 Générez sur votre utilisateur et le token depuis votre proxmox, puis remplissez les champs suivant : 
 ```bash
 # Fichier credentials.tfvars
-proxmox_api_url = "https://0.0.0.0:8006/api2/json"  # Your Proxmox IP Address
-proxmox_api_token_id = "terraform@pam!terraform"  # API Token ID
+proxmox_api_url = "https://0.0.0.0:8006/api2/json"  # Votre adresse IP Proxmox
+proxmox_api_token_id = "terraform@pam!terraform"  # Le token ID de l'API
 proxmox_api_token_secret = "your-api-token-secret"
 ```
 
@@ -872,21 +872,21 @@ Vous créerez votre main.tf dans un TP par la suite.
 
 Concernant les différentes commandes importante : 
 ```bash
-terraform init #permet d'initialiser le projet/telecharger les elements nécessaires pour communiquer avec proxmox
+terraform init #Permet d'initialiser le projet/télécharger les éléments nécessaires pour communiquer avec Proxmox
 
-terraform plan -var-file="credentials.tfvars" #Permet d'afficher les changements prévu, sans les appliquer
+terraform plan -var-file="credentials.tfvars" #Permet d'afficher les changements prévus, sans les appliquer
 
-terraform apply -var-file="credentials.tfvars" #Permet de lancer le terraform, et donc de creer la VM
+terraform apply -var-file="credentials.tfvars" #Permet de lancer le Terraform, et donc de créer la VM
 
-terraform destroy -var-file="credentials.tfvars" #Permet de supprimer les elements créer par terraform
+terraform destroy -var-file="credentials.tfvars" #Permet de supprimer les éléments créés par Terraform
 ```
 
 **Ansible**
 
-Ansible est un système de configuration as code. Contrairement à Terraform, Ansible est fait pour configurer des serveurs ou services. Cela combine cependant bien avec Terraform dans la mise en place d'un projet AsCode. Vous allez pouvoir definir des configurations dans des fichiers yaml, et les appliquer à distance et sur plusieurs machines différentes en même temps.<br>
-Voici la documentation d'Ansible : https://docs.ansible.com/
+Ansible est un système de configuration as code. Contrairement à Terraform, Ansible est fait pour configurer des serveurs ou des services, mais nous pouvons tout à fait combiner cette technologie avec Terraform dans la mise en place d'un projet AsCode. Vous allez pouvoir definir des configurations dans des fichiers YAML, et les appliquer à distance sur plusieurs machines différentes et de manière simultanée.<br>
+Vous trouverez la documentation d'Ansible ici : https://docs.ansible.com/
 
-Pour installer Ansible, connectez vous sur la machine devops que vous avez créé au préalable.
+Pour installer Ansible, connectez-vous sur la machine devops que vous avez créé au début de ce cours.
 ```bash
 # Debian
 sudo apt-add-repository ppa:ansible/ansible
@@ -896,127 +896,128 @@ sudo apt install -y ansible
 sudo dnf install -y ansible-core
 ```
 
-Avant de commencer, nous allons créer sur notre serveur une clé ssh qui permettra à notre ansible de se connecter sur les différents hôtes. Vous pouvez rajouter cette clé à votre template de vm pour permettre à ansible de pouvoir directement se connecter à vos VMs, et faire des actions dessus.
+Avant de commencer, nous allons créer sur notre serveur une clé ssh qui permettra à notre Ansible de se connecter sur les différents hôtes. Vous pouvez ajouter cette clé à votre template de VM pour permettre à Ansible de se connecter directement à vos VM et réaaliser des actions dessus.
 
-Les fichiers ansible sont des fichiers yaml. On les appelle les playbook.<br>
-Pour lancer ces playbooks, il va falloir spécifier les hôtes. On va donc pouvoir configurer un fichier inventory.ini.
+Les fichiers Ansible sont des fichiers YAML appelés playbook.<br>
+Pour lancer ces playbooks, il va falloir spécifier les hôtes; nous configurons donc un fichier inventory.ini.
 
-Pour tester la connexion vers les différents hôtes : 
+Pour tester la connexion vers les différents hôtes, nous saisissons la commande suivante : 
 ```bash
 ansible all -i inventory.ini -m ping
 ```
-Voici la liste des paramètres : 
-- `all` : toutes les hôtes de l'inventaire
-- `-i inventory.ini`: L'inventaire en question
-- `-m ping` : On lui demande d'executer la commande ping
+Les paramètres sont : 
+- `all` : tous les hôtes de l'inventaire
+- `-i inventory.ini`: l'inventaire en question
+- `-m ping` : on demande d'exécuter la commande ping
 
 On peut aussi lancer des commandes linux : 
 ```bash
 ansible all -i inventory.ini -a "whereis python"
 ```
-Dans le cas où il faudra une élévation de privilège, vous pouvez passer le paramètres `--become`.
+Dans le cas où il faudrait une élévation de privilège, vous pouvez passer le paramètre `--become`.
 
-Le fichier inventory.ini sera de la forme : 
+Le fichier inventory.ini se présentera sous cette forme : 
 ```yaml
 [targets] 
 other1.example.com ansible_connection=ssh ansible_ssh_user=user ansible_ssh_private_key_file=/path/to/file
 ```
 Voici la liste des paramètres : 
-- `[targets]` : Nom de la target
-- `other1.example.com`: ip ou fqdn de la target
-- `ansible_connection=ssh` : On definit le type de connexion. Pour windows, cela pourrait etre winrm.
-- ``ansible_ssh_user=user`` : on définit l'utilisateur de l'hôte distant
-- ``ansible_ssh_private_key_file=/path/to/file`` : on définit la clé ssh pour se connecter dans mot de passe.
+- `[targets]` : nom de la cible
+- `other1.example.com`: IP ou FQDN de la cible
+- `ansible_connection=ssh` : definit le type de connexion. Pour Windows, cela pourrait être winrm.
+- ``ansible_ssh_user=user`` : définit l'utilisateur de l'hôte distant
+- ``ansible_ssh_private_key_file=/path/to/file`` : définit la clé ssh pour se connecter sans mot de passe.
 
-Vous créerez des playbooks dans un TP par la suite.
+Vous pourrez vous entrainer à créer des playbooks dans un prochain TP.
 
-Les commandes pour lancer des playbooks : 
+Les commandes pour lancer des playbooks sont : 
 ```bash
 ansible-playbook -i inventory.ini nom_playbook
 ```
-Voici la liste des paramètres : 
-- `-i inventory.ini`: L'inventaire
-- `nom_playbook` : Le playbook que vous voulez lancer
+Et vous retrouverez ici la liste des paramètres : 
+- `-i inventory.ini`: l'inventaire
+- `nom_playbook` : le playbook que vous voulez lancer
 
 **Git**
 
-Git est un logiciel de gestion de versions. Il est intéressant car il permet de stocker des fichiers de configurations ou le code sources d'applications de manière efficace, permettant de gerer les versions des fichiers. Il est aussi très utilisé, vous retrouverez beaucoup d'integration de git dans les logiciles de developpement. De plus, certains dérivé, comme gitlab ou github, permettent d'avoir un ensemble d'outils supplémentaires pour les développeurs, et pour déployer des services de manières automatiques.<br>
-Voici la documentation de Git : https://git-scm.com/<br>
-Voici la documentation de Gitlab : https://docs.gitlab.com/<br>
-Voici la documentation de github : https://docs.github.com/fr<br>
+Git est un logiciel de gestion de versions. Il est intéressant car il permet de stocker des fichiers de configuration ou le code source d'applications de manière efficace tout en offrant la possibilité de gérer les versions des fichiers. Il est très utilisé, vous retrouverez donc beaucoup d'intégrations de git dans les logiciels de developpement. De plus, certains dérivés comme gitlab ou github permettent d'obtenir un ensemble d'outils supplémentaires pour les développeurs, permettant de déployer des services de manière automatique.<br>
+Vous trouverez les documentations nécessaires sur les sites suivants :
+Git : https://git-scm.com/<br>
+Gitlab : https://docs.gitlab.com/<br>
+Github : https://docs.github.com/fr<br>
 
 Nous allons commencer par installer git sur notre poste : https://git-scm.com/downloads<br>
-Une fois git installer sur votre ordinateur, vous pourrez faire des clones de repos.
+Une fois Git installé sur votre ordinateur, vous pouvez faire des clones de répertoires (repositories, ou repo).
 
-De notre côté, nous allons installer gitlab. Votre machine virtuelle aura donc besoin au minimum : 
+De notre côté, nous allons installer Gitlab. Pour ce faire, votre machine virtuelle aura besoin au minimum de : 
 - 2 coeurs
 - 8go de ram
 
-Nous commencerons donc par installer les prérequis : 
+Nous commençons par installer les prérequis : 
 ```bash
 sudo apt update
 sudo apt install ca-certificates curl openssh-server postfix perl
 ```
 
-Pour installer les référentiels maintenus par gitlab, nous allons utiliser un script : 
+Pour installer les référentiels maintenus par Gitlab, nous allons utiliser un script : 
 ```bash
 cd /tmp
 curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.deb.sh
 sudo bash /tmp/script.deb.sh
 ```
-Nous pouvons maintenant installer gitlab via apt : 
+Nous pouvons maintenant installer Gitlab via apt : 
 ```bash
 sudo apt install gitlab-ce
 ```
 
-Nous allons ensuite editer le fichier de configuration de gitlab : 
+Nous allons ensuite éditer le fichier de configuration de Gitlab : 
 ```bash
-# Vous pouvez utiliser l'éditeur que vous souhaitez
+# Vous pouvez utiliser l'éditeur de votre choix
 sudo vim /etc/gitlab/gitlab.rb
 ```
 
-Cherchez le paramètre external_url, et remplissez placez l'url qui sera utiliser pour se connecter sur cette machine. Cela dépends de votre cas. Si vous avez un nom de domaine, vous pouvez l'utiliser.
+Cherchez le paramètre external_url, et remplissez le par l'url qui sera utilisée pour se connecter sur cette machine. Si vous avez un nom de domaine, vous pouvez aussi l'utiliser.
 ```bash
 external_url 'http://exemple.com:80'
 ```
-Vous pouvez aussi jeter un oeil à la documentation et aux autres paramètres pour configurer votre gitlab comme vous le souhaitez.
+Vous pouvez aussi jeter un oeil à la documentation et aux autres paramètres pour configurer votre Gitlab comme vous le souhaitez.
 
-Une fois vos paramètres etablis correctement dans le fichier de configuration, nous allons configurer le service : 
+Une fois vos paramètres établis correctement dans le fichier de configuration, nous allons configurer le service : 
 ```bash
 sudo gitlab-ctl reconfigure
 ```
-Cette opération peut prendre plus ou moins de temps en fonction des ressources que vous avez.
+Cette opération peut prendre plus ou moins de temps en fonction des ressources que vous avez alloué.
 
-Une fois la configuration finalisé, vous pouvez aller sur l'url que vous avez configurer et aller sur votre gitlab. Les identifiants par défaut sont récupérable dans le fichier `/etc/gitlab/initial_root_password`.
+Une fois la configuration finalisée, vous pouvez vous rendre sur l'url que vous avez configuré et aller sur votre gitlab. Les identifiants par défaut sont récupérables dans le fichier `/etc/gitlab/initial_root_password`.
 
-Vous pouvez maintenant utiliser votre gitlab, créer des repos et des utilisateurs.
+Vous pouvez désormais utiliser votre Gitlab, créer des repos et des utilisateurs.
 
 ## E. - Monitorings
 
 ### 1. - Présentation
 
-Le monitoring peut être utilisé de différentes manières, mêmes pour un usage personnel. En effet, les habitations possèdent de plus en plus d'objets connectés (caméra de surveillances, luminaires, domotiques, portables, tablettes, ordinateurs, etc.). Un monitoring permettra de recenser les différentes performances qu'utilise un équipement électronique.
+Le monitoring peut être utilisé de différentes manières, y compris dans un usage personnel. En effet, les habitations possèdent de plus en plus d'objets connectés (caméras de surveillance, luminaires, domotique variée, portables, tablettes, ordinateurs, etc.). Un monitoring permettra de recenser les différentes performances qu'utilise un équipement électronique.
 
-Nous utiliserons différentes solutions pour surveiller nos différents équipements : Prometheus et UptimeKuma.
+Nous utiliserons différentes solutions pour surveiller nos équipements : Prometheus et UptimeKuma.
 Leur utilisation diffère selon vos besoins.
 
 ||Uptime Kuma|Prometheus|
 |---|:---:|:---:|
-|**Utilisation**|Surveillance de sites web|Surveillance des performances systèmes|
+|**Utilisation**|Surveillance de sites web|Surveillance des performances système|
 |**Alertes**|Oui|Oui|
 |**Facilité de prise en main**|Facile|Medium|
-|**Exemple d'utilisation**|Ping sur un site (en cours de développement) pour connaître s'il est en marche ou non|% d'utilisation de la RAM d'un équipement|
+|**Exemple d'utilisation**|Ping sur un site (en cours de développement) pour savoir s'il est en marche ou non|% d'utilisation de la RAM d'un équipement|
 
 ### 2. - Installation Prometheus/UptimeKuma (à faire en vidéo)
 
-Dû à leurs complexité de configuration, il est conseillé d'installer ces serveurs sous Docker. 
+A cause de la complexité de la configuration, il est conseillé d'installer ces serveurs sous Docker. 
 Voici cependant des liens si vous souhaitez les installer manuellement : [Prometheus](https://linux.how2shout.com/how-to-install-prometheus-in-debian-11-or-ubuntu-20-04/), [Uptime Kuma](https://www.rosehosting.com/blog/how-to-install-uptime-kuma-on-debian-12/).
 
-Nous vous montrerons comment installer Prometheus sous Docker et vous laisserons comme cas pratique, l'installation de l'autre serveur de monitoring.
+Nous vous montrerons comment installer Prometheus sous Docker et vous laisserons comme cas pratique l'installation de l'autre serveur de monitoring.
 
 Lien vers le repo Docker Hub de Prometheus : https://hub.docker.com/r/prom/prometheus/
 
-Prenez la main sur votre serveur Docker en SSH. Tapez ensuite les commandes suivantes:
+Prenez la main sur votre serveur Docker en SSH, puis tapez les commandes suivantes:
 
 ```bash
 mkdir /etc/prometheus
@@ -1066,7 +1067,7 @@ docker run -p 9090:9090 -v prometheus-data:/prometheus -v /etc/prometheus/promet
 ```
 **Installation des agents avec Node Exporter sur les machines virtuelles**
 
-Nous allons maintenant installer l'agent sur les VMs clients pour récolter les données.
+Nous allons maintenant installer l'agent sur les VM clientes pour récolter les données.
 Tapez la commande suivante pour installer l'agent sur une VM Debian :
 ```bash
 apt install prometheus-node-exporter
@@ -1074,8 +1075,8 @@ apt install prometheus-node-exporter
 
 Nous retournons maintenant sur le serveur comportant Prometheus et nous modifions le fichier **Prometheus.yml**.
 
-En effet vous avez dans ce fichier, une ligne se nommant *static config* avec *target* soit comportant les adresses IP des cibles pour récupérer leurs données.
-Node-exporter utilise le port 9100. Nous allons donc rajouter dans target l'adresse IP de la machine auquel nous avons installé l'agent avec comme port 9100.
+En effet, vous avez dans ce fichier une ligne nommée *static config* avec *target*, comportant les adresses IP des cibles pour récupérer leurs données.
+Node-exporter utilise le port 9100. Nous allons donc rajouter dans target l'adresse IP de la machine surlaquelle nous avons installé l'agent avec le port 9100.
 
 A chaque modification du fichier, notamment pour un ajout de cible dans prometheus, nous devons redémarrer le conteneur avec : `docker restart [container_ID]`
 
@@ -1093,11 +1094,11 @@ docker run -d -p 3000:3000 --name=grafana -v grafana-data:/etc/grafana grafana/g
 
 **Configuration Grafana**
 
-Une fois l'installation de Prometheus et des agents effectué, nous allons configuré Grafana afin de récupérer les données de Prometheus et les afficher dans un graphs avec les spécificités que nous souhaitons.
+Une fois l'installation de Prometheus et des agents effectuée, nous allons configurer Grafana afin de récupérer les données de Prometheus et les afficher dans un graph avec les options souhaitées.
 
-Nous pouvons voir des graphs préconfigurés sur [ce site](https://grafana.com/grafana/dashboards/).
+Nous pouvons consulter des graphs préconfigurés sur [ce site](https://grafana.com/grafana/dashboards/).
 
-Dans notre exemple nous prendrons [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) que vous pouvez importer dans Grafana. Voici le dashboard affiché. 
+Dans notre exemple nous prendrons [Node Exporter Full](https://grafana.com/grafana/dashboards/1860-node-exporter-full/) que vous pouvez importer dans Grafana. Voici le dashboard affiché :
 
 ![DashboardGrafana](src/DashboardGrafana.png)
 
@@ -1108,8 +1109,8 @@ Dans notre exemple nous prendrons [Node Exporter Full](https://grafana.com/grafa
 
 ### 1. - Présentation
 
-Un tableau de bord permettra donc de voir de manière organisé les différentes données recensé par le monitoring. En effet, un serveur de monitoring s'occupera de recenser les informations que vous aurez programmé mais affichera ces données de manière brute et condensé.
-Pour un usage personnel, nous resterons sur des solutions open sources, tel que [Homer](https://github.com/bastienwirtz/homer?ref=tcude.net)
+Un tableau de bord permettra de consulter de manière organisée les différentes données recensées par le monitoring. En effet, un serveur de monitoring s'occupera de recenser les informations que vous aurez programmées mais affichera ces données de manière brute et condensée.
+Pour un usage personnel, nous resterons sur des solutions open-source, telles que [Homer](https://github.com/bastienwirtz/homer?ref=tcude.net)
 
 ### 2. - Installation Homer
 
@@ -1125,7 +1126,7 @@ docker run -d -p 8080:8080  --name homer -v /etc/Homer:/etc/Homer --restart=alwa
 
 ## G. - Pour aller plus loin
 
-Vous avez maintenant un infrastructure en place fonctionnel. Vous allez pouvoir integrer plus de services, et tester plus de technologies.
+Vous avez maintenant une infrastructure fonctionelle en ligne. Vous allez pouvoir intégrer plus de services et tester plus de technologies.
 
 Voici quelques technologies que nous vous conseillons de regarder : 
 - Virtualisation
@@ -1138,12 +1139,11 @@ Voici quelques technologies que nous vous conseillons de regarder :
 - Automatisation
     - rundeck
     - foreman
-    - 
 - Autres
     - Serveur DNS
     - Serveur DHCP
     - Serveur WEB
     - Serveur proxy/reverse proxy
 
-Un homelab est quelque chose qui ouvre des portes pour tous les passionnés d'informatiques, leur permettant de tester des choses, et surtout de les mettres en place ! <br>
-Maintenant que vous avez mis en place le coeur de votre homelab, amusez vous et testez tous !
+Un homelab est quelque chose qui ouvre des portes pour tous les passionnés d'informatique, leur permettant de tester des technologies, et surtout de les mettres en place ! <br>
+Maintenant que vous avez mis en place le coeur de votre homelab, amusez-vous et testez tout !
