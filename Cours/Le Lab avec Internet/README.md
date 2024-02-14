@@ -72,15 +72,15 @@ Dans le cas des entreprises, le réseau local correspondrait à l'emplacement de
 
 ### 2.	Mise en place d’une DMZ
 
-Pour la mise en place d'une DMZ sur notre Homelab, nous allons avoir besoin d'un firewall. Je vous renvoie à la partie de notre cours concernant l'installation de PFSense, si vous ne l'avez pas déjà mis en place, ou que vous n'avez pas déjà votre propre firewall.
+Pour la mise en place d'une DMZ sur notre Homelab, nous allons avoir besoin d'un firewall. Je vous renvoie à la partie de notre cours concernant l'installation de pfSense si vous ne l'avez pas déjà mis en place, ou que vous n'avez pas déjà votre propre firewall.
 
-Allez ensuite dans les paramètres de votre box, et cherchez l'onglet concernant la gestion de port : 
+Rendez-vous ensuite dans les paramètres de votre box, et cherchez l'onglet concernant la gestion de port : 
 ![dmz_box_param](src/dmz_box_param.png)$
 
-Vous retrouverez ensuite un paramètres DMZ à cochez, et une adresse IP à mettre. Cette adresse corresponds à l'adresse IP de votre firewall.
+Vous aurez ensuite à activer la DMZ et à spécifier une adresse IP liée à cette DMZ. Cette adresse correspond à l'adresse IP de votre firewall.
 ![dmz_box_ip](src/dmz_box_ip.png)
 
-Votre DMZ est maintenant configurer, vous pouvez donc aller sur votre firewall. L'ensemble des ports seront rediriger dessus, et vous pourrez faire vos ouvertures vers vos différents services.
+Votre DMZ est maintenant configurée. L'ensemble des ports seront redirigés dessus, et vous pourrez faire vos ouvertures de ports pour vos différents services.
 
 
 ## D.	Multisite
