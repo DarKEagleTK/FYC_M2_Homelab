@@ -1,10 +1,10 @@
 ## A.	Le lab avec internet
 
-Maintenant que nous avons tout un ensemble de systèmes et de services configurés sur notre environnement, nous pouvons nous posez les questions suivantes : 
+Maintenant que nous avons tout un ensemble de systèmes et de services configurés sur notre environnement, nous pouvons nous poser les questions suivantes : 
 - Comment exposer mes services sur internet pour pouvoir y accéder de partout ?
 - Quels services dois-je exposer ou non ? 
 
-Lors de cette partie de cours, nous allons voir lesquel de nos services nous pouvons exposer sur la toile, et comment le faire de manière propre. Nous verrons aussi pour mettre en place un système multisite, pour connecter votre infrastructure à d'autre environnement comme la maison de vos amis ou parents.
+Lors de cette partie du cours, nous allons voir quels services sont exposable sur la toile, et comment le faire de manière sécurisée. Nous verrons aussi comment mettre en place un système multisite, afin de connecter votre infrastructure à d'autres environnements comme la maison de vos amis ou parents.
 
 Pour cela, nous allons avoir besoin de plusieurs technologies différentes: 
 - Les noms de domaines
@@ -12,62 +12,63 @@ Pour cela, nous allons avoir besoin de plusieurs technologies différentes:
 - Les zones DMZ
 - Les VPNs
 
-**Point d'attention** : L'exposition de votre infrastructure personnelle sur internet peut contenir des risques. Des services mal configuré peuvent être cassé par des bots ou des personnes mal intentionné. Veuillez donc prendre ces informations en comptes avant d'exposer vos services, et faites attentions aux ouvertures que vous faites sur votre firewall !
+**Point d'attention** : L'exposition de votre infrastructure personnelle sur internet peut être risquée. Des services mal configurés peuvent être cassés par des bots ou des personnes mal intentionnées. Veuillez donc prendre ces informations en compte avant d'exposer vos services, et faites attention aux ouvertures que vous faites sur votre firewall !
 
 ## B.	Nom de domaine
 ### 1.	Présentation
 
-Nous allons donc commencer par les noms de domaines. Pour cette partie, nous allons malheuresement avoir de nouveau besoin de notre carte bleu.
+Nous allons commencer par les noms de domaines. Pour cette partie, nous allons malheuresement avoir de nouveau besoin de notre carte bleu.
 Avant de commencer, nous allons faire un petit rappel sur les DNS et leurs fonctionnements.
 
-Il existe plusieurs types de serveurs DNS. On y retrouve les serveurs racines, qui se nomment de A jusqu'à M, et qui sont des serveurs internationnaux. Il n'existe pas de serveurs DNS ayant une authorité plus importante que ces serveurs.
-Il y a ensuite les serveurs faisant authorité sur un domaine. C'est ces serveurs que vous devez joindre pour connaitre les informations de la zone qu'ils gèrent. Dans le cas de `google.com`, on retrouve les celebres IP 8.8.8.8 et 8.8.4.4.
-Pour finir, les serveurs DNS relais ne font pas authorité sur une zone, et servent uniquement de caches pour les hôtes qui se connectent dessus.
+Il existe plusieurs types de serveurs DNS. On y retrouve les serveurs racines, nommés de A à M, et qui sont des serveurs internationnaux. Il n'existe pas de serveur DNS ayant une authorité plus importante que ces serveurs.
+Viennent ensuite les serveurs faisant authorité sur un domaine. Ce sont ces serveurs que vous devez joindre pour connaitre les informations de la zone dont ils sont responsables. Dans le cas de `google.com` par exemple, nous retrouvons les célèbres IP 8.8.8.8 et 8.8.4.4.
+Pour finir, les serveurs DNS relais ne font pas authorité sur une zone, et servent uniquement de cache pour les hôtes qui se connectent dessus.
 
-Pour obtenir un nom de domaine, on doit réserver le nom de domaine aupres de `registars`, qui dependent de la zone DNS qui vous voulez (fr, com, eu, ...). L'oganisme internationnal qui gèrent les DNS s'appelle ICANN.
-Un certain nombres d'entreprises proposent cependant aux utilisateurs l'accès à des noms de domaines, pour les prixs allant de 5 à plusieurs milliers d'euros. En France, on retrouve IONOS, CLOUDFARE, ou encore OVH.
+Pour obtenir un nom de domaine, nous devons acheter le nom de domaine auprès de `registars`, qui dépendent de la zone DNS de votre choix (fr, com, eu, ...). L'organisme internationnal qui gère les DNS s'appelle ICANN.
+Un certain nombre d'entreprises proposent cependant aux utilisateurs l'accès à des noms de domaines, pour les prix allant de moins d'un euro à plusieurs milliers d'euros. En France, on peut retrouver des noms comme IONOS, CLOUDFARE, ou encore OVH.
 
 
 ### 2.	DNS
 
-Choisissez donc un fournisseur de nom de domaine, et réservez votre propre nom de domaine. **ATTENTION** C'est payant !!
+Choisissez un fournisseur de nom de domaine, et réservez votre propre nom de domaine. **ATTENTION** C'est payant !
 Voici quelques fournisseurs : 
 - [OVH](https://www.ovhcloud.com/fr/domains/)
 - [IONOS](https://www.ionos.fr/domaine/noms-de-domaine)
 - [Hostinger](https://www.hostinger.fr/nom-de-domaine-disponible)
 
-Une fois que vous avez votre nom de domaine, rendez-vous sur la page de gestion de nom de domaine de votre fournisseur. Vous obtiendrez une page similaire, récapitulant les informations de nom de domaine et vous permettant de faire des configurations.
+Une fois que vous avez fait l'acquisition de votre nom de domaine, rendez-vous sur la page de gestion de nom de domaine de votre fournisseur. Vous obtiendrez une page similaire, récapitulant les informations de nom de domaine et vous permettant de faire des configurations.
 ![dns_details](src/dns_details.png)
 ![dnsdetails-ovh](src/dns_details_ovh.png)
 
-Ici, vous pouvez voir deux hébergeurs de domaines IONOS et OVH proposant de configurer nos sous-domaines, les entrées dns, ainsi que parametrer les serveurs DNS pour faire en sorte d'utiliser votre propre serveurs en tant que serveur de nom.
+Ici vous pouvez voir deux hébergeurs de domaines, IONOS et OVH, et leur interface de configuration de nom de domaines. Vous pourrez ici configurer les entrées DNS ou paramétrer les serveurs DNS pour faire en sorte d'utiliser votre propre serveur en tant que serveur de nom.
 
 ### 3.	Certificat SSL
 
-Dans la continuité de l'acquisition d'un nom de domaine avec DNS, nous avons la possibilité de créer un site web avec notre nom de domaine. Cependant, afin de certifier que notre site web est bien sécurisé, nous devons importer un certificat SSL. Je vous donne donc 2 liens de d'acquisition de certificat SSL sur [IONOS](https://www.ionos.fr/assistance/certificats-ssl/configurer-un-certificat-ssl-gere-par-lutilisateur/configuration-dun-certificat-ssl-gere-par-vous-meme-ssl-starter-ssl-starter-wildcard/) et [OVH](https://help.ovhcloud.com/csm/fr-web-hosting-ssl-certificates?id=kb_article_view&sysparm_article=KB0053177).
+Dans la continuité de l'acquisition d'un nom de domaine et d'un DNS, nous avons la possibilité de créer un site web avec notre nom de domaine. Cependant, afin de nous assurer que notre site web est bien sécurisé, nous devons importer un certificat SSL. Je vous donne donc 2 liens d'acquisition de certificat SSL sur [IONOS](https://www.ionos.fr/assistance/certificats-ssl/configurer-un-certificat-ssl-gere-par-lutilisateur/configuration-dun-certificat-ssl-gere-par-vous-meme-ssl-starter-ssl-starter-wildcard/) et [OVH](https://help.ovhcloud.com/csm/fr-web-hosting-ssl-certificates?id=kb_article_view&sysparm_article=KB0053177).
 
 ## C.	DMZ
 ### 1.	Présentation
 
-Une zone démilitarisée (DMZ) est un sous-réseau séparé du réseau local et isolé d'internet par in parefeu. C'est le réseau qu'on expose sur internet, au lieu d'exposer notre réseau local.
+Une zone démilitarisée (DMZ) est un sous-réseau séparé du réseau local et séparé d'internet par un pare-feu. C'est le réseau qu'on expose sur internet au lieu d'exposer l'entièreté de notre réseau local, réduisant ainsi les dommages d'une potentielle attaque.
 
-Dans le cas d'un homelab, avoir une DMZ va nous permettre d'exposer nos services sur internet, sans compromettre notre réseau local. Par exemple, on pourrait pointer sur un reverse proxy, qui permettrai d'avoir plusieurs sites web sur notre infrastructure.
+Dans le cas d'un homelab, avoir une DMZ va nous permettre d'exposer nos services sur internet, sans compromettre notre réseau local. On pourrait par exemple pointer sur un reverse proxy, ce qui permettrait d'avoir plusieurs sites web hébergés par notre infrastructure.
 
-Cependant, il est important que toutes choses exposer sur internet comporte des risques. Il faut donc bien faire attention à ses règles de pare-feu, et aux configurations des services que l'on expose.
+Cependant, il est important de souligner que tout service exposé sur internet est soumis à des risques. Il faut donc bien faire attention à ses règles de pare-feu et aux configurations des services que l'on expose.
+
 
 #### Les architectures de DMZ
 
-Le cas le plus courant de DMZ est la DMZ avec un seul firewall. Dans ce cas, on se retrouve avec 3 zones déclarés. 
+Le cas le plus courant de DMZ est une DMZ avec un seul firewall. Dans ce cas, on se retrouve avec 3 zones déclarées. 
 
 ![dmz_solo_fw](src/dmz_solo_fw.png)
 
-Dans le cadre de notre homelab, on se trouve dans ce cas présent. Le pare-feu correspondrait à notre box, et le serveur à un routeur qui permettrai d'acceder aux différents réseaux que l'on aurait configurer derrière.
+Dans le cadre de notre homelab, on se trouve dans ce cas. Le pare-feu correspondrait à notre box, et le serveur à un routeur qui permettrait d'accéder aux différents réseaux que l'on aurait configuré derrière.
 
-Il faut cependant savoir qu'on peux aussi avoir des DMZ avec deux firewalls. Cette architecture est plus complexe, et est souvent mise en place dans les grosses entreprises.
+Il faut cependant savoir que l'on peut également avoir des DMZ avec plusieurs pare-feux. Cette architecture est plus complexe, et est souvent mise en place dans les grosses entreprises.
 
 ![dmz_multi_fw](src/dmz_multi_fw.png)
 
-Dans le cas des entreprises, le réseau local correspondrait à l'emplacement ou les serveurs se trouves. Dans la partie DMZ, on retrouverai l'ensemble des relais pour aller sur internet, tel des proxys et reverses proxy.
+Dans le cas des entreprises, le réseau local correspondrait à l'emplacement des serveurs. Pour la partie DMZ, nous retrouverions l'ensemble des relais permettant d'aller sur internet, tels que des proxys ou reverses proxy.
 
 ### 2.	Mise en place d’une DMZ
 
