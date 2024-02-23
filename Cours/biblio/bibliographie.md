@@ -17,3 +17,6 @@
 - https://openvpn.net/community-resources/static-key-mini-howto/
 - https://www.it-connect.fr/debian-11-et-openvpn-comment-creer-son-propre-serveur-vpn/#A_Telecharger_le_script_dinstallation
 - https://github.com/angristan/openvpn-install
+- https://www.watchguard.com/help/docs/help-center/en-US/Content/en-US/Fireware/_intro/set-up_administer.html
+- https://www.truenas.com/community/
+    - https://www.truenas.com/docs/solutions/integrations/nextcloud/

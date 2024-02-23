@@ -1,32 +1,19 @@
 
 ## A.	Le matériel système
-### 1.	Analyse des besoins
 Sélectionner ou virtualiser ses équipements ?
-    Félicitation, vous vous êtes décidé à créer votre propre HomeLab. Mais la première difficulté de votre nouvelle aventure s’élève déjà devant vous : quel matériel allez-vous choisir ? Plusieurs critères peuvent vous aider à vous décider, mais tout d’abord il vous faut établir une liste de vos besoins. Cette première réponse peut paraitre simpliste, mais vous ne pourrez pas aller plus loin sans votre objectif final clairement établi. Voici donc une liste de questions à vous poser avant de vous lancer : 
+    Félicitation, vous vous êtes décidé à créer votre propre homelab. Mais la première difficulté de votre nouvelle aventure s’élève déjà devant vous : quel matériel allez-vous choisir ? Plusieurs critères peuvent vous aider à vous décider, mais tout d’abord il vous faut établir une liste de vos besoins. Cette première réponse peut paraitre simpliste, mais vous ne pourrez pas aller plus loin sans votre objectif final clairement établi. Voici donc une liste de questions à vous poser avant de vous lancer : 
 
 - Quel genre de services voulez-vous héberger ? Un simple serveur de fichier qui ne serait utilisé que par vous-même ne demandera pas les mêmes ressources qu’un serveur Exchange, qu’une infrastructure complète de test pour vos projets ou un mix de plusieurs applications.
 
 - Quel type de matériel voulez-vous utiliser ? Vous pouvez acheter votre matériel neuf, d’occasion ou essayer de récupérer le matériel dont certaines entreprises souhaitent se débarrasser. Tout cela aura un impact sur le coût de votre HomeLab, mais aussi sur sa fiabilité et sur sa période offline en cas de problème technique (facilité de trouver des pièces, matériel sous garantie ou non, quel genre de garantie le cas échéant, etc.). 
 
-- Quel avenir voulez-vous réserver à votre HomeLab ? Sauf cas exceptionnel, vous ne vous rééquiperez pas dans 6 mois, autant prévoir votre investissement sur le long terme. Il est bien sûr toujours possible de racheter de nouveaux équipements plus tard, mais bien dimensionner son infrastructure dès le début sera moins coûteux et ne demandera pas autant de travail. Si vous ne savez pas encore à quel point vous voudriez développer votre HomeLab, il pourrait être intéressant de garder une marge d’upgrade sur votre matériel (slots de disques libres sur NAS ou serveur, emplacements vides pour ajouter de la RAM sur votre serveur, ports Ethernet en “trop”). 
+- Quel avenir voulez-vous réserver à votre HomeLab ? Sauf cas exceptionnel, vous ne vous rééquiperez pas dans 6 mois, autant prévoir votre investissement sur le long terme. Il est bien sûr toujours possible de racheter de nouveaux équipements plus tard, mais bien dimensionner son infrastructure dès le début sera moins coûteux et ne demandera pas autant de travail. Si vous ne savez pas encore à quel point vous voudriez développer votre homelab, il pourrait être intéressant de garder une marge d’upgrade sur votre matériel (slots de disques libres sur NAS ou serveur, emplacements vides pour ajouter de la RAM sur votre serveur, ports Ethernet en “trop”). 
 
-### 2.	Répartitions des ressources matérielles et financières
-*a)	Cas pratique : Création liste ou schéma répartitions des VMs serveurs selon les besoins*
-### 3.	Serveurs
-- Gestion des disques/RAID
-- Gestion du bios
-- Activer la virtualisation
-### 4.	Pour aller plus loin
-Évolutivité, flexibilité des ressources, transitions étude de cas du matériel système dans le monde professionnel
+
 ## B.	Le matériel réseau
-### 1.	Analyse des besoins
-Physique ou virtuel ?
-### 2.	Répartitions des ressources matérielles et financières
-*a)	Cas pratique : Création du schéma infrastructure*
-### 3.	Routeur/pare-feu (si physiques)
-- Règles de routage/gateway
-- Gestion des vlans
-### 4.	Switch (si physiques)
-Gestion des vlans
-### 5.	Pour aller plus loin
-Sécurité des transferts avec filtre dynamique des données via abonnement dans matériels professionnels
+Tout comme pour votre serveur et les autres équipements que nous avons vu précédemment, la question se pose entre choisir des équipements réseaux physiques ou virtuels. Encore une fois (on ne le dira jamais assez), récupérez ce que vous pouvez ! Du matériel physique sera un plus, il vous sera souvent plus facile de vous y retrouver (surtout si vous débutez !) du fait de son aspect plus parlant et intuitif.
+Les matériels physiques comme des switch par exemple seront aussi à préférer au format physique. En effet, si le but est de brasser plusieurs équipements, le nombre d’interfaces réseaux de votre serveur risque vite d’être saturé ; c’est un élément à prendre en compte, si vous ne comptez pas utiliser beaucoup d’éléments, un switch virtuel peut peut-être suffire pour le moment. Libre à vous d’acheter le nécessaire plus tard quand votre infrastructure (et/ou votre budget) évoluera. Pour prendre un contre-exemple, un pare-feu comme iptables ou pfSense peut tout à fait être virtualisé car il ne prendra souvent que 2 ou 3 interfaces réseau.
+
+Enfin, il faut vous poser la question de l'objectif de votre homelab. Si votre but est de vous former à l'utilisation de l'informatique en entreprise par exemple, privilégiez les solutions qu'elles utiliseront. Votre choix se portera alors souvent sur des équipements physiques (sauf dans certains cas tels que le cloud, où des pare-feux seront virtualisés par exemple), et souvent de gamme (et malheureusement, de prix) élevée. L’occasion peut encore une fois être une bonne solution si le matériel a été utilisé dans de bonnes conditions, surtout que ce genre d’équipements vient avec une garantie pouvant monter à plusieurs années, voir à vie.
+
+Dans tous les cas : ne vous précipitez pas. Prenez le temps de faire des recherches, posez des questions sur les forums spécialisés, et ne vous jetez pas sur une offre trop alléchante ; cela cache peut-être quelque chose : creusez le sujet pour être sûr de votre achat, et passez votre chemin en cas de doute, vous trouverez plus tard. 
